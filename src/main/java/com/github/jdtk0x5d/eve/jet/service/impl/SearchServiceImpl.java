@@ -34,11 +34,9 @@ public class SearchServiceImpl implements SearchService {
 
   @Override
   public List<OrderSearchRow> searchForOrders(double isk, double volume, Collection<String> systems) {
-    logger.debug("Searching for orders with ISK = [" + isk + "], Volume=[" + volume + "], Systems=[" + systems + "]");
     long timeCount = System.currentTimeMillis();
     List<OrderSearchRow> result = search(isk, volume, systems);
     timeCount = System.currentTimeMillis() - timeCount;
-    logger.debug("Total loading time: " + timeCount / 1000);
     return result;
   }
 
@@ -50,17 +48,16 @@ public class SearchServiceImpl implements SearchService {
   private void loadAndSave(double isk, double volume, Collection<String> systems) {
     List<Integer> regionIds = systems == null ? mapDao.getAllSystemIds() : mapDao.getRegioIdsByNames(systems);
     for (Integer regionId : regionIds) {
-      int ordersCount;
+      int ordersCount =0;
       int page = 1;
 
       do {
         List<MarketOrder> orders = marketAPI.getOrders(OrderType.ALL, regionId, page);
         if(orders != null){
-
+          cacheDao.saveOrders(convert(orders));
+          ordersCount = orders.size();
+          page++;
         }
-        cacheDao.saveOrders(convert(orders));
-        ordersCount = orders.size();
-        page++;
       } while (ordersCount > 0);
 
     }

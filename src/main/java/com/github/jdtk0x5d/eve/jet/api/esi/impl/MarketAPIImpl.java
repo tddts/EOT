@@ -1,6 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.api.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.api.esi.MarketAPI;
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.NullOnException;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketHistory;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketPrice;
@@ -19,6 +20,7 @@ import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.restOperations;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
+@NullOnException
 public class MarketAPIImpl implements MarketAPI {
 
   @Value("${url.market.region.orders}")

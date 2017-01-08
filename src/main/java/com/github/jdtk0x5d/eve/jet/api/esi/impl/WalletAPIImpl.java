@@ -1,6 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.api.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.api.esi.WalletAPI;
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.NullOnException;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.wallet.Wallet;
 import com.github.jdtk0x5d.eve.jet.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.restOperations;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
+@NullOnException
 public class WalletAPIImpl implements WalletAPI {
 
   @Value("${url.wallets}")
