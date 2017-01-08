@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.github.jdtk0x5d.eve.jet.fx.controller.impl.LoginController">
+    <HBox fx:id="headerHbox" alignment="CENTER_LEFT" spacing="5.0" style="-fx-background-color: #ed4949;"
+          xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <VBox.margin>
+            <Insets/>
+        </VBox.margin>
+        <ChoiceBox fx:id="loginChoiceBox" minWidth="120.0"/>
+        <Button fx:id="loginButton" mnemonicParsing="false" text="%msg.login"/>
+        <Label fx:id="statusLabel" text="%login.unauthorized"/>
+    </HBox>
+</VBox>

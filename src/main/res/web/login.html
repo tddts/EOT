@@ -1,0 +1,23 @@
+<script>
+
+var resultParams = null;
+
+if(window.location.hash && window.location.hash !== "#_=_") {
+  resultParams = location.hash.substring(1);
+}
+else {
+  resultParams = location.search.substring(1);
+}
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+var path = 'http://localhost:55553/trader?' + resultParams;
+var message = httpGet(path);
+alert(message);
+</script>

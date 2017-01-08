@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- Basic configurations -->
+    <aop:aspectj-autoproxy/>
+    <context:component-scan base-package="com.github.jdtk0x5d.eve.jet.*"/>
+    <util:properties id="applicationProperties" location="classpath:application.properties"/>
+    <context:property-placeholder properties-ref="applicationProperties"/>
+
+    <!-- Bean postprocessors -->
+    <bean id="eventBusPostProcessor" class="com.github.jdtk0x5d.eve.jet.config.spring.config.EventBusBeanPostProcessor"/>
+    <bean id="messageAnnotationPostProcessor" class="com.github.jdtk0x5d.eve.jet.config.spring.config.MessageAnnotationBeanPostProcessor"/>
+
+    <!-- Message source -->
+    <bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+            <value>locale/messages</value>
+        </property>
+    </bean>
+
+    <!-- Guava EventBus -->
+    <bean id="eventBus" class="com.google.common.eventbus.EventBus"/>
+
+    <!-- GSON config -->
+    <bean id="gsonFactory" class="com.github.jdtk0x5d.eve.jet.config.spring.factory.GsonFactoryBean">
+        <property name="deserializers">
+            <map>
+                <entry key="com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute"
+                       value="com.github.jdtk0x5d.eve.jet.config.gson.DotlanRouteJsonDeserializer"/>
+
+                <entry key="java.time.LocalDateTime"
+                       value="com.github.jdtk0x5d.eve.jet.config.gson.LocalDateTimeJsonDeserializer"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id ="gsonHttpMessageConverter" class="org.springframework.http.converter.json.GsonHttpMessageConverter">
+        <property name="gson" ref="gsonFactory"/>
+    </bean>
+
+    <bean class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <ref bean="gsonHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Ebean ORM-->
+    <bean id="ebeanServerConfig" class="com.avaje.ebean.config.ServerConfig">
+        <property name="name" value="ebeanServerConfig"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packages">
+            <list>
+                <value>com.github.jdtk0x5d.eve.jet.model.db</value>
+            </list>
+        </property>
+        <property name="ddlGenerate" value="false"/>
+        <property name="ddlRun" value="false"/>
+    </bean>
+
+    <bean class="com.avaje.ebean.springsupport.factory.EbeanServerFactoryBean">
+        <property name="serverConfig" ref="ebeanServerConfig"/>
+    </bean>
+
+    <bean id="transactionManager" class="com.avaje.ebean.springsupport.txn.SpringAwareJdbcTransactionManager"/>
+
+    <!-- SQLite DB -->
+    <bean id="dataSource" class="org.sqlite.SQLiteDataSource">
+        <property name="url" value="${jdbc.url}" />
+    </bean>
+
+</beans>

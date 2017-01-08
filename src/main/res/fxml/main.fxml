@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.jdtk0x5d.eve.jet.fx.controller.impl.MainController">
+   <top>
+       <fx:include fx:id="header" source="header.fxml" />
+   </top>
+   <bottom>
+      <TextField editable="false" text="Loading..." BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+           <Tab text="%tabs.search.header">
+               <fx:include fx:id="searchTab" source="tab_search.fxml"/>
+           </Tab>
+       </TabPane>
+   </center>
+</BorderPane>
