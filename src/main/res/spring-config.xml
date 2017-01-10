@@ -12,7 +12,7 @@
     <!-- Basic configurations -->
     <aop:aspectj-autoproxy/>
     <context:component-scan base-package="com.github.jdtk0x5d.eve.jet.*"/>
-    <util:properties id="applicationProperties" location="classpath:application.properties"/>
+    <util:properties id="applicationProperties" location="classpath:application.properties,classpath:static_data.properties"/>
     <context:property-placeholder properties-ref="applicationProperties"/>
 
     <!-- Bean postprocessors -->
@@ -64,8 +64,8 @@
                 <value>com.github.jdtk0x5d.eve.jet.model.db</value>
             </list>
         </property>
-        <property name="ddlGenerate" value="false"/>
-        <property name="ddlRun" value="false"/>
+        <property name="ddlGenerate" value="true"/>
+        <property name="ddlRun" value="true"/>
     </bean>
 
     <bean class="com.avaje.ebean.springsupport.factory.EbeanServerFactoryBean">
@@ -75,7 +75,7 @@
     <bean id="transactionManager" class="com.avaje.ebean.springsupport.txn.SpringAwareJdbcTransactionManager"/>
 
     <!-- SQLite DB -->
-    <bean id="dataSource" class="org.sqlite.SQLiteDataSource">
+    <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource">
         <property name="url" value="${jdbc.url}" />
     </bean>
 

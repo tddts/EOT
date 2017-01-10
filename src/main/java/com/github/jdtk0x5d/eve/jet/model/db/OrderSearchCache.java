@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.model.db.nonstat;
+package com.github.jdtk0x5d.eve.jet.model.db;
 
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 
@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Entity
-@Table(name = "\"appOrderSearchCache\"")
 public class OrderSearchCache {
 
   @Column
