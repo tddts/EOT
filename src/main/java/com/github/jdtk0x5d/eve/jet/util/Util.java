@@ -35,9 +35,4 @@ public class Util {
     return new DotlanJump(Integer.valueOf(jumps[0]), Integer.valueOf(jumps[1]));
   }
 
-  @SuppressWarnings("unchecked")
-  public static List<Integer> toIntList(java.util.List<Object> objectList) {
-    return (List<Integer>) (List<?>) objectList;
-  }
-
 }
