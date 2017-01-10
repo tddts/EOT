@@ -27,7 +27,7 @@ public class RequestUtil {
   }
 
   public static UriComponentsBuilder apiUriBuilder(String resourceAddress) {
-    String URL = Context.getPropertyHolder().getProperty("url.swagger") + resourceAddress;
+    String URL = Context.getAppProperties().getProperty("url.swagger") + resourceAddress;
     return setDefaultParameters(UriComponentsBuilder.fromHttpUrl(URL));
   }
 
