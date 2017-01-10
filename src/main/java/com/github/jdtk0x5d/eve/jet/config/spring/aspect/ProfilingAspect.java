@@ -21,10 +21,14 @@ public class ProfilingAspect {
   public void annotationPointcut(ProceedingJoinPoint joinPoint) throws Throwable {
     long time = System.currentTimeMillis();
     joinPoint.proceed();
-    time = System.currentTimeMillis() - time;
+    long duration = (System.currentTimeMillis() - time) / 1000;
+    long minutes = (duration % (60 * 60)) / 60;
+    long seconds = duration % 60;
     logger.debug(joinPoint.getSignature().getDeclaringType().getSimpleName()
         + "."
         + joinPoint.getSignature().getName()
-        + "() execution time is: " + time + " ms.");
+        + "() execution time is: "
+        + minutes + " m. "
+        + seconds + " s.");
   }
 }
