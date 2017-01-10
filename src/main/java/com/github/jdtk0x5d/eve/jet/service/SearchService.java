@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface SearchService {
 
-  List<OrderSearchRow> searchForOrders(double isk, double volume, Collection<String> systems);
+  List<OrderSearchRow> searchForOrders(double isk, double volume, Collection<String> regions);
 }

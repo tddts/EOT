@@ -56,10 +56,10 @@ public class SearchTabController {
   }
 
   private void search() {
-    List<String> systems = new ArrayList<>(2);
-    systems.add("The Forge");
-    systems.add("Domain");
-    searchService.searchForOrders(0, 0, systems);
+    List<String> regions = new ArrayList<>(2);
+    regions.add("The Forge");
+    regions.add("Domain");
+    searchService.searchForOrders(0, 0, regions);
   }
 
   private void initTable() {
