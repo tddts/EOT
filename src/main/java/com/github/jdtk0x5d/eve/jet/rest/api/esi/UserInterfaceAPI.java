@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.rest.esi;
+package com.github.jdtk0x5d.eve.jet.rest.api.esi;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com

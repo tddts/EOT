@@ -1,6 +1,6 @@
-package com.github.jdtk0x5d.eve.jet.rest.esi.impl;
+package com.github.jdtk0x5d.eve.jet.rest.api.esi.impl;
 
-import com.github.jdtk0x5d.eve.jet.rest.esi.MarketAPI;
+import com.github.jdtk0x5d.eve.jet.rest.api.esi.MarketAPI;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.NullOnException;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketHistory;

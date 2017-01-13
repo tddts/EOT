@@ -1,6 +1,6 @@
-package com.github.jdtk0x5d.eve.jet.rest.esi.impl;
+package com.github.jdtk0x5d.eve.jet.rest.api.esi.impl;
 
-import com.github.jdtk0x5d.eve.jet.rest.esi.UserInterfaceAPI;
+import com.github.jdtk0x5d.eve.jet.rest.api.esi.UserInterfaceAPI;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.NullOnException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
