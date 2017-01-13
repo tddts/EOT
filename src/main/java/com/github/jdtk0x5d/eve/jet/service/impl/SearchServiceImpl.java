@@ -1,6 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.service.impl;
 
-import com.github.jdtk0x5d.eve.jet.api.esi.MarketAPI;
+import com.github.jdtk0x5d.eve.jet.rest.esi.MarketAPI;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Component
+@Repository
 public class SearchServiceImpl implements SearchService {
 
   private static final Logger logger = LogManager.getLogger(SearchServiceImpl.class);
@@ -29,7 +29,7 @@ public class SearchServiceImpl implements SearchService {
   @Autowired
   private MarketAPI marketAPI;
 
-  @Value("${api.retry.count}")
+  @Value("${rest.retry.count}")
   private int retryCount;
 
   @Value("#{${static.regions}}")
@@ -66,7 +66,7 @@ public class SearchServiceImpl implements SearchService {
       List<MarketOrder> orders = marketAPI.getOrders(OrderType.ALL, regionId, page);
 
       if (orders != null) {
-        cacheDao.saveOrders(convert(orders));
+        cacheDao.saveOrders(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList()));
         ordersCount = orders.size();
         logger.debug("Loaded " + ordersCount + " orders.");
         page++;
@@ -75,11 +75,4 @@ public class SearchServiceImpl implements SearchService {
     } while (ordersCount > 0);
   }
 
-  private List<OrderSearchCache> convert(List<MarketOrder> orders) {
-    List<OrderSearchCache> searchCache = new ArrayList<>(orders.size());
-    for (MarketOrder order : orders) {
-      searchCache.add(new OrderSearchCache(order));
-    }
-    return searchCache;
-  }
 }

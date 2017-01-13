@@ -1,6 +1,6 @@
-package com.github.jdtk0x5d.eve.jet.api.esi.impl;
+package com.github.jdtk0x5d.eve.jet.rest.esi.impl;
 
-import com.github.jdtk0x5d.eve.jet.api.esi.LocationAPI;
+import com.github.jdtk0x5d.eve.jet.rest.esi.LocationAPI;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.NullOnException;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.location.Location;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.location.Ship;

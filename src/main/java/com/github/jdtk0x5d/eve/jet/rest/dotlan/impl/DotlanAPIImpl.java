@@ -1,6 +1,6 @@
-package com.github.jdtk0x5d.eve.jet.api.dotlan.impl;
+package com.github.jdtk0x5d.eve.jet.rest.dotlan.impl;
 
-import com.github.jdtk0x5d.eve.jet.api.dotlan.DotlanAPI;
+import com.github.jdtk0x5d.eve.jet.rest.dotlan.DotlanAPI;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.exception.DotlanResponseParsingException;
 import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;

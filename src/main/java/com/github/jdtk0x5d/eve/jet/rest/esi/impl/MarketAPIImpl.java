@@ -1,8 +1,7 @@
-package com.github.jdtk0x5d.eve.jet.api.esi.impl;
+package com.github.jdtk0x5d.eve.jet.rest.esi.impl;
 
-import com.github.jdtk0x5d.eve.jet.api.esi.MarketAPI;
+import com.github.jdtk0x5d.eve.jet.rest.esi.MarketAPI;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.NullOnException;
-import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketHistory;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketPrice;
@@ -34,7 +33,6 @@ public class MarketAPIImpl implements MarketAPI {
   private String addressItemHistory;
 
   @Override
-  @Profiling
   public List<MarketOrder> getOrders(OrderType orderType, long regionId, int page) {
     String url = apiUriBuilder(addressOrdersInRegion)
         .queryParam("page", page)

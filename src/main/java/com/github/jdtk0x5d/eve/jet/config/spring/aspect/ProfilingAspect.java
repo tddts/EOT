@@ -18,9 +18,9 @@ public class ProfilingAspect {
   private static final Logger logger = LogManager.getLogger(Profiling.class);
 
   @Around("@annotation(com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling)")
-  public void annotationPointcut(ProceedingJoinPoint joinPoint) throws Throwable {
+  public Object annotationPointcut(ProceedingJoinPoint joinPoint) throws Throwable {
     long time = System.currentTimeMillis();
-    joinPoint.proceed();
+    Object value = joinPoint.proceed();
     long duration = (System.currentTimeMillis() - time) / 1000;
     long minutes = (duration % (60 * 60)) / 60;
     long seconds = duration % 60;
@@ -30,5 +30,6 @@ public class ProfilingAspect {
         + "() execution time is: "
         + minutes + " m. "
         + seconds + " s.");
+    return  value;
   }
 }
