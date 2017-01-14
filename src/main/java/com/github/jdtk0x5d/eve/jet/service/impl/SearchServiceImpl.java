@@ -54,8 +54,10 @@ public class SearchServiceImpl implements SearchService {
     Pagination.perform(
         // Load market orders for region
         page -> marketAPI.getOrders(OrderType.ALL, regionId, page),
-        // Save loaded orders to db
-        orders -> cacheDao.saveOrders(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())));
+        // Save loaded orders to DB
+        orders -> cacheDao.saveOrders(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())),
+        // For all pages
+        Pagination.ALL_PAGES);
   }
 
 }
