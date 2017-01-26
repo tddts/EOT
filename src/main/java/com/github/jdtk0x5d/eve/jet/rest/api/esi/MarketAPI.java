@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.rest.api.esi;
 
+import com.github.jdtk0x5d.eve.jet.api.RestResponse;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketHistory;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketPrice;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public interface MarketAPI {
 
-  List<MarketOrder> getOrders(OrderType orderType, long regionId, int page) throws RestClientException;
+  RestResponse<List<MarketOrder>> getOrders(OrderType orderType, long regionId, int page) throws RestClientException;
 
   List<MarketPrice> getAllItemPrices() throws RestClientException;
 

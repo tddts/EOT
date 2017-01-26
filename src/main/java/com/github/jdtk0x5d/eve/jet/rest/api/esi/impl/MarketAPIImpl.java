@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.rest.api.esi.impl;
 
+import com.github.jdtk0x5d.eve.jet.api.RestResponse;
 import com.github.jdtk0x5d.eve.jet.rest.api.esi.MarketAPI;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.NullOnException;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
@@ -7,6 +8,7 @@ import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketHistory;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketPrice;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -33,14 +35,14 @@ public class MarketAPIImpl implements MarketAPI {
   private String addressItemHistory;
 
   @Override
-  public List<MarketOrder> getOrders(OrderType orderType, long regionId, int page) {
+  public RestResponse<List<MarketOrder>> getOrders(OrderType orderType, long regionId, int page) {
     String url = apiUriBuilder(addressOrdersInRegion)
         .queryParam("page", page)
         .queryParam("order_type", orderType.getValue())
         .build().toString();
 
-    MarketOrder[] marketOrders = restOperations().getForObject(url, MarketOrder[].class, regionId);
-    return Arrays.asList(marketOrders);
+    ResponseEntity<MarketOrder[]> entity = restOperations().getForEntity(url, MarketOrder[].class, regionId);
+    return RestResponse.fromArrayResponse(entity);
   }
 
   @Override
