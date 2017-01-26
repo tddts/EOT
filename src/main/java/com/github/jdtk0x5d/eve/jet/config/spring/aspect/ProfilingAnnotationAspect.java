@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-public class ProfilingAspect {
+public class ProfilingAnnotationAspect {
 
   private static final Logger logger = LogManager.getLogger(Profiling.class);
 

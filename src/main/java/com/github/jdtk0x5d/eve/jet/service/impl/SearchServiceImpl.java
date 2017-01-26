@@ -46,7 +46,7 @@ public class SearchServiceImpl implements SearchService {
         regionsMap.values() : // or
         // Only required regions
         regions.stream().map(region -> regionsMap.get(region)).collect(Collectors.toList());
-    // Load orders every region in its own thread
+    // Load orders for regions in multiple streams
     regionIds.parallelStream().forEach(this::loadForRegion);
   }
 

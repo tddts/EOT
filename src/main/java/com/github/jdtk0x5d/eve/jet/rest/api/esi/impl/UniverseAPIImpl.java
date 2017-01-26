@@ -1,7 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.rest.api.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.rest.api.esi.UniverseAPI;
-import com.github.jdtk0x5d.eve.jet.config.spring.annotations.NullOnException;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.input.IdArray;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseName;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseStation;
@@ -22,7 +21,6 @@ import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.*;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@NullOnException
 public class UniverseAPIImpl implements UniverseAPI {
 
   @Value("${url.universe.names}")

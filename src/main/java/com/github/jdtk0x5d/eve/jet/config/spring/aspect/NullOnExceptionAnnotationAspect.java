@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-public class NullOnExceptionAspect {
+public class NullOnExceptionAnnotationAspect {
 
   private static final Logger logger = LogManager.getLogger(NullOnException.class);
 
