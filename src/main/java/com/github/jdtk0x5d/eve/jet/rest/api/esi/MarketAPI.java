@@ -16,7 +16,7 @@ public interface MarketAPI {
 
   RestResponse<List<MarketOrder>> getOrders(OrderType orderType, long regionId, int page) throws RestClientException;
 
-  List<MarketPrice> getAllItemPrices() throws RestClientException;
+  RestResponse<List<MarketPrice>> getAllItemPrices() throws RestClientException;
 
-  List<MarketHistory> getItemHistory(int type_id, int region_id) throws RestClientException;
+  RestResponse<List<MarketHistory>> getItemHistory(int type_id, int region_id) throws RestClientException;
 }

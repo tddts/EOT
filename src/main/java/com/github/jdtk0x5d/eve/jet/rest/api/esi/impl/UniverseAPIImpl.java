@@ -1,5 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.rest.api.esi.impl;
 
+import com.github.jdtk0x5d.eve.jet.api.RestResponse;
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestApi;
 import com.github.jdtk0x5d.eve.jet.rest.api.esi.UniverseAPI;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.input.IdArray;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseName;
@@ -21,6 +23,7 @@ import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.*;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
+@RestApi
 public class UniverseAPIImpl implements UniverseAPI {
 
   @Value("${url.universe.names}")
@@ -45,35 +48,33 @@ public class UniverseAPIImpl implements UniverseAPI {
   private Gson gson;
 
   @Override
-  public List<UniverseName> getNames(long[] ids) {
-    String body = gson.toJson(new IdArray(ids));
-    UniverseName[] names = restOperations().exchange(apiUrl(addressNames), HttpMethod.POST, jsonEntity(body), UniverseName[].class).getBody();
-    return Arrays.asList(names);
+  public RestResponse<List<UniverseName>> getNames(long[] ids) {
+    String requestBody = gson.toJson(new IdArray(ids));
+    return RestResponse.fromArrayResponse(restOperations().exchange(apiUrl(addressNames), HttpMethod.POST, jsonEntity(requestBody), UniverseName[].class));
   }
 
   @Override
-  public UniverseStation getStation(int stationId) {
-    return restOperations().getForObject(apiUrl(addressStation), UniverseStation.class, stationId);
+  public RestResponse<UniverseStation> getStation(int stationId) {
+    return new RestResponse<>(restOperations().getForEntity(apiUrl(addressStation), UniverseStation.class, stationId));
   }
 
   @Override
-  public UniverseStructure getStructure(int structureId) {
-    return restOperations().getForObject(apiUrl(addressStructure), UniverseStructure.class, structureId);
+  public RestResponse<UniverseStructure> getStructure(int structureId) {
+    return new RestResponse<>(restOperations().getForEntity(apiUrl(addressStructure), UniverseStructure.class, structureId));
   }
 
   @Override
-  public UniverseType getType(long typeId) {
-    return restOperations().getForObject(apiUrl(addressType), UniverseType.class, typeId);
+  public RestResponse<UniverseType> getType(long typeId) {
+    return new RestResponse<>(restOperations().getForEntity(apiUrl(addressType), UniverseType.class, typeId));
   }
 
   @Override
-  public String getSystemName(int systemId) {
-    return restOperations().getForObject(apiUrl(addressSystem), String.class, systemId);
+  public RestResponse<String> getSystemName(int systemId) {
+    return new RestResponse<>(restOperations().getForEntity(apiUrl(addressSystem), String.class, systemId));
   }
 
   @Override
-  public List<Long> getAllStructureIds() {
-    Long[] structures = restOperations().getForObject(apiUrl(addressStructures), Long[].class);
-    return Arrays.asList(structures);
+  public RestResponse<List<Long>> getAllStructureIds() {
+    return RestResponse.fromArrayResponse(restOperations().getForEntity(apiUrl(addressStructures), Long[].class));
   }
 }

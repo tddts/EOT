@@ -8,10 +8,8 @@ import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketHistory;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketPrice;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.apiUriBuilder;
@@ -41,25 +39,21 @@ public class MarketAPIImpl implements MarketAPI {
         .queryParam("order_type", orderType.getValue())
         .build().toString();
 
-    ResponseEntity<MarketOrder[]> entity = restOperations().getForEntity(url, MarketOrder[].class, regionId);
-    return RestResponse.fromArrayResponse(entity);
+    return RestResponse.fromArrayResponse(restOperations().getForEntity(url, MarketOrder[].class, regionId));
   }
 
   @Override
-  public List<MarketPrice> getAllItemPrices() {
-    String url = apiUrl(addressAllPrices);
-    MarketPrice[] marketPrices = restOperations().getForObject(url, MarketPrice[].class);
-    return Arrays.asList(marketPrices);
+  public RestResponse<List<MarketPrice>> getAllItemPrices() {
+    return RestResponse.fromArrayResponse(restOperations().getForEntity(apiUrl(addressAllPrices), MarketPrice[].class));
   }
 
   @Override
-  public List<MarketHistory> getItemHistory(int type_id, int region_id) {
+  public RestResponse<List<MarketHistory>> getItemHistory(int type_id, int region_id) {
     String url = apiUriBuilder(addressItemHistory)
         .queryParam("type_id", type_id)
         .build().toString();
 
-    MarketHistory[] marketHistory = restOperations().getForObject(url, MarketHistory[].class, region_id);
-    return Arrays.asList(marketHistory);
+    return RestResponse.fromArrayResponse(restOperations().getForEntity(url, MarketHistory[].class, region_id));
   }
 
 }

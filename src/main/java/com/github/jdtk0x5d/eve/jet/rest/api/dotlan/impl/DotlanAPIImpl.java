@@ -1,5 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.rest.api.dotlan.impl;
 
+import com.github.jdtk0x5d.eve.jet.api.RestResponse;
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestApi;
 import com.github.jdtk0x5d.eve.jet.rest.api.dotlan.DotlanAPI;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.exception.DotlanResponseParsingException;
@@ -8,6 +10,7 @@ import com.github.jdtk0x5d.eve.jet.util.RequestUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
@@ -17,6 +20,7 @@ import java.util.regex.Pattern;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
+@RestApi
 public class DotlanAPIImpl implements DotlanAPI {
 
   @Value("${url.dotlan.route}")
@@ -29,12 +33,13 @@ public class DotlanAPIImpl implements DotlanAPI {
   private Gson gson;
 
   @Override
-  public DotlanRoute getRoute(String[] waypoints, DotlanRouteOption dotlanRouteOption) {
+  public RestResponse<DotlanRoute> getRoute(String[] waypoints, DotlanRouteOption dotlanRouteOption) {
     String routeOption = dotlanRouteOption == DotlanRouteOption.FASTEST ? "" : dotlanRouteOption.getValue() + ":";
     String url = addressDotlan + "?&path=" + routeOption + String.join(":", waypoints);
 
-    String responseBody = RequestUtil.restOperations().getForObject(url, String.class);
-    return gson.fromJson(getPathJson(responseBody), DotlanRoute.class);
+    ResponseEntity<String> responseEntity = RequestUtil.restOperations().getForEntity(url, String.class);
+    DotlanRoute route = gson.fromJson(getPathJson(responseEntity.getBody()), DotlanRoute.class);
+    return new RestResponse<>(route, responseEntity.getStatusCode());
   }
 
   private String getPathJson(String responseBody) {
