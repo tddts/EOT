@@ -1,6 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.service.impl;
 
 import com.github.jdtk0x5d.eve.jet.api.Pagination;
+import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 import com.github.jdtk0x5d.eve.jet.rest.api.esi.MarketAPI;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl implements SearchService {
 
   private static final Logger logger = LogManager.getLogger(SearchServiceImpl.class);
+
   @Autowired
   private CacheDao cacheDao;
   @Autowired
@@ -46,18 +48,20 @@ public class SearchServiceImpl implements SearchService {
         regionsMap.values() : // or
         // Only required regions
         regions.stream().map(region -> regionsMap.get(region)).collect(Collectors.toList());
-    // Load orders for regions in multiple streams
+    // Load orders for regions in multiple threads
     regionIds.parallelStream().forEach(this::loadForRegion);
   }
 
   private void loadForRegion(Integer regionId) {
-    Pagination.perform(
-        // Load market orders for region
-        page -> marketAPI.getOrders(OrderType.ALL, regionId, page),
+    new Pagination<MarketOrder, List<MarketOrder>>()
+        // Load market orders for given region and page
+        .loadPage(page -> marketAPI.getOrders(OrderType.ALL, regionId, page))
         // Save loaded orders to DB
-        orders -> cacheDao.saveOrders(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())),
+        .processPage(orders -> cacheDao.saveOrders(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())))
         // Skip page on error
-        Pagination::skipPage);
+        .onError(Pagination::skipPage)
+        // Perform pagination
+        .perform();
   }
 
 }

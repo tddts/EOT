@@ -42,7 +42,7 @@ public class RestResponse<T> {
   }
 
   public boolean hasObject() {
-    return object == null;
+    return object != null;
   }
 
   public boolean hasError(){

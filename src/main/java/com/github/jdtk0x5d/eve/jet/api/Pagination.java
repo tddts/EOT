@@ -5,38 +5,63 @@ import com.github.jdtk0x5d.eve.jet.exception.ApplicationException;
 import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class Pagination<E, T extends Collection<E>> {
 
-  public static final Predicate<Pagination> ALL_PAGES = pagination -> pagination.rows > 0;
+  private Function<Integer, RestResponse<T>> loadFunction;
+  private Consumer<Collection<E>> loadingResultConsumer;
+  private Consumer<Pagination<E, T>> errorHandler;
 
   private int page = 1;
   private int rows = 0;
   private int retryCount = 0;
 
-  private Pagination() {
+  public Pagination() {
   }
 
-  public static <E, T extends Collection<E>> void perform(Function<Integer, RestResponse<T>> function, Consumer<Collection<E>> cons, Consumer<Pagination<E, T>> errorHandler) {
-    Pagination<E, T> pagination = new Pagination<>();
-    pagination.performPagination(function, cons, errorHandler);
+  public Pagination(Function<Integer, RestResponse<T>> loadFunction, Consumer<Collection<E>> loadingResultConsumer, Consumer<Pagination<E, T>> errorHandler) {
+    this.loadFunction = loadFunction;
+    this.loadingResultConsumer = loadingResultConsumer;
+    this.errorHandler = errorHandler;
   }
 
-  private void performPagination(Function<Integer, RestResponse<T>> function, Consumer<Collection<E>> collectionConsumer, Consumer<Pagination<E, T>> errorConsumer) {
+  public Pagination<E, T> loadPage(Function<Integer, RestResponse<T>> loadFunction) {
+    this.loadFunction = loadFunction;
+    return this;
+  }
+
+  public Pagination<E, T> processPage(Consumer<Collection<E>> loadingResultConsumer) {
+    this.loadingResultConsumer = loadingResultConsumer;
+    return this;
+  }
+
+  public Pagination<E, T> onError(Consumer<Pagination<E, T>> errorHandler) {
+    this.errorHandler = errorHandler;
+    return this;
+  }
+
+  public void perform() throws IllegalArgumentException{
+    checkNulls();
+
     do {
-      RestResponse<T> response = function.apply(page);
+      RestResponse<T> response = loadFunction.apply(page);
       if (response.hasError()) {
-        errorConsumer.accept(this);
+        errorHandler.accept(this);
       } else {
         Collection<E> supplied = response.getObject();
-        collectionConsumer.accept(supplied);
+        loadingResultConsumer.accept(supplied);
         nextPage(supplied);
       }
     } while (rows > 0);
+  }
+
+  private void checkNulls() {
+    if (loadFunction == null || loadingResultConsumer == null || errorHandler == null) {
+      throw new IllegalArgumentException("Pagination is not initialized!");
+    }
   }
 
   private void nextPage(Collection<E> supplied) {
