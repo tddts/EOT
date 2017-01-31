@@ -2,10 +2,10 @@ package com.github.jdtk0x5d.eve.jet.rest.api.dotlan.impl;
 
 import com.github.jdtk0x5d.eve.jet.api.RestResponse;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestApi;
-import com.github.jdtk0x5d.eve.jet.rest.api.dotlan.DotlanAPI;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.exception.DotlanResponseParsingException;
 import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
+import com.github.jdtk0x5d.eve.jet.rest.api.dotlan.DotlanAPI;
 import com.github.jdtk0x5d.eve.jet.util.RequestUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;

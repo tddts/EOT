@@ -1,13 +1,13 @@
 package com.github.jdtk0x5d.eve.jet.fx.controller.impl;
 
-import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
+import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.fx.dialog.DevCredentialsDialog;
 import com.github.jdtk0x5d.eve.jet.fx.view.ViewUtil;
-import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.github.jdtk0x5d.eve.jet.oauth.EmbeddedServer;
+import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

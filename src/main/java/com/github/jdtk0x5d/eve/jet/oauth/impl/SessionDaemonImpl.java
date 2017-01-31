@@ -2,8 +2,8 @@ package com.github.jdtk0x5d.eve.jet.oauth.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
-import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.github.jdtk0x5d.eve.jet.oauth.SessionDaemon;
+import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -41,27 +42,29 @@ public class SessionDaemonImpl implements SessionDaemon {
   @Autowired
   private EventBus eventBus;
 
-  private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+  private ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+
+  private Future<?> expirationFuture;
+  private Future<?> refreshFuture;
 
   @Subscribe
   private void processAuthorizationEvent(AuthorizationEvent event) {
     if (event.isAuthorized() || event.isRefreshed()) {
-      if (userBean.isTokenRefreshable()) {
-        scheduleRefresh();
-      } else {
-        scheduleExpiration();
-      }
+      if (userBean.isTokenRefreshable()) scheduleRefresh();
+      scheduleExpiration();
     }
   }
 
   private void scheduleExpiration() {
     logger.debug("Scheduling authorization expiration task.");
-    executor.schedule(this::fireExpirationEvent, getRefreshDelay(expireRate), TimeUnit.SECONDS);
+    checkCancel(expirationFuture);
+    expirationFuture = executor.schedule(this::fireExpirationEvent, getRefreshDelay(expireRate), TimeUnit.SECONDS);
   }
 
   private void scheduleRefresh() {
     logger.debug("Scheduling token refresh task.");
-    executor.schedule(this::refreshToken, getRefreshDelay(refreshRate), TimeUnit.SECONDS);
+    checkCancel(refreshFuture);
+    refreshFuture = executor.schedule(this::refreshToken, getRefreshDelay(refreshRate), TimeUnit.SECONDS);
   }
 
   private void fireExpirationEvent() {
@@ -70,10 +73,16 @@ public class SessionDaemonImpl implements SessionDaemon {
 
   private void refreshToken() {
     logger.debug("Refreshing token...");
-    authService.refreshAccessToken(userBean.getAccessToken().getRefresh_token(), userBean.getClientId(), userBean.getSercretKey());
+    authService.refreshAccessToken();
   }
 
   private long getRefreshDelay(double rate) {
     return (long) (userBean.getAccessToken().getExpires_in() * rate);
+  }
+
+  private void checkCancel(Future<?> future) {
+    if (future != null && !future.isDone()) {
+      future.cancel(true);
+    }
   }
 }

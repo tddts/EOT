@@ -10,7 +10,8 @@ public class Wallet {
   private int wallet_id;
   private BigDecimal balance;
 
-  public Wallet() {}
+  public Wallet() {
+  }
 
   public int getWallet_id() {
     return wallet_id;

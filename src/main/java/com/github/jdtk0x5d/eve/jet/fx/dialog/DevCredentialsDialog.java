@@ -8,7 +8,7 @@ import javafx.util.Pair;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class DevCredentialsDialog extends Dialog<Pair<String, String>>{
+public class DevCredentialsDialog extends Dialog<Pair<String, String>> {
 
   public DevCredentialsDialog(String cancelMessage) {
     // Set buttons
@@ -20,7 +20,7 @@ public class DevCredentialsDialog extends Dialog<Pair<String, String>>{
     getDialogPane().setContent(viewRoot);
     // Get fields from fx
     TextField clientIdFiel = (TextField) viewRoot.lookup("#clientIdField");
-    PasswordField secretKeyField  = (PasswordField) viewRoot.lookup("#secretKeyField");
+    PasswordField secretKeyField = (PasswordField) viewRoot.lookup("#secretKeyField");
     // Set return value
     setResultConverter(dialogButton -> {
       if (dialogButton == ButtonType.OK) {

@@ -8,7 +8,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -25,11 +24,11 @@ public class EventBusBeanPostProcessor implements BeanPostProcessor {
   public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
     for (Method method : bean.getClass().getDeclaredMethods()) {
 
-        if (method.isAnnotationPresent(Subscribe.class)) {
-          eventBus.register(bean);
-          logger.debug("Bean registered to EventBus: [" + beanName + "]");
-          return bean;
-        }
+      if (method.isAnnotationPresent(Subscribe.class)) {
+        eventBus.register(bean);
+        logger.debug("Bean registered to EventBus: [" + beanName + "]");
+        return bean;
+      }
     }
     return bean;
   }

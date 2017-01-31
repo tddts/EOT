@@ -16,7 +16,8 @@ public class PropertyHolder {
   @Resource(name = "applicationProperties")
   private Properties properties;
 
-  public PropertyHolder() {}
+  public PropertyHolder() {
+  }
 
 
   public Properties getProperties() {
@@ -27,7 +28,7 @@ public class PropertyHolder {
     this.properties = properties;
   }
 
-  public String getProperty(String key){
+  public String getProperty(String key) {
     return properties.getProperty(key);
   }
 

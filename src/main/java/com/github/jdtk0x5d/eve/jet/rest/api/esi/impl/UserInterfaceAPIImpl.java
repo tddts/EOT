@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
-import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.apiUriBuilder;
-import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.authorizedEntity;
-import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.restOperations;
+import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.*;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com

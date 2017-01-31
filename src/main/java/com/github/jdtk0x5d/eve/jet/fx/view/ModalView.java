@@ -28,19 +28,19 @@ public class ModalView<T> extends View<T> {
     stage.setScene(scene);
   }
 
+  private static Stage createPopup(Stage primaryStage) {
+    final Stage dialog = new Stage();
+    dialog.initModality(Modality.APPLICATION_MODAL);
+    dialog.initOwner(primaryStage);
+    return dialog;
+  }
+
   public Stage getStage() {
     return stage;
   }
 
   public Scene getScene() {
     return scene;
-  }
-
-  private static Stage createPopup(Stage primaryStage) {
-    final Stage dialog = new Stage();
-    dialog.initModality(Modality.APPLICATION_MODAL);
-    dialog.initOwner(primaryStage);
-    return dialog;
   }
 
   public void show() {

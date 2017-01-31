@@ -1,10 +1,10 @@
 package com.github.jdtk0x5d.eve.jet.oauth.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
-import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.github.jdtk0x5d.eve.jet.oauth.EmbeddedServer;
 import com.github.jdtk0x5d.eve.jet.oauth.server.AuthHttpHandler;
 import com.github.jdtk0x5d.eve.jet.oauth.server.TransientServer;
+import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

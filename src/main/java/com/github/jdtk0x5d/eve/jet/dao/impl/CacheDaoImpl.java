@@ -1,12 +1,10 @@
 package com.github.jdtk0x5d.eve.jet.dao.impl;
 
 import com.avaje.ebean.EbeanServer;
-import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
 import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

@@ -28,7 +28,8 @@ public class View<T> {
 
     if (bundle == null) {
       loader = new FXMLLoader(getFileURL(), Context.getResourceBundle());
-    } else {
+    }
+    else {
       loader = new FXMLLoader(getFileURL(), bundle);
     }
 
@@ -42,7 +43,7 @@ public class View<T> {
     controller = loader.getController();
   }
 
-  public String getFileName(){
+  public String getFileName() {
     return fileName;
   }
 

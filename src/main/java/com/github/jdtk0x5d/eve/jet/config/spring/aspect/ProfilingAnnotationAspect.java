@@ -30,6 +30,6 @@ public class ProfilingAnnotationAspect {
         + "() execution time is: "
         + minutes + " m. "
         + seconds + " s.");
-    return  value;
+    return value;
   }
 }

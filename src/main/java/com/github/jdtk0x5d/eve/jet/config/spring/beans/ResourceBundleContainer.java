@@ -20,7 +20,7 @@ public class ResourceBundleContainer {
   private ResourceBundle resourceBundle;
 
   @PostConstruct
-  public void init(){
+  public void init() {
     resourceBundle = ResourceBundle.getBundle(bundlePath);
   }
 

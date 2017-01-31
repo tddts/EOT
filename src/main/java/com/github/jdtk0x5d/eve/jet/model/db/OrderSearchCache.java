@@ -4,7 +4,6 @@ import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**

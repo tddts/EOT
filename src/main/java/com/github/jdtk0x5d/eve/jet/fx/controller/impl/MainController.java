@@ -16,7 +16,7 @@ public class MainController implements NestedControllerAware {
   private SearchTabController searchTabController;
 
   @PostConstruct
-  public void init(){
+  public void init() {
 
   }
 

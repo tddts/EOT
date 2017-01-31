@@ -1,13 +1,13 @@
 package com.github.jdtk0x5d.eve.jet.service.impl;
 
 import com.github.jdtk0x5d.eve.jet.api.Pagination;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
-import com.github.jdtk0x5d.eve.jet.rest.api.esi.MarketAPI;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
+import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
 import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchCache;
+import com.github.jdtk0x5d.eve.jet.rest.api.esi.MarketAPI;
 import com.github.jdtk0x5d.eve.jet.service.SearchService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -59,7 +61,7 @@ public class SearchServiceImpl implements SearchService {
         // Save loaded orders to DB
         .processPage(orders -> cacheDao.saveOrders(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())))
         // Skip page on error
-        .onError(Pagination::skipPage)
+        .onError(Pagination::onErrorSkipPage)
         // Perform pagination
         .perform();
   }

@@ -1,12 +1,11 @@
 package com.github.jdtk0x5d.eve.jet.rest.api.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.api.RestResponse;
-import com.github.jdtk0x5d.eve.jet.rest.api.esi.LocationAPI;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.location.Location;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.location.Ship;
+import com.github.jdtk0x5d.eve.jet.rest.api.esi.LocationAPI;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.*;

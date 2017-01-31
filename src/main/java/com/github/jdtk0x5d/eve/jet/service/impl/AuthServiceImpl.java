@@ -1,23 +1,21 @@
 package com.github.jdtk0x5d.eve.jet.service.impl;
 
+import com.github.jdtk0x5d.eve.jet.api.RestResponse;
 import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.sso.AccessToken;
 import com.github.jdtk0x5d.eve.jet.oauth.QueryParser;
+import com.github.jdtk0x5d.eve.jet.rest.api.esi.AuthAPI;
 import com.github.jdtk0x5d.eve.jet.service.AuthService;
-import com.github.jdtk0x5d.eve.jet.util.RequestUtil;
 import com.google.common.eventbus.EventBus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.nio.charset.Charset;
-import java.util.Base64;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -29,9 +27,6 @@ public class AuthServiceImpl implements AuthService {
 
   @Value("${login.url.authorize}")
   private String loginAuthURL;
-
-  @Value("${login.url.token}")
-  private String loginTokenURL;
 
   @Value("${login.redirect.uri}")
   private String redirectURI;
@@ -56,6 +51,9 @@ public class AuthServiceImpl implements AuthService {
 
   @Autowired
   private EventBus eventBus;
+
+  @Autowired
+  private AuthAPI authAPI;
 
 
   @Override
@@ -97,51 +95,35 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public void processAuthorizationCode(String query, String clientId, String secretKey) {
-    URI uri = UriComponentsBuilder.fromHttpUrl(loginTokenURL)
-        .queryParam("grant_type", "authorization_code")
-        .queryParam("code", queryParser.parseAuthCode(query))
-        .build().toUri();
-    // Get first token
-    AccessToken token = RequestUtil.restOperations()
-        .exchange(uri, HttpMethod.POST, new HttpEntity<>(null, getBasicAuthHeader(clientId, secretKey)), AccessToken.class).getBody();
-    // Save access token
-    userBean.setAccessToken(token);
-    // Fire authorization event
-    eventBus.post(AuthorizationEvent.AUTHORIZED);
+  public void processAuthorizationCode(String query) {
+    RestResponse<AccessToken> response = authAPI.getToken(queryParser.parseAuthCode(query));
 
+    if (response.isSuccessful()) {
+      userBean.setAccessToken(response.getObject());
+      eventBus.post(AuthorizationEvent.AUTHORIZED);
+    }
   }
 
   @Override
-  public void refreshAccessToken(String refreshToken, String clientId, String secretKey) {
-    URI uri = UriComponentsBuilder.fromHttpUrl(loginTokenURL)
-        .queryParam("grant_type", "refresh_token")
-        .queryParam("refresh_token", refreshToken)
-        .build().toUri();
-    // Get new token
-    AccessToken token = RequestUtil.restOperations()
-        .exchange(uri, HttpMethod.POST, new HttpEntity<>(null, getBasicAuthHeader(clientId, secretKey)), AccessToken.class).getBody();
-    // Save access token
-    userBean.setAccessToken(token);
-    // Fire authorization event
-    eventBus.post(AuthorizationEvent.REFRESHED);
+  public void refreshAccessToken() {
+    RestResponse<AccessToken> response = authAPI.refreshToken();
+
+    if (response.isSuccessful()) {
+      AccessToken token = response.getObject();
+      userBean.setAccessToken(token);
+      eventBus.post(AuthorizationEvent.REFRESHED);
+    }
   }
+
 
   @Override
   public void processAuthorization(String query) {
     if (query.startsWith("code")) {
-      processAuthorizationCode(query, userBean.getClientId(), userBean.getSercretKey());
-    } else {
+      processAuthorizationCode(query);
+    }
+    else {
       processAccessToken(query);
     }
   }
 
-  private HttpHeaders getBasicAuthHeader(String clientId, String secretKey) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-    String authHeader = clientId + ":" + secretKey;
-    String base64EncodedHeader = new String(Base64.getEncoder().encode(authHeader.getBytes()), Charset.forName("UTF-8"));
-    headers.set("Authorization", "Basic " + base64EncodedHeader);
-    return headers;
-  }
 }

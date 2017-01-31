@@ -47,7 +47,8 @@ public class TransientServer {
       serverTimeoutTaskFuture.cancel(false);
       scheduleServerTimeoutStop();
       logger.debug("Server timeout refreshed.");
-    } else {
+    }
+    else {
       server.start();
       scheduleServerTimeoutStop();
       started = true;

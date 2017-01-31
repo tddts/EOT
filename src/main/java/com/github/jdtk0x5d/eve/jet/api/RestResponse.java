@@ -45,7 +45,11 @@ public class RestResponse<T> {
     return object != null;
   }
 
-  public boolean hasError(){
+  public boolean hasError() {
     return status.is5xxServerError() || status.is4xxClientError();
+  }
+
+  public boolean isSuccessful() {
+    return status.is2xxSuccessful() && hasObject();
   }
 }

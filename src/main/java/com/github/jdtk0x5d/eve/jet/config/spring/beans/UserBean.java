@@ -27,7 +27,7 @@ public class UserBean {
   public UserBean() {
   }
 
-  public boolean isTokenRefreshable(){
+  public boolean isTokenRefreshable() {
     return accessToken.getRefresh_token() != null;
   }
 

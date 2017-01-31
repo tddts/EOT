@@ -66,7 +66,7 @@ public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {
   private String preprocess(AccessibleObject accessibleObject) throws NoSuchMessageException {
     Message messageAnnotation = accessibleObject.getAnnotation(Message.class);
     String messageKey = messageAnnotation.value();
-    String message = messageSource.getMessage(messageKey,new Object[0], Locale.getDefault());
+    String message = messageSource.getMessage(messageKey, new Object[0], Locale.getDefault());
     accessibleObject.setAccessible(true);
     return message;
   }

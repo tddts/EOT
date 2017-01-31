@@ -1,8 +1,10 @@
 package com.github.jdtk0x5d.eve.jet.util;
 
-import com.github.jdtk0x5d.eve.jet.context.Context;
 import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
-import org.springframework.http.*;
+import com.github.jdtk0x5d.eve.jet.context.Context;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,11 +29,16 @@ public class RequestUtil {
   }
 
   public static UriComponentsBuilder apiUriBuilder(String resourceAddress) {
-    String URL = Context.getAppProperties().getProperty("url.swagger") + resourceAddress;
+    String URL = Context.getAppProperties().getProperty("path.swagger") + resourceAddress;
     return setDefaultParameters(UriComponentsBuilder.fromHttpUrl(URL));
   }
 
-  public static HttpEntity<?> jsonEntity(Object body){
+
+  public static UriComponentsBuilder authUriBuilder(String resourceAddress) {
+    return UriComponentsBuilder.fromHttpUrl(Context.getAppProperties().getProperty("path.auth=") + resourceAddress);
+  }
+
+  public static HttpEntity<?> jsonEntity(Object body) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     return new HttpEntity<>(body, headers);

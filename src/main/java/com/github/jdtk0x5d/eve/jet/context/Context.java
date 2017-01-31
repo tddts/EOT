@@ -33,11 +33,11 @@ public class Context {
   }
 
 
-  public static ClassPathXmlApplicationContext getAppContext(){
+  public static ClassPathXmlApplicationContext getAppContext() {
     return SPRING_CONTEXT;
   }
 
-  public static AutowireCapableBeanFactory getBeanFactory(){
+  public static AutowireCapableBeanFactory getBeanFactory() {
     return BEAN_FACTORY;
   }
 
@@ -49,11 +49,11 @@ public class Context {
     return RESOURCE_BUNDLE_CONTAINER.getResourceBundle();
   }
 
-  public static <T> T getBean(Class<T> type){
+  public static <T> T getBean(Class<T> type) {
     return SPRING_CONTEXT.getBean(type);
   }
 
-  public static Properties getAppProperties(){
+  public static Properties getAppProperties() {
     return APP_PROPERTIES;
   }
 

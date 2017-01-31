@@ -44,7 +44,7 @@ public class DotlanRoute {
     this.jumps = jumps;
   }
 
-  public int getJumpsCount(){
+  public int getJumpsCount() {
     return jumps.size();
   }
 

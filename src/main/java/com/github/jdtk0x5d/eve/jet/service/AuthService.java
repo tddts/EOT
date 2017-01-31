@@ -19,9 +19,9 @@ public interface AuthService {
 
   void processAccessToken(String query);
 
-  void processAuthorizationCode(String query, String clientId, String secretKey) throws RestClientException;
+  void processAuthorizationCode(String query) throws RestClientException;
 
-  void refreshAccessToken(String refreshToken, String clientId, String secretKey) throws RestClientException;
+  void refreshAccessToken() throws RestClientException;
 
   void processAuthorization(String query) throws RestClientException;
 }

@@ -39,7 +39,8 @@ public class AuthHttpHandler implements HttpHandler {
       if (requestURI.getQuery() == null) {
         response = Util.loadContent(responseFileName);
         exchange.sendResponseHeaders(HttpStatus.SC_OK, response.length());
-      } else {
+      }
+      else {
         try {
           authService.processAuthorization(requestURI.getQuery());
           exchange.sendResponseHeaders(HttpStatus.SC_OK, response.length());

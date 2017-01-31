@@ -8,7 +8,6 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
