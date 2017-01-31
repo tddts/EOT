@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestClientException;
 
 import java.net.URI;
@@ -19,9 +20,9 @@ public interface AuthService {
 
   void processAccessToken(String query);
 
-  void processAuthorizationCode(String query) throws RestClientException;
+  HttpStatus processAuthorizationCode(String query) throws RestClientException;
 
   void refreshAccessToken() throws RestClientException;
 
-  void processAuthorization(String query) throws RestClientException;
+  HttpStatus processAuthorization(String query) throws RestClientException;
 }

@@ -4,9 +4,8 @@ import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.github.jdtk0x5d.eve.jet.util.Util;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.apache.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestClientException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,16 +37,12 @@ public class AuthHttpHandler implements HttpHandler {
 
       if (requestURI.getQuery() == null) {
         response = Util.loadContent(responseFileName);
-        exchange.sendResponseHeaders(HttpStatus.SC_OK, response.length());
+        exchange.sendResponseHeaders(HttpStatus.OK.value(), response.length());
       }
       else {
-        try {
-          authService.processAuthorization(requestURI.getQuery());
-          exchange.sendResponseHeaders(HttpStatus.SC_OK, response.length());
-        } catch (RestClientException e) {
-          response = e.getMessage();
-          exchange.sendResponseHeaders(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.length());
-        }
+        HttpStatus status = authService.processAuthorization(requestURI.getQuery());
+        response = status.is2xxSuccessful() ? response : status.getReasonPhrase();
+        exchange.sendResponseHeaders(status.value(), response.length());
       }
 
       OutputStream os = exchange.getResponseBody();

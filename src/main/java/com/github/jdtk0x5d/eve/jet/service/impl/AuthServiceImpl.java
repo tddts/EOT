@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -22,6 +23,9 @@ import java.net.URI;
  */
 @Service
 public class AuthServiceImpl implements AuthService {
+
+  private static final String CODE = "code";
+  private static final String TOKEN = "token";
 
   private final Logger logger = LogManager.getLogger(AuthServiceImpl.class);
 
@@ -63,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public URI getLoginPageURI(String clientId) {
-    return getLoginPageURI(clientId, "code");
+    return getLoginPageURI(clientId, CODE);
   }
 
   @Override
@@ -73,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public URI getLoginPageURI() {
-    return getLoginPageURI(defaultClientId, "token");
+    return getLoginPageURI(defaultClientId, TOKEN);
   }
 
   private URI getLoginPageURI(String clientId, String responseType) {
@@ -95,13 +99,15 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public void processAuthorizationCode(String query) {
+  public HttpStatus processAuthorizationCode(String query) {
     RestResponse<AccessToken> response = authAPI.getToken(queryParser.parseAuthCode(query));
 
     if (response.isSuccessful()) {
       userBean.setAccessToken(response.getObject());
       eventBus.post(AuthorizationEvent.AUTHORIZED);
     }
+
+    return response.getStatus();
   }
 
   @Override
@@ -109,20 +115,20 @@ public class AuthServiceImpl implements AuthService {
     RestResponse<AccessToken> response = authAPI.refreshToken();
 
     if (response.isSuccessful()) {
-      AccessToken token = response.getObject();
-      userBean.setAccessToken(token);
+      userBean.setAccessToken(response.getObject());
       eventBus.post(AuthorizationEvent.REFRESHED);
     }
   }
 
 
   @Override
-  public void processAuthorization(String query) {
-    if (query.startsWith("code")) {
-      processAuthorizationCode(query);
+  public HttpStatus processAuthorization(String query) {
+    if (query.startsWith(CODE)) {
+      return processAuthorizationCode(query);
     }
     else {
       processAccessToken(query);
+      return HttpStatus.OK;
     }
   }
 
