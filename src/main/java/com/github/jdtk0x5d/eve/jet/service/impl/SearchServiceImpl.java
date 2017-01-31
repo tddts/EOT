@@ -13,7 +13,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Repository
+@Service
 public class SearchServiceImpl implements SearchService {
 
   private static final Logger logger = LogManager.getLogger(SearchServiceImpl.class);
