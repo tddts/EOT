@@ -88,6 +88,7 @@ public class Pagination<E, T extends Collection<E>> {
       else {
         Collection<E> supplied = response.getObject();
         loadingResultConsumer.accept(supplied);
+        nextPage(supplied);
       }
     } while (rows > 0);
   }
