@@ -64,6 +64,11 @@
                 <value>com.github.jdtk0x5d.eve.jet.model.db</value>
             </list>
         </property>
+        <property name="classes">
+            <list>
+                <value>com.github.jdtk0x5d.eve.jet.config.ebean.ScalarTypeDotlanRoute</value>
+            </list>
+        </property>
         <property name="ddlGenerate" value="true"/>
         <property name="ddlRun" value="true"/>
     </bean>
