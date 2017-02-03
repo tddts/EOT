@@ -1,24 +1,22 @@
 package com.github.jdtk0x5d.eve.jet.dao.impl;
 
-import com.avaje.ebean.EbeanServer;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
-import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchCache;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.jdtk0x5d.eve.jet.model.db.RouteCache;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-public class CacheDaoImpl implements CacheDao {
-
-  @Autowired
-  private EbeanServer ebeanServer;
+public class CacheDaoImpl extends AbstractDao implements CacheDao {
 
   @Override
-  public void saveOrders(List<OrderSearchCache> cacheList) {
-    ebeanServer.saveAll(cacheList);
+  public RouteCache findCachedRoute(Long firstPointId, Long secondPointId) {
+    return ebeans().find(RouteCache.class).where()
+        .in("startPointId", firstPointId, secondPointId)
+        .or()
+        .in("endPointId", firstPointId, secondPointId).findUnique();
   }
+
+
 }
