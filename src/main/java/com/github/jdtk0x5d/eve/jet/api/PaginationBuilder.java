@@ -35,7 +35,7 @@ public class PaginationBuilder<E, T extends Collection<E>> {
   }
 
   void startWith(int page) {
-    firstPage = page < 0 ? 0 : page;
+    firstPage = page < 1 ? 1 : page;
   }
 
   void finishOn(int page) {
