@@ -13,8 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -38,10 +36,17 @@ public class SearchServiceImpl implements SearchService {
   @Value("#{${static.regions}}")
   private Map<String, Integer> regionsMap;
 
+  @Value("${service.search.expiration.timeout}")
+  private int expirationTimeout;
+
+  @Value("${service.search.rax.percent}")
+  private int taxPercent;
+
   @Override
   @Profiling
   public List<OrderSearchRow> searchForOrders(double isk, double volume, Collection<String> regions) {
     load(regions);
+    filter();
     return null;
   }
 
@@ -66,6 +71,10 @@ public class SearchServiceImpl implements SearchService {
         .onError(Pagination::onErrorSkipPage)
         // Perform pagination
         .perform();
+  }
+
+  private void filter() {
+    cacheDao.removeSoonExpiredOrders(expirationTimeout);
   }
 
 }
