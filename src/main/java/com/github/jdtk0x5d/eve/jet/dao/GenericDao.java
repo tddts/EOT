@@ -9,10 +9,10 @@ public interface GenericDao {
 
   void save(Object object);
 
-  void saveAll(Collection<?> collection);
+  int saveAll(Collection<?> collection);
 
-  void delete(Object object);
+  boolean delete(Object object);
 
-  void deleteAll(Collection<?> collection);
+  int deleteAll(Collection<?> collection);
 
 }

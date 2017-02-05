@@ -24,17 +24,17 @@ public abstract class AbstractDao implements GenericDao {
   }
 
   @Override
-  public void saveAll(Collection<?> collection) {
-    ebeanServer.saveAll(collection);
+  public int saveAll(Collection<?> collection) {
+    return ebeanServer.saveAll(collection);
   }
 
   @Override
-  public void delete(Object object) {
-    ebeanServer.delete(object);
+  public boolean delete(Object object) {
+    return ebeanServer.delete(object);
   }
 
   @Override
-  public void deleteAll(Collection<?> collection) {
-    ebeanServer.deleteAll(collection);
+  public int deleteAll(Collection<?> collection) {
+    return ebeanServer.deleteAll(collection);
   }
 }
