@@ -12,7 +12,7 @@ import java.util.function.Function;
 public class Pagination<E, T extends Collection<E>> {
 
   private Function<Integer, RestResponse<T>> loadFunction;
-  private Consumer<Collection<E>> loadingResultConsumer;
+  private Consumer<T> loadingResultConsumer;
   private Function<Pagination<E, T>, PaginationErrorHandlerProvider> errorHandler;
 
   private int page = 1;
@@ -22,7 +22,7 @@ public class Pagination<E, T extends Collection<E>> {
   public Pagination() {
   }
 
-  public Pagination(Function<Integer, RestResponse<T>> loadFunction, Consumer<Collection<E>> loadingResultConsumer, Function<Pagination<E, T>, PaginationErrorHandlerProvider> errorHandler) {
+  public Pagination(Function<Integer, RestResponse<T>> loadFunction, Consumer<T> loadingResultConsumer, Function<Pagination<E, T>, PaginationErrorHandlerProvider> errorHandler) {
     this.loadFunction = loadFunction;
     this.loadingResultConsumer = loadingResultConsumer;
     this.errorHandler = errorHandler;
@@ -48,7 +48,7 @@ public class Pagination<E, T extends Collection<E>> {
    * @param loadingResultConsumer page data consumer.
    * @return current Pagination object.
    */
-  public Pagination<E, T> processPage(Consumer<Collection<E>> loadingResultConsumer) {
+  public Pagination<E, T> processPage(Consumer<T> loadingResultConsumer) {
     this.loadingResultConsumer = loadingResultConsumer;
     return this;
   }
@@ -86,14 +86,14 @@ public class Pagination<E, T extends Collection<E>> {
         errorHandler.apply(this).getHandler().handle();
       }
       else {
-        Collection<E> supplied = response.getObject();
+        T supplied = response.getObject();
         loadingResultConsumer.accept(supplied);
         nextPage(supplied);
       }
     } while (rows > 0);
   }
 
-  private void nextPage(Collection<E> supplied){
+  private void nextPage(T supplied){
     rows = supplied.size();
     page++;
     retryCount = 0;
