@@ -76,23 +76,27 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination, P
 
   @Override
   public void retryPage(int maxTries, long timeout, boolean skip) {
-    try {
-      if (retryCount < maxTries) {
-        // Retry after timeout
-        Thread.sleep(timeout);
-        retryCount++;
+    if (retryCount < maxTries) {
+      // Retry after timeout
+      sleepForTimeout(timeout);
+      retryCount++;
+    }
+    else {
+      // Set retry count to zero
+      retryCount = 0;
+      // Skip or stop
+      if (skip) {
+        skipPage();
       }
       else {
-        // Set retry count to zero
-        retryCount = 0;
-        // Skip or stop
-        if (skip) {
-          skipPage();
-        }
-        else {
-          stop();
-        }
+        stop();
       }
+    }
+  }
+
+  private void sleepForTimeout(long timeout) {
+    try {
+      Thread.sleep(timeout);
     }
     catch (InterruptedException e) {
       throw new ApplicationException(e);
