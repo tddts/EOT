@@ -1,7 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.service.impl;
 
-import com.github.jdtk0x5d.eve.jet.api.Pagination;
-import com.github.jdtk0x5d.eve.jet.api.PaginationBuilder;
+import com.github.jdtk0x5d.eve.jet.api.pagination.PaginationBuilder;
+import com.github.jdtk0x5d.eve.jet.api.pagination.PaginationErrorHandler;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
@@ -69,7 +69,7 @@ public class SearchServiceImpl implements SearchService {
         // Save loaded orders to DB
         .processPage(orders -> cacheDao.saveAll(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())))
         // Skip page on error
-        .onError(Pagination::skipPage)
+        .onError(PaginationErrorHandler::skipPage)
         // Build pagination object
         .build()
         // Perform pagination

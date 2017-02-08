@@ -1,5 +1,6 @@
-package com.github.jdtk0x5d.eve.jet.api;
+package com.github.jdtk0x5d.eve.jet.api.pagination;
 
+import com.github.jdtk0x5d.eve.jet.api.RestResponse;
 import com.github.jdtk0x5d.eve.jet.exception.ApplicationException;
 
 import java.util.Collection;
@@ -10,12 +11,12 @@ import java.util.function.Predicate;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class PaginationImpl<E, T extends Collection<E>> implements Pagination {
+public class PaginationImpl<E, T extends Collection<E>> implements Pagination, PaginationErrorHandler {
 
   private final Function<Integer, RestResponse<T>> loadFunction;
   private final Consumer<T> loadingResultConsumer;
-  private final Consumer<Pagination> errorHandler;
   private final Predicate<Pagination> paginationCondition;
+  private final Consumer<PaginationErrorHandler> errorConsumer;
 
   private int page;
   private int rows;
@@ -23,21 +24,20 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination {
 
   PaginationImpl(Function<Integer, RestResponse<T>> loadFunction,
                  Consumer<T> loadingResultConsumer,
-                 Consumer<Pagination> errorHandler,
+                 Consumer<PaginationErrorHandler> errorConsumer,
                  int firstPage, int lastPage) {
-
+    // Functions
     this.loadFunction = loadFunction;
     this.loadingResultConsumer = loadingResultConsumer;
-    this.errorHandler = errorHandler;
-
+    this.errorConsumer = errorConsumer;
+    // First and last page
     page = firstPage;
-
     if (lastPage <= 0) {
       paginationCondition = pagination -> rows > 0;
     }
     else {
-      int lastLoadedPage = lastPage < firstPage ? firstPage : lastPage;
-      paginationCondition = pagination -> rows > 0 || page <= lastLoadedPage;
+      int lastPageToLoad = lastPage < firstPage ? firstPage : lastPage;
+      paginationCondition = pagination -> rows > 0 || page <= lastPageToLoad;
     }
   }
 
@@ -46,14 +46,15 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination {
     do {
       RestResponse<T> response = loadFunction.apply(page);
       if (response.hasError()) {
-        errorHandler.accept(this);
+        errorConsumer.accept(this);
       }
       else {
         T supplied = response.getObject();
         loadingResultConsumer.accept(supplied);
         nextPage(supplied);
       }
-    } while (paginationCondition.test(this));
+    }
+    while (paginationCondition.test(this));
   }
 
   private void nextPage(T supplied) {
@@ -74,7 +75,7 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination {
   }
 
   @Override
-  public void retry(int maxTries, long timeout, boolean skip) {
+  public void retryPage(int maxTries, long timeout, boolean skip) {
     try {
       if (retryCount < maxTries) {
         // Retry after timeout
@@ -92,7 +93,8 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination {
           stop();
         }
       }
-    } catch (InterruptedException e) {
+    }
+    catch (InterruptedException e) {
       throw new ApplicationException(e);
     }
   }

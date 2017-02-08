@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.api;
+package com.github.jdtk0x5d.eve.jet.api.pagination;
 
 import java.util.Collection;
 
@@ -8,11 +8,4 @@ import java.util.Collection;
 public interface Pagination {
 
   void perform();
-
-  void stop();
-
-  void skipPage();
-
-  void retry(int maxTries, long timeout, boolean skip);
-
 }

@@ -1,4 +1,6 @@
-package com.github.jdtk0x5d.eve.jet.api;
+package com.github.jdtk0x5d.eve.jet.api.pagination;
+
+import com.github.jdtk0x5d.eve.jet.api.RestResponse;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -11,7 +13,7 @@ public class PaginationBuilder<E, T extends Collection<E>> {
 
   private Function<Integer, RestResponse<T>> loadFunction;
   private Consumer<T> loadingResultConsumer;
-  private Consumer<Pagination> errorHandler;
+  private Consumer<PaginationErrorHandler> errorConsumer;
 
   private int firstPage = 1;
   private int lastPage = -1;
@@ -29,23 +31,25 @@ public class PaginationBuilder<E, T extends Collection<E>> {
     return this;
   }
 
-  public PaginationBuilder<E, T> onError(Consumer<Pagination> errorHandler) {
-    this.errorHandler = errorHandler;
+  public PaginationBuilder<E, T> onError(Consumer<PaginationErrorHandler> errorConsumer){
+    this.errorConsumer = errorConsumer;
     return this;
   }
 
-  void startWith(int page) {
+  public PaginationBuilder<E, T> startWith(int page) {
     firstPage = page < 1 ? 1 : page;
+    return this;
   }
 
-  void finishOn(int page) {
+  public PaginationBuilder<E, T> finishOn(int page) {
     lastPage = page;
+    return this;
   }
 
   public Pagination build() {
-    if (loadFunction == null || loadingResultConsumer == null || errorHandler == null) {
+    if (loadFunction == null || loadingResultConsumer == null || errorConsumer == null) {
       throw new IllegalArgumentException("Pagination could not be initialized! Some of required fields are NULL!.");
     }
-    return new PaginationImpl<>(loadFunction, loadingResultConsumer, errorHandler, firstPage, lastPage);
+    return new PaginationImpl<>(loadFunction, loadingResultConsumer, errorConsumer, firstPage, lastPage);
   }
 }
