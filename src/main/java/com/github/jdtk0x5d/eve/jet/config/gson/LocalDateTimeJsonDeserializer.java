@@ -6,8 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -16,6 +15,8 @@ public class LocalDateTimeJsonDeserializer implements JsonDeserializer<LocalDate
 
   @Override
   public LocalDateTime deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-    return ZonedDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString()).toLocalDateTime();
+    Instant timeInstant = Instant.parse(jsonElement.getAsJsonPrimitive().getAsString());
+    // Convert Zulu time to system time zone
+    return ZonedDateTime.ofInstant(timeInstant, ZoneId.systemDefault()).toLocalDateTime();
   }
 }
