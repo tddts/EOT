@@ -1,6 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.rest.api.esi;
 
-import com.github.jdtk0x5d.eve.jet.api.RestResponse;
+import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com

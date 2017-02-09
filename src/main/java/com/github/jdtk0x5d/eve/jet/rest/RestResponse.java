@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.api;
+package com.github.jdtk0x5d.eve.jet.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.github.jdtk0x5d.eve.jet.api.pagination;
+package com.github.jdtk0x5d.eve.jet.tools.pagination;
 
-import com.github.jdtk0x5d.eve.jet.api.RestResponse;
+import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.exception.ApplicationException;
 
 import java.util.Collection;

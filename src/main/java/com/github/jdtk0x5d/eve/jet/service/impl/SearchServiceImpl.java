@@ -1,7 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.service.impl;
 
-import com.github.jdtk0x5d.eve.jet.api.pagination.PaginationBuilder;
-import com.github.jdtk0x5d.eve.jet.api.pagination.PaginationErrorHandler;
+import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationBuilder;
+import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationErrorHandler;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;

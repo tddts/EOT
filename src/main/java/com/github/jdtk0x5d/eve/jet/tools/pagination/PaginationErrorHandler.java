@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.api.pagination;
+package com.github.jdtk0x5d.eve.jet.tools.pagination;
 
 /**
  * @author Tigran_Dadaiants@epam.com

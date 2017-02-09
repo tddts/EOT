@@ -1,6 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.rest.api.esi;
 
-import com.github.jdtk0x5d.eve.jet.api.RestResponse;
+import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketHistory;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
