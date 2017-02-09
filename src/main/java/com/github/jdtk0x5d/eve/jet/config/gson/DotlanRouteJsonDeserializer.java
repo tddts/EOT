@@ -41,7 +41,7 @@ public class DotlanRouteJsonDeserializer implements JsonDeserializer<DotlanRoute
     JsonArray jsonJumps = jsonObject.getAsJsonArray("j");
     List<DotlanJump> jumps = new ArrayList<>(jsonJumps.size());
     for (JsonElement jump : jsonJumps) {
-      jumps.add(Util.parseJump(jump.getAsString()));
+      jumps.add(parseJump(jump.getAsString()));
     }
 
     route.setSystems(systems);
@@ -50,5 +50,10 @@ public class DotlanRouteJsonDeserializer implements JsonDeserializer<DotlanRoute
     route.setJumps(jumps);
 
     return route;
+  }
+
+  private DotlanJump parseJump(String value) {
+    String[] jumps = value.split("-");
+    return new DotlanJump(Integer.valueOf(jumps[0]), Integer.valueOf(jumps[1]));
   }
 }

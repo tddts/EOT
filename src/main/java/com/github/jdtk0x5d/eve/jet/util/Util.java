@@ -29,9 +29,4 @@ public class Util {
     beanFactory.initializeBean(object, name);
   }
 
-  public static DotlanJump parseJump(String value) {
-    String[] jumps = value.split("-");
-    return new DotlanJump(Integer.valueOf(jumps[0]), Integer.valueOf(jumps[1]));
-  }
-
 }
