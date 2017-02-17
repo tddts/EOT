@@ -4,6 +4,7 @@ import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 /**
@@ -11,6 +12,10 @@ import java.time.LocalDateTime;
  */
 @Entity
 public class OrderSearchCache {
+
+  @Id
+  @Column
+  private Long orderId;
 
   @Column
   private Boolean buyOrder;
@@ -23,8 +28,7 @@ public class OrderSearchCache {
 
   @Column
   private LocalDateTime issued;
-  @Column
-  private Long orderId;
+
   @Column
   private Integer typeID;
   @Column
@@ -140,5 +144,20 @@ public class OrderSearchCache {
 
   public void setVolumeTotal(Long volumeTotal) {
     this.volumeTotal = volumeTotal;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    OrderSearchCache that = (OrderSearchCache) o;
+
+    return orderId.equals(that.orderId);
+  }
+
+  @Override
+  public int hashCode() {
+    return orderId.hashCode();
   }
 }
