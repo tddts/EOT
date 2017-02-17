@@ -37,4 +37,9 @@ public abstract class AbstractDao implements GenericDao {
   public int deleteAll(Collection<?> collection) {
     return ebeanServer.deleteAll(collection);
   }
+
+  @Override
+  public int deleteAll(Class<?> type) {
+    return ebeanServer.find(type).delete();
+  }
 }

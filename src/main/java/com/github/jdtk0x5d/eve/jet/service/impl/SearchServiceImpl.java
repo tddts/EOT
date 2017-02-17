@@ -46,9 +46,14 @@ public class SearchServiceImpl implements SearchService {
   @Override
   @Profiling
   public List<OrderSearchRow> searchForOrders(double isk, double volume, Collection<String> regions) {
+    clear();
     load(regions);
     filter();
     return null;
+  }
+
+  private void clear(){
+    cacheDao.deleteAll(OrderSearchCache.class);
   }
 
   private void load(Collection<String> regions) {

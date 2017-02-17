@@ -15,4 +15,6 @@ public interface GenericDao {
 
   int deleteAll(Collection<?> collection);
 
+  int deleteAll(Class<?> type);
+
 }
