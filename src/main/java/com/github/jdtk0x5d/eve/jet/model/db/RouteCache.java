@@ -10,30 +10,36 @@ import javax.persistence.Entity;
 @Entity
 public class RouteCache {
 
-  @EmbeddedId
-  private RouteCachePK routeKey;
+  @Column
+  private Long startPointId;
+  @Column
+  private Long endPointId;
   @Column
   private String routeJson;
 
   public RouteCache() {
   }
 
-  public RouteCache(RouteCachePK routeKey, String routeJson) {
-    this.routeKey = routeKey;
+  public RouteCache(Long startPointId, Long endPointId, String routeJson) {
+    this.startPointId = startPointId;
+    this.endPointId = endPointId;
     this.routeJson = routeJson;
   }
 
-  public RouteCache(Long firstPoint, Long secondPoint, String routeJson) {
-    this.routeKey = new RouteCachePK(firstPoint, secondPoint);
-    this.routeJson = routeJson;
+  public Long getStartPointId() {
+    return startPointId;
   }
 
-  public RouteCachePK getRouteKey() {
-    return routeKey;
+  public void setStartPointId(Long startPointId) {
+    this.startPointId = startPointId;
   }
 
-  public void setRouteKey(RouteCachePK routeKey) {
-    this.routeKey = routeKey;
+  public Long getEndPointId() {
+    return endPointId;
+  }
+
+  public void setEndPointId(Long endPointId) {
+    this.endPointId = endPointId;
   }
 
   public String getRouteJson() {

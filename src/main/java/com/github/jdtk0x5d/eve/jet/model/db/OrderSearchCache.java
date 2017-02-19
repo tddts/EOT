@@ -13,9 +13,12 @@ import java.time.LocalDateTime;
 @Entity
 public class OrderSearchCache {
 
-  @Id
   @Column
   private Long orderId;
+  @Column
+  private Integer typeID;
+  @Column
+  private Long locationID;
 
   @Column
   private Boolean buyOrder;
@@ -28,11 +31,6 @@ public class OrderSearchCache {
 
   @Column
   private LocalDateTime issued;
-
-  @Column
-  private Integer typeID;
-  @Column
-  private Long locationID;
 
   @Column
   private Long minVolume;
