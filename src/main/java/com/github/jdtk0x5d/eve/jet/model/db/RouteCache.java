@@ -1,14 +1,18 @@
 package com.github.jdtk0x5d.eve.jet.model.db;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Entity
 public class RouteCache {
+
+  @Id
+  @Column
+  private Long routePK;
 
   @Column
   private Long startPointId;
@@ -24,6 +28,14 @@ public class RouteCache {
     this.startPointId = startPointId;
     this.endPointId = endPointId;
     this.routeJson = routeJson;
+  }
+
+  public Long getRoutePK() {
+    return routePK;
+  }
+
+  public void setRoutePK(Long routePK) {
+    this.routePK = routePK;
   }
 
   public Long getStartPointId() {
