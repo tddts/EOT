@@ -15,4 +15,6 @@ public interface CacheDao extends GenericDao {
 
   int removeSoonExpiredOrders(int time);
 
+  int removeDuplicateOrders();
+
 }

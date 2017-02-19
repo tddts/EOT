@@ -82,6 +82,7 @@ public class SearchServiceImpl implements SearchService {
   }
 
   private void filter() {
+    cacheDao.removeDuplicateOrders();
     cacheDao.removeSoonExpiredOrders(expirationTimeout);
   }
 
