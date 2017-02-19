@@ -12,7 +12,7 @@
     <!-- Basic configurations -->
     <aop:aspectj-autoproxy/>
     <context:component-scan base-package="com.github.jdtk0x5d.eve.jet.*"/>
-    <util:properties id="applicationProperties" location="classpath:application.properties,classpath:static_data.properties"/>
+    <util:properties id="applicationProperties" location="classpath:application.properties,classpath:static_data.properties,classpath:sql.properties"/>
     <context:property-placeholder properties-ref="applicationProperties"/>
 
     <!-- Bean postprocessors -->
