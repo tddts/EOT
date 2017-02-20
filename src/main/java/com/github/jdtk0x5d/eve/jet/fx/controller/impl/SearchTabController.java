@@ -59,7 +59,7 @@ public class SearchTabController {
     List<String> regions = new ArrayList<>(2);
     regions.add("The Forge");
     regions.add("Domain");
-    searchService.searchForOrders(0, 0, regions);
+    searchService.searchForOrders(0, 0, null);
   }
 
   private void initTable() {

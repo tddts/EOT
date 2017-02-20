@@ -1,7 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.dao.impl;
 
-import com.avaje.ebean.EbeanServer;
 import com.github.jdtk0x5d.eve.jet.dao.GenericDao;
+import io.ebean.EbeanServer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;

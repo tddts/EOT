@@ -1,8 +1,9 @@
 package com.github.jdtk0x5d.eve.jet.config.ebean;
 
-import com.avaje.ebeaninternal.server.type.ScalarTypeBaseVarchar;
+
 import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
 import com.google.gson.Gson;
+import io.ebeaninternal.server.type.ScalarTypeBaseVarchar;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com

@@ -1,10 +1,12 @@
 package com.github.jdtk0x5d.eve.jet.config.spring.config;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
+import com.github.jdtk0x5d.eve.jet.util.SpringUtil;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.MessageSource;
@@ -28,19 +30,23 @@ public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {
 
   @Override
   public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-    Class<?> type = bean.getClass();
+
+    Pair<Class<?>, Object> typeObjectPair = SpringUtil.checkForDinamicProxy(bean);
+    Class<?> type = typeObjectPair.getLeft();
+    Object target = typeObjectPair.getRight();
+
     Method[] methods = type.getDeclaredMethods();
     Field[] fields = type.getDeclaredFields();
 
     for (Method method : methods) {
       if (method.isAnnotationPresent(Message.class) && checkMethod(method, type)) {
-        processMethod(bean, method);
+        processMethod(target, method);
       }
     }
 
     for (Field field : fields) {
       if (field.isAnnotationPresent(Message.class) && checkField(field, type)) {
-        processField(bean, field);
+        processField(target, field);
       }
     }
 
@@ -76,9 +82,9 @@ public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {
       String message = preprocess(method);
       method.invoke(bean, message);
     } catch (IllegalAccessException | InvocationTargetException e) {
-      throw new BeanCreationException("Injection of message failed for method [" + bean.getClass() + "." + method.getName() + "]", e);
+      throw new BeanInitializationException("Injection of message failed for method [" + bean.getClass() + "." + method.getName() + "]", e);
     } catch (NoSuchMessageException e) {
-      throw new BeanCreationException("Failed to find message for method [" + bean.getClass() + "." + method.getName() + "]", e);
+      throw new BeanInitializationException("Failed to find message for method [" + bean.getClass() + "." + method.getName() + "]", e);
     }
   }
 
@@ -87,9 +93,9 @@ public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {
       String message = preprocess(field);
       field.set(bean, message);
     } catch (IllegalAccessException e) {
-      throw new BeanCreationException("Injection of message failed for field [" + bean.getClass() + "." + field.getName() + "]", e);
+      throw new BeanInitializationException("Injection of message failed for field [" + bean.getClass() + "." + field.getName() + "]", e);
     } catch (NoSuchMessageException e) {
-      throw new BeanCreationException("Failed to find message for field [" + bean.getClass() + "." + field.getName() + "]", e);
+      throw new BeanInitializationException("Failed to find message for field [" + bean.getClass() + "." + field.getName() + "]", e);
     }
   }
 

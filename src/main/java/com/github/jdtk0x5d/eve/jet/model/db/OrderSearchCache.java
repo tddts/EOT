@@ -1,15 +1,18 @@
 package com.github.jdtk0x5d.eve.jet.model.db;
 
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
+import io.ebean.annotation.Index;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Table
 @Entity
 public class OrderSearchCache {
 
@@ -17,12 +20,16 @@ public class OrderSearchCache {
   @Column
   private Long orderPK;
 
-  @Column
-  private Long orderId;
-  @Column
-  private Integer typeID;
+  @Index
   @Column
   private Long locationID;
+
+  @Column
+  private Long orderId;
+
+  @Index
+  @Column
+  private Integer typeID;
 
   @Column
   private Boolean buyOrder;

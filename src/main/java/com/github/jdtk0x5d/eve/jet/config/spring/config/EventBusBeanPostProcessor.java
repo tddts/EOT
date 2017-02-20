@@ -1,7 +1,9 @@
 package com.github.jdtk0x5d.eve.jet.config.spring.config;
 
+import com.github.jdtk0x5d.eve.jet.util.SpringUtil;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;
@@ -22,10 +24,15 @@ public class EventBusBeanPostProcessor implements BeanPostProcessor {
 
   @Override
   public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-    for (Method method : bean.getClass().getDeclaredMethods()) {
+
+    Pair<Class<?>, Object> typeObjectPair = SpringUtil.checkForDinamicProxy(bean);
+    Class<?> type = typeObjectPair.getLeft();
+    Object target = typeObjectPair.getRight();
+
+    for (Method method : type.getDeclaredMethods()) {
 
       if (method.isAnnotationPresent(Subscribe.class)) {
-        eventBus.register(bean);
+        eventBus.register(target);
         logger.debug("Bean registered to EventBus: [" + beanName + "]");
         return bean;
       }

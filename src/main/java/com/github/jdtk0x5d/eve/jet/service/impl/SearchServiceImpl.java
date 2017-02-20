@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.service.impl;
 
+import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationBuilder;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationErrorHandler;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
@@ -49,6 +50,7 @@ public class SearchServiceImpl implements SearchService {
     clear();
     load(regions);
     filter();
+    search();
     return null;
   }
 
@@ -84,6 +86,15 @@ public class SearchServiceImpl implements SearchService {
   private void filter() {
     cacheDao.removeDuplicateOrders();
     cacheDao.removeSoonExpiredOrders(expirationTimeout);
+  }
+
+  private void search(){
+    cacheDao.findTypeIds().forEach(type -> {
+      List<OrderSearchResult> results = cacheDao.findOrdersForType(type);
+      System.out.println("Type: "+type+"__________");
+      results.forEach(result -> logger.debug(result.toString()));
+    }
+    );
   }
 
 }
