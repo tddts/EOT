@@ -7,13 +7,10 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.Locale;
-
 
 public class App extends Application {
 
   public static void main(String[] args) throws Exception {
-    Locale.setDefault(new Locale.Builder().setLanguage("ru").setRegion("RU").build());
     launch(args);
   }
 
@@ -28,7 +25,7 @@ public class App extends Application {
 
     View view = new View("fxml/main.fxml");
     ViewUtil.wire(view);
-    Scene scene = new Scene(view.getRoot(), 800, 600);
+    Scene scene = new Scene(view.getRoot(), 1024, 600);
     stage.setScene(scene);
     stage.show();
   }

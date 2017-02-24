@@ -1,11 +1,9 @@
 package com.github.jdtk0x5d.eve.jet.dao.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.LoadContent;
-import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
 import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchCache;
 import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
-import com.github.jdtk0x5d.eve.jet.model.db.RouteCache;
 import io.ebean.SqlRow;
 import io.ebean.annotation.Transactional;
 import org.springframework.stereotype.Component;
@@ -23,32 +21,21 @@ public class CacheDaoImpl extends AbstractDao implements CacheDao {
   private String sql_delete_expired;
   @LoadContent("sql.file.delete.duplicate")
   private String sql_delete_duplicate;
+  @LoadContent("sql.file.delete.large")
+  private String sql_delete_large;
+
+  @LoadContent("sql.file.find.systems")
+  private String sql_find_systems;
 
   @LoadContent("sql.file.search.update.create.tables")
   private String sql_update_searchCreateTables;
   @LoadContent("sql.file.search.update.insert.stations")
   private String sql_update_searchInsertStations;
-  @LoadContent("sql.file.search.update.insert.sell.orders")
-  private String sql_update_searchInsertSellOrders;
-  @LoadContent("sql.file.search.update.insert.buy.orders")
-  private String sql_update_searchInsertBuyOrders;
+  @LoadContent("sql.file.search.update.insert.orders")
+  private String sql_update_searchInsertOrders;
 
   @LoadContent("sql.file.search.select")
-  private String sql_select_searchForType;
-
-
-  @Override
-  public RouteCache findCachedRoute(Long firstPointId, Long secondPointId) {
-    return ebeans().find(RouteCache.class).where()
-        .in("startPointId", firstPointId, secondPointId)
-        .or()
-        .in("endPointId", firstPointId, secondPointId).findUnique();
-  }
-
-  @Override
-  public List<Integer> findTypeIds() {
-    return ebeans().find(OrderSearchCache.class).select("typeID").setDistinct(true).findSingleAttributeList();
-  }
+  private String sql_select_search;
 
   @Override
   public int removeSoonExpiredOrders(int time) {
@@ -61,15 +48,35 @@ public class CacheDaoImpl extends AbstractDao implements CacheDao {
   }
 
   @Override
-  @Profiling
+  public int removeLargeItemOrders(double volume) {
+    return ebeans().createSqlUpdate(sql_delete_large).setParameter("volume", volume).execute();
+  }
+
+  @Override
+  public int removeTooExpensiveOrders(long funds) {
+    return ebeans().find(OrderSearchCache.class).where().eq("buyOrder", false).gt("price", funds).delete();
+  }
+
+  @Override
   @Transactional
-  public List<OrderSearchResult> findOrdersForType(Integer typeId) {
+  public List<OrderSearchResult> findProfitableOrders(double security, double cargoVolume, double taxRate) {
+    // Create and fill temporary tables
     ebeans().createSqlUpdate(sql_update_searchCreateTables).execute();
-    ebeans().createSqlUpdate(sql_update_searchInsertStations).setParameter("security", 0.5f).execute();
-    ebeans().createSqlUpdate(sql_update_searchInsertSellOrders).setParameter("type_param", typeId).execute();
-    ebeans().createSqlUpdate(sql_update_searchInsertBuyOrders).setParameter("type_param", typeId).execute();
-    List<SqlRow> searchRows = ebeans().createSqlQuery(sql_select_searchForType).findList();
+    ebeans().createSqlUpdate(sql_update_searchInsertStations).setParameter("security_status", security).execute();
+    ebeans().createSqlUpdate(sql_update_searchInsertOrders).execute();
+    // Find orders
+    List<SqlRow> searchRows = ebeans().createSqlQuery(sql_select_search)
+        .setParameter("cargo_volume", cargoVolume)
+        .setParameter("tax_rate", taxRate)
+        .findList();
+    // Convert SqlRow to OrderSearchResult
     return searchRows.stream().map(OrderSearchResult::new).collect(Collectors.toList());
+  }
+
+  @Override
+  public String findStationSystemName(long station) {
+    SqlRow system = ebeans().createSqlQuery(sql_find_systems).setParameter("station",station).findUnique();
+    return system.getString("solar_system_name");
   }
 
 }

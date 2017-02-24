@@ -19,6 +19,9 @@ public class UserInterfaceAPIImpl implements UserInterfaceAPI {
   @Value("${url.ui.waypoint}")
   private String addressWaypoint;
 
+  @Value("${url.ui.market.details}")
+  private String addressMarketDetails;
+
   @Override
   public RestResponse<String> setWaypoint(int destinationId, boolean clearOtherWaypoints, boolean addToBeginning) {
     String url = apiUriBuilder(addressWaypoint)
@@ -26,6 +29,14 @@ public class UserInterfaceAPIImpl implements UserInterfaceAPI {
         .queryParam("clear_other_waypoints", clearOtherWaypoints)
         .queryParam("add_to_beginning", addToBeginning)
         .build().toString();
+
+    return new RestResponse<>(restOperations().exchange(url, HttpMethod.POST, authorizedEntity(), String.class));
+  }
+
+  @Override
+  public RestResponse<String> openMarketDetails(int typeId) {
+    String url = apiUriBuilder(addressMarketDetails)
+        .queryParam("type_id",typeId).build().toString();
 
     return new RestResponse<>(restOperations().exchange(url, HttpMethod.POST, authorizedEntity(), String.class));
   }

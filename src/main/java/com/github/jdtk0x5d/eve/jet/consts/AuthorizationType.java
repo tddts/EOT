@@ -1,12 +1,14 @@
 package com.github.jdtk0x5d.eve.jet.consts;
 
+import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageAware;
+
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public enum AuthorizationType {
+public enum AuthorizationType implements MessageAware{
 
-  IMPLICIT("auth.type.implicit"),
-  DEV("auth.type.dev");
+  IMPLICIT("enum.auth.type.implicit"),
+  DEV("enum.auth.type.dev");
 
   private final String key;
 
@@ -14,7 +16,7 @@ public enum AuthorizationType {
     this.key = key;
   }
 
-  public String getKey() {
+  public String getMessageKey() {
     return key;
   }
 

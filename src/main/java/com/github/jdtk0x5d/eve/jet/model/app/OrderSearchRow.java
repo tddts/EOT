@@ -1,21 +1,40 @@
 package com.github.jdtk0x5d.eve.jet.model.app;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.StringProperty;
+import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
+import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
+import javafx.beans.property.*;
+import javafx.util.converter.NumberStringConverter;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class OrderSearchRow {
 
-  private StringProperty item;
-  private IntegerProperty quantity;
-  private StringProperty sellingLocation;
-  private StringProperty buyingLocation;
-  private IntegerProperty jumps;
-  private DoubleProperty profit;
-  private DoubleProperty perJumpProfit;
+  private StringProperty item = new SimpleStringProperty();
+  private LongProperty quantity = new SimpleLongProperty();
+
+  private StringProperty sellingLocation = new SimpleStringProperty();
+  private StringProperty buyingLocation = new SimpleStringProperty();
+
+  private IntegerProperty jumps = new SimpleIntegerProperty();
+
+  private DoubleProperty sellPrice = new SimpleDoubleProperty();
+  private DoubleProperty buyPrice = new SimpleDoubleProperty();
+
+  private DoubleProperty profit = new SimpleDoubleProperty();
+  private DoubleProperty perJumpProfit = new SimpleDoubleProperty();
+
+  private StringProperty profitText = new SimpleStringProperty();
+  private StringProperty perJumpProfitText = new SimpleStringProperty();
+
+  private DotlanRoute dotlanRoute;
+  private OrderSearchResult searchResultData;
+
+  public OrderSearchRow() {
+    NumberStringConverter numberStringConverter = new NumberStringConverter("###.##");
+    profitText.bindBidirectional(profit, numberStringConverter);
+    perJumpProfitText.bindBidirectional(perJumpProfit, numberStringConverter);
+  }
 
   public String getItem() {
     return item.get();
@@ -29,15 +48,15 @@ public class OrderSearchRow {
     return item;
   }
 
-  public int getQuantity() {
+  public long getQuantity() {
     return quantity.get();
   }
 
-  public void setQuantity(int quantity) {
+  public void setQuantity(long quantity) {
     this.quantity.set(quantity);
   }
 
-  public IntegerProperty quantityProperty() {
+  public LongProperty quantityProperty() {
     return quantity;
   }
 
@@ -77,6 +96,30 @@ public class OrderSearchRow {
     return jumps;
   }
 
+  public double getSellPrice() {
+    return sellPrice.get();
+  }
+
+  public DoubleProperty sellPriceProperty() {
+    return sellPrice;
+  }
+
+  public void setSellPrice(double sellPrice) {
+    this.sellPrice.set(sellPrice);
+  }
+
+  public double getBuyPrice() {
+    return buyPrice.get();
+  }
+
+  public DoubleProperty buyPriceProperty() {
+    return buyPrice;
+  }
+
+  public void setBuyPrice(double buyPrice) {
+    this.buyPrice.set(buyPrice);
+  }
+
   public double getProfit() {
     return profit.get();
   }
@@ -99,5 +142,46 @@ public class OrderSearchRow {
 
   public DoubleProperty perJumpProfitProperty() {
     return perJumpProfit;
+  }
+
+
+  public String getProfitText() {
+    return profitText.get();
+  }
+
+  public void setProfitText(String profitText) {
+    this.profitText.set(profitText);
+  }
+
+  public StringProperty profitTextProperty() {
+    return profitText;
+  }
+
+  public String getPerJumpProfitText() {
+    return perJumpProfitText.get();
+  }
+
+  public void setPerJumpProfitText(String perJumpProfitText) {
+    this.perJumpProfitText.set(perJumpProfitText);
+  }
+
+  public StringProperty perJumpProfitTextProperty() {
+    return perJumpProfitText;
+  }
+
+  public DotlanRoute getDotlanRoute() {
+    return dotlanRoute;
+  }
+
+  public void setDotlanRoute(DotlanRoute dotlanRoute) {
+    this.dotlanRoute = dotlanRoute;
+  }
+
+  public OrderSearchResult getSearchResultData() {
+    return searchResultData;
+  }
+
+  public void setSearchResultData(OrderSearchResult searchResultData) {
+    this.searchResultData = searchResultData;
   }
 }

@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.service;
 
+import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
 
 import java.util.Collection;
@@ -10,5 +11,5 @@ import java.util.List;
  */
 public interface SearchService {
 
-  List<OrderSearchRow> searchForOrders(double isk, double volume, Collection<String> regions);
+  List<OrderSearchRow> searchForOrders(DotlanRouteOption routeOption, long isk, double volume, double taxRate, Collection<String> regions);
 }

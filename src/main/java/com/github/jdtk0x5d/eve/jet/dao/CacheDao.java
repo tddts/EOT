@@ -1,8 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.dao;
 
-import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchCache;
 import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
-import com.github.jdtk0x5d.eve.jet.model.db.RouteCache;
 
 import java.util.List;
 
@@ -11,14 +9,16 @@ import java.util.List;
  */
 public interface CacheDao extends GenericDao {
 
-  RouteCache findCachedRoute(Long firstPointId, Long secondPointId);
-
-  List<Integer> findTypeIds();
-
   int removeSoonExpiredOrders(int time);
 
   int removeDuplicateOrders();
 
-  List<OrderSearchResult> findOrdersForType(Integer typeId);
+  int removeLargeItemOrders(double volume);
+
+  int removeTooExpensiveOrders(long funds);
+
+  List<OrderSearchResult> findProfitableOrders(double security, double cargoVolume, double taxRate);
+
+  String findStationSystemName(long station);
 
 }

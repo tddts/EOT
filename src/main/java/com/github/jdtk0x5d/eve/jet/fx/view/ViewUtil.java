@@ -2,7 +2,7 @@ package com.github.jdtk0x5d.eve.jet.fx.view;
 
 import com.github.jdtk0x5d.eve.jet.exception.BrowserOpeningException;
 import com.github.jdtk0x5d.eve.jet.fx.controller.NestedControllerAware;
-import com.github.jdtk0x5d.eve.jet.util.Util;
+import com.github.jdtk0x5d.eve.jet.util.SpringUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.Background;
@@ -44,7 +44,7 @@ public class ViewUtil {
   }
 
   private static void wireController(Object controller) {
-    Util.initBean(controller, controller.getClass().getSimpleName());
+    SpringUtil.initBean(controller, controller.getClass().getSimpleName());
   }
 
   public static Stage getStage(Node node) {

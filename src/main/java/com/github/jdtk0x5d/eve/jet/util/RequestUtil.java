@@ -2,6 +2,7 @@ package com.github.jdtk0x5d.eve.jet.util;
 
 import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.context.Context;
+import com.github.jdtk0x5d.eve.jet.model.api.esi.sso.AccessToken;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -51,7 +52,9 @@ public class RequestUtil {
   public static HttpEntity<?> authorizedEntity(Object body) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    headers.set("Authorization", Context.getUserBean().getAccessToken().getFullValue());
+    AccessToken token = Context.getUserBean().getAccessToken();
+    String authValue = token == null ? "" : token.getFullValue();
+    headers.set("Authorization", authValue);
     return new HttpEntity<>(body, headers);
   }
 

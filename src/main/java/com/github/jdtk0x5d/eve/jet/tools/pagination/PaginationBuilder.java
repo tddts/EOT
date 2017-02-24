@@ -18,6 +18,10 @@ public class PaginationBuilder<E, T extends Collection<E>> {
   private int firstPage = 1;
   private int lastPage = -1;
 
+  private int retryNumber = 3;
+  private long retryTimeout = 100;
+  private boolean skipPageOnRetry = true;
+
   public PaginationBuilder() {
   }
 
@@ -46,10 +50,27 @@ public class PaginationBuilder<E, T extends Collection<E>> {
     return this;
   }
 
+  public PaginationBuilder<E, T> retryNumber(int retryNumber){
+    this.retryNumber = retryNumber;
+    return this;
+  }
+
+  public PaginationBuilder<E, T> retryTimeout(long retryTimeout){
+    this.retryTimeout = retryTimeout;
+    return this;
+  }
+
+  public PaginationBuilder<E, T> skiPageOnRetry(boolean skipPageOnRetry){
+    this.skipPageOnRetry = skipPageOnRetry;
+    return this;
+  }
+
   public Pagination build() {
     if (loadFunction == null || loadingResultConsumer == null || errorConsumer == null) {
-      throw new IllegalArgumentException("Pagination could not be initialized! Some of required fields are NULL!.");
+      throw new IllegalArgumentException("Pagination can not be initialized! Some of required fields are NULL!");
     }
-    return new PaginationImpl<>(loadFunction, loadingResultConsumer, errorConsumer, firstPage, lastPage);
+    return new PaginationImpl<>(loadFunction, loadingResultConsumer, errorConsumer,
+        firstPage, lastPage,
+        retryNumber, retryTimeout, skipPageOnRetry);
   }
 }

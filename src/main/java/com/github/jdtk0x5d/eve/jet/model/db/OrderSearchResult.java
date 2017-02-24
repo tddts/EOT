@@ -3,51 +3,80 @@ package com.github.jdtk0x5d.eve.jet.model.db;
 
 import io.ebean.SqlRow;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class OrderSearchResult {
 
-  private Long orderId;
-  private Long locationId;
+  private Integer typeId;
+
+  private Integer sellOrderId;
+  private Integer buyOrderId;
+
   private Double sellPrice;
   private Double buyPrice;
+
   private Long sellVolume;
   private Long buyVolume;
-  private Long volume;
+  private Long buyMinVolume;
+  private Long tradeVolume;
+
+  private Integer buyLocation;
+  private Integer sellLocation;
+
+  private Double itemCargoVolume;
+  private Double itemCargoFreeVolume;
+
   private Double profit;
 
   public OrderSearchResult() {
   }
 
   public OrderSearchResult(SqlRow sqlRow) {
-    orderId = sqlRow.getLong("order_id");
-    locationId = sqlRow.getLong("location_id");
+    typeId = sqlRow.getInteger("type_id");
+
+    sellOrderId = sqlRow.getInteger("sell_order_id");
+    buyOrderId = sqlRow.getInteger("buy_order_id");
+
     sellPrice = sqlRow.getDouble("sell_price");
     buyPrice = sqlRow.getDouble("buy_price");
+
     sellVolume = sqlRow.getLong("sell_volume");
     buyVolume = sqlRow.getLong("buy_volume");
-    volume = sqlRow.getLong("volume");
+    buyMinVolume = sqlRow.getLong("buy_min_volume");
+    tradeVolume = sqlRow.getLong("trade_volume");
+
+    buyLocation = sqlRow.getInteger("buy_location");
+    sellLocation = sqlRow.getInteger("sell_location");
+
+    itemCargoVolume = sqlRow.getDouble("item_cargo_volume");
+    itemCargoFreeVolume = sqlRow.getDouble("item_cargo_free_volume");
+
     profit = sqlRow.getDouble("profit");
   }
 
-  public Long getOrderId() {
-    return orderId;
+  public Integer getTypeId() {
+    return typeId;
   }
 
-  public void setOrderId(Long orderId) {
-    this.orderId = orderId;
+  public void setTypeId(Integer typeId) {
+    this.typeId = typeId;
   }
 
-  public Long getLocationId() {
-    return locationId;
+  public Integer getSellOrderId() {
+    return sellOrderId;
   }
 
-  public void setLocationId(Long locationId) {
-    this.locationId = locationId;
+  public void setSellOrderId(Integer sellOrderId) {
+    this.sellOrderId = sellOrderId;
+  }
+
+  public Integer getBuyOrderId() {
+    return buyOrderId;
+  }
+
+  public void setBuyOrderId(Integer buyOrderId) {
+    this.buyOrderId = buyOrderId;
   }
 
   public Double getSellPrice() {
@@ -82,12 +111,52 @@ public class OrderSearchResult {
     this.buyVolume = buyVolume;
   }
 
-  public Long getVolume() {
-    return volume;
+  public Long getBuyMinVolume() {
+    return buyMinVolume;
   }
 
-  public void setVolume(Long volume) {
-    this.volume = volume;
+  public void setBuyMinVolume(Long buyMinVolume) {
+    this.buyMinVolume = buyMinVolume;
+  }
+
+  public Long getTradeVolume() {
+    return tradeVolume;
+  }
+
+  public void setTradeVolume(Long tradeVolume) {
+    this.tradeVolume = tradeVolume;
+  }
+
+  public Integer getBuyLocation() {
+    return buyLocation;
+  }
+
+  public void setBuyLocation(Integer buyLocation) {
+    this.buyLocation = buyLocation;
+  }
+
+  public Integer getSellLocation() {
+    return sellLocation;
+  }
+
+  public void setSellLocation(Integer sellLocation) {
+    this.sellLocation = sellLocation;
+  }
+
+  public Double getItemCargoVolume() {
+    return itemCargoVolume;
+  }
+
+  public void setItemCargoVolume(Double itemCargoVolume) {
+    this.itemCargoVolume = itemCargoVolume;
+  }
+
+  public Double getItemCargoFreeVolume() {
+    return itemCargoFreeVolume;
+  }
+
+  public void setItemCargoFreeVolume(Double itemCargoFreeVolume) {
+    this.itemCargoFreeVolume = itemCargoFreeVolume;
   }
 
   public Double getProfit() {
@@ -100,8 +169,6 @@ public class OrderSearchResult {
 
   @Override
   public String toString() {
-    return "OrderSearchResult{" + "orderId=[" + orderId + "], locationId=[" + locationId + "], sellPrice=["
-        + sellPrice + "], buyPrice=[" + buyPrice + "], sellVolume=[" + sellVolume + "], buyVolume=["
-        + buyVolume + "], volume=[" + volume + "], profit=[" + profit + "]}";
+    return "OrderSearchResult{" + "typeId=[" + typeId + "], sellOrderId=[" + sellOrderId + "], buyOrderId=[" + buyOrderId + "], sellPrice=[" + sellPrice + "], buyPrice=[" + buyPrice + "], sellVolume=[" + sellVolume + "], buyVolume=[" + buyVolume + "], buyMinVolume=[" + buyMinVolume + "], buyLocation=[" + buyLocation + "], sellLocation=[" + sellLocation + "], itemCargoVolume=[" + itemCargoVolume + "], itemCargoFreeVolume=[" + itemCargoFreeVolume + "], profit=[" + profit + "]}";
   }
 }

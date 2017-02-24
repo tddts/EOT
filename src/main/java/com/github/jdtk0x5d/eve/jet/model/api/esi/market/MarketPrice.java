@@ -5,31 +5,31 @@ package com.github.jdtk0x5d.eve.jet.model.api.esi.market;
  */
 public class MarketPrice {
 
-  private String average_price;
-  private String adjusted_price;
-  private String type_id;
+  private double average_price;
+  private double adjusted_price;
+  private double type_id;
 
-  public String getAverage_price() {
+  public double getAverage_price() {
     return average_price;
   }
 
-  public void setAverage_price(String average_price) {
+  public void setAverage_price(double average_price) {
     this.average_price = average_price;
   }
 
-  public String getAdjusted_price() {
+  public double getAdjusted_price() {
     return adjusted_price;
   }
 
-  public void setAdjusted_price(String adjusted_price) {
+  public void setAdjusted_price(double adjusted_price) {
     this.adjusted_price = adjusted_price;
   }
 
-  public String getType_id() {
+  public double getType_id() {
     return type_id;
   }
 
-  public void setType_id(String type_id) {
+  public void setType_id(double type_id) {
     this.type_id = type_id;
   }
 

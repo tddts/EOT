@@ -2,7 +2,6 @@ package com.github.jdtk0x5d.eve.jet.rest.api.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestApi;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.input.IdArray;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseName;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseStation;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseStructure;
@@ -43,13 +42,9 @@ public class UniverseAPIImpl implements UniverseAPI {
   @Value("${url.universe.type}")
   private String addressType;
 
-  @Autowired
-  private Gson gson;
-
   @Override
-  public RestResponse<List<UniverseName>> getNames(long[] ids) {
-    String requestBody = gson.toJson(new IdArray(ids));
-    return RestResponse.fromArrayResponse(restOperations().exchange(apiUrl(addressNames), HttpMethod.POST, jsonEntity(requestBody), UniverseName[].class));
+  public RestResponse<List<UniverseName>> getNames(int... ids) {
+    return RestResponse.fromArrayResponse(restOperations().exchange(apiUrl(addressNames), HttpMethod.POST, jsonEntity(ids), UniverseName[].class));
   }
 
   @Override

@@ -12,8 +12,12 @@ import java.util.List;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface UniverseAPI {
-
-  RestResponse<List<UniverseName>> getNames(long[] ids);
+  /**
+   * Ids should be distinct!
+   * @param ids
+   * @return
+   */
+  RestResponse<List<UniverseName>> getNames(int... ids);
 
   RestResponse<UniverseStation> getStation(int stationId);
 

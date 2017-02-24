@@ -1,9 +1,10 @@
 package com.github.jdtk0x5d.eve.jet.oauth.server;
 
 import com.github.jdtk0x5d.eve.jet.service.AuthService;
-import com.github.jdtk0x5d.eve.jet.util.Util;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,39 +17,57 @@ import java.net.URI;
  */
 public class AuthHttpHandler implements HttpHandler {
 
+  private static final Logger logger = LogManager.getLogger(AuthHttpHandler.class);
+
   private AuthService authService;
-  private String responseFileName;
+  private String responseText;
   private String successMessage;
 
-  public AuthHttpHandler(AuthService authService, String responseFileName, String successMessage) {
+  public AuthHttpHandler(AuthService authService, String responseText, String successMessage) {
     this.authService = authService;
-    this.responseFileName = responseFileName;
+    this.responseText = responseText;
     this.successMessage = successMessage;
   }
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
 
-    URI requestURI = exchange.getRequestURI();
+    String response = "";
 
-    if (exchange.getRequestMethod().equals(RequestMethod.GET.name())) {
+    try {
 
-      String response = successMessage;
+      URI requestURI = exchange.getRequestURI();
 
-      if (requestURI.getQuery() == null) {
-        response = Util.loadContent(responseFileName);
-        exchange.sendResponseHeaders(HttpStatus.OK.value(), response.length());
+      logger.debug("Request URI:[" + requestURI + "]");
+
+      if (exchange.getRequestMethod().equals(RequestMethod.GET.name())) {
+
+        response = successMessage;
+
+        if (requestURI.getQuery() == null) {
+          logger.debug("Query is null.");
+          response = responseText;
+          exchange.sendResponseHeaders(HttpStatus.OK.value(), response.length());
+        }
+        else {
+          logger.debug("Query is not null.");
+          HttpStatus status = authService.processAuthorization(requestURI.getQuery());
+          response = status.is2xxSuccessful() ? response : status.getReasonPhrase();
+          exchange.sendResponseHeaders(status.value(), response.length());
+        }
       }
-      else {
-        HttpStatus status = authService.processAuthorization(requestURI.getQuery());
-        response = status.is2xxSuccessful() ? response : status.getReasonPhrase();
-        exchange.sendResponseHeaders(status.value(), response.length());
-      }
+
+    } finally {
+      logger.debug("Response: \n" + response);
 
       OutputStream os = exchange.getResponseBody();
       os.write(response.getBytes());
       os.flush();
       os.close();
+
+      logger.debug("Response stream closed.");
     }
+
+
   }
 }

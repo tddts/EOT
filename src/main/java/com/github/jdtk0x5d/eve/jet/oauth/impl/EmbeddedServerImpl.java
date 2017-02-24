@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.oauth.impl;
 
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.LoadContent;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.oauth.EmbeddedServer;
 import com.github.jdtk0x5d.eve.jet.oauth.server.AuthHttpHandler;
@@ -30,10 +31,10 @@ public class EmbeddedServerImpl implements EmbeddedServer {
   @Value("${server.timeout}")
   private long timeout;
 
-  @Value("${auth.implicit.response.html}")
-  private String implicitResponseFileName;
+  @LoadContent("auth.implicit.response.html")
+  private String implicitSuccessResponse;
 
-  @Message("auth.success")
+  @Message("enum.auth.success")
   private String successMessage;
 
   @Autowired
@@ -43,7 +44,7 @@ public class EmbeddedServerImpl implements EmbeddedServer {
 
   @PostConstruct
   public void init() {
-    AuthHttpHandler httpHandler = new AuthHttpHandler(authService, implicitResponseFileName, successMessage);
+    AuthHttpHandler httpHandler = new AuthHttpHandler(authService, implicitSuccessResponse, successMessage);
     server = new TransientServer(resourceLocation, port, timeout, httpHandler);
   }
 

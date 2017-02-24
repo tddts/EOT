@@ -9,5 +9,5 @@ public interface PaginationErrorHandler {
 
   void skipPage();
 
-  void retryPage(int maxTries, long timeout, boolean skip);
+  void retryPage();
 }

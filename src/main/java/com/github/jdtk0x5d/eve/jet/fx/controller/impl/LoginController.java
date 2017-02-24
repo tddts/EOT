@@ -1,32 +1,26 @@
 package com.github.jdtk0x5d.eve.jet.fx.controller.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
-import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.fx.dialog.DevCredentialsDialog;
 import com.github.jdtk0x5d.eve.jet.fx.view.ViewUtil;
-import com.github.jdtk0x5d.eve.jet.oauth.EmbeddedServer;
-import com.github.jdtk0x5d.eve.jet.service.AuthService;
+import com.github.jdtk0x5d.eve.jet.service.LoginService;
+import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageStringConverter;
+import com.github.jdtk0x5d.eve.jet.service.UserDataService;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
-import javafx.util.StringConverter;
+import javafx.util.converter.IntegerStringConverter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -49,22 +43,22 @@ public class LoginController {
   @FXML
   private ChoiceBox<AuthorizationType> loginChoiceBox;
   @FXML
+  private TextField characterIdField;
+  @FXML
   private Button loginButton;
   @FXML
-  private Label statusLabel;
+  private Label loginStatusLabel;
 
   @Autowired
   private MessageSource messageSource;
   @Autowired
-  private UserBean userBean;
+  private LoginService loginService;
   @Autowired
-  private AuthService authService;
-  @Autowired
-  private EmbeddedServer server;
+  private UserDataService userDataService;
 
   @PostConstruct
   private void init() {
-    loginChoiceBox.setConverter(new LoginOptionStringConverter());
+    loginChoiceBox.setConverter(new MessageStringConverter<>(messageSource,AuthorizationType.values()));
     loginChoiceBox.setItems(FXCollections.observableArrayList(AuthorizationType.values()));
     loginChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldval, val) -> processLoginTypeChange(val));
     loginChoiceBox.getSelectionModel().selectFirst();
@@ -72,33 +66,30 @@ public class LoginController {
 
     loginChoiceBox.managedProperty().bind(loginChoiceBox.visibleProperty());
     loginButton.managedProperty().bind(loginButton.visibleProperty());
+
+    characterIdField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+    characterIdField.setText(getCharacterId());
+    characterIdField.setOnAction(event -> setCharacterId());
   }
 
   private void processLoginTypeChange(AuthorizationType value) {
-    userBean.setAuthorizationType(value);
+    loginService.processLoginTypeChange(value);
   }
 
   private void processLogin() {
-    AuthorizationType authType = userBean.getAuthorizationType();
+    loginService.processLogin(this::getCredentials, ViewUtil::openWebpage);
+  }
 
-    server.start();
+  private Optional<Pair<String, String>> getCredentials() {
+    return new DevCredentialsDialog(messageCancel).showAndWait();
+  }
 
-    if (authType.isImplicit()) {
-      ViewUtil.openWebpage(authService.getLoginPageURI());
-    }
+  private String getCharacterId(){
+    return userDataService.getCharacterId();
+  }
 
-    if (authType.isDev()) {
-      DevCredentialsDialog dialog = new DevCredentialsDialog(messageCancel);
-      Optional<Pair<String, String>> credentialsPair = dialog.showAndWait();
-
-      if (credentialsPair.isPresent()) {
-        Pair<String, String> credentials = credentialsPair.get();
-        userBean.setClientId(credentials.getKey());
-        userBean.setSercretKey(credentials.getValue());
-
-        ViewUtil.openWebpage(authService.getLoginPageURI(userBean.getClientId()));
-      }
-    }
+  private void setCharacterId(){
+    userDataService.saveCharacterId(characterIdField.getText());
   }
 
   @Subscribe
@@ -116,11 +107,11 @@ public class LoginController {
 
   private void setAuthorizedStatus() {
     // Set message
-    statusLabel.setText(messageAuthorized);
+    loginStatusLabel.setText(messageAuthorized);
     // Set color to background and text
     headerHbox.getStyleClass().clear();
     headerHbox.setStyle(null);
-    statusLabel.setTextFill(Color.GREEN);
+    loginStatusLabel.setTextFill(Color.GREEN);
     // Hide elements
     loginChoiceBox.setVisible(false);
     loginButton.setVisible(false);
@@ -128,9 +119,9 @@ public class LoginController {
 
   private void setExpiredStatus() {
     // Set message
-    statusLabel.setText(messageUnauthorized);
+    loginStatusLabel.setText(messageUnauthorized);
     // Set color to background and text
-    statusLabel.setTextFill(Color.BLACK);
+    loginStatusLabel.setTextFill(Color.BLACK);
     headerHbox.setBackground(ViewUtil.BACKGROUND_RED);
     // Show elements
     loginChoiceBox.setVisible(true);
@@ -141,33 +132,6 @@ public class LoginController {
     Alert alert = new Alert(Alert.AlertType.WARNING);
     alert.setHeaderText(messageDialogExpiration);
     alert.showAndWait();
-  }
-
-
-  private class LoginOptionStringConverter extends StringConverter<AuthorizationType> {
-
-    Map<AuthorizationType, String> values = new HashMap<>();
-
-    LoginOptionStringConverter() {
-      for (AuthorizationType type : AuthorizationType.values()) {
-        values.put(type, messageSource.getMessage(type.getKey(), new Object[0], Locale.getDefault()));
-      }
-    }
-
-    @Override
-    public String toString(AuthorizationType object) {
-      return values.get(object);
-    }
-
-    @Override
-    public AuthorizationType fromString(String string) {
-      for (AuthorizationType authorizationType : values.keySet()) {
-        if (values.get(authorizationType).equals(string)) {
-          return authorizationType;
-        }
-      }
-      return null;
-    }
   }
 
 }

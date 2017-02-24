@@ -9,5 +9,5 @@ import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
  */
 public interface DotlanAPI {
 
-  RestResponse<DotlanRoute> getRoute(String[] waypoints, DotlanRouteOption routeOption);
+  RestResponse<DotlanRoute> getRoute(DotlanRouteOption routeOption, String... waypoints);
 }

@@ -21,6 +21,7 @@ public class UserBean {
   private String clientId;
   private String sercretKey;
   private AccessToken accessToken;
+
   private AuthorizationType authorizationType = AuthorizationType.IMPLICIT;
   private RestDataSource restDataSource = RestDataSource.TRANQULITY;
 

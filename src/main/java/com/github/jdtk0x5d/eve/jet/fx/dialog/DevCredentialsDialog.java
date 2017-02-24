@@ -3,7 +3,7 @@ package com.github.jdtk0x5d.eve.jet.fx.dialog;
 import com.github.jdtk0x5d.eve.jet.fx.view.ViewUtil;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -24,7 +24,7 @@ public class DevCredentialsDialog extends Dialog<Pair<String, String>> {
     // Set return value
     setResultConverter(dialogButton -> {
       if (dialogButton == ButtonType.OK) {
-        return new Pair<>(clientIdFiel.getText(), secretKeyField.getText());
+        return Pair.of(clientIdFiel.getText(), secretKeyField.getText());
       }
       return null;
     });

@@ -35,6 +35,7 @@ public class OrderSearchCache {
   private Boolean buyOrder;
   @Column
   private Integer duration;
+  @Index
   @Column
   private Double price;
   @Column
