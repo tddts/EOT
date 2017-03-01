@@ -110,7 +110,7 @@ public class SearchServiceImpl implements SearchService {
         .loadPage(page -> marketAPI.getOrders(OrderType.ALL, regionId, page))
         // Save loaded orders to DB
         .processPage(orders -> cacheDao.saveAll(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())))
-        // Skip page on error
+        // Retry page on error
         .onError(PaginationErrorHandler::retryPage)
         // Build pagination object
         .build()
