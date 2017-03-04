@@ -16,10 +16,10 @@ public class OrderSearchResult {
   private Double sellPrice;
   private Double buyPrice;
 
-  private Long sellVolume;
-  private Long buyVolume;
-  private Long buyMinVolume;
-  private Long tradeVolume;
+  private Long sellQuantity;
+  private Long buyQuantity;
+  private Long buyMinQuantity;
+  private Long tradeQuantity;
 
   private Integer buyLocation;
   private Integer sellLocation;
@@ -41,10 +41,10 @@ public class OrderSearchResult {
     sellPrice = sqlRow.getDouble("sell_price");
     buyPrice = sqlRow.getDouble("buy_price");
 
-    sellVolume = sqlRow.getLong("sell_volume");
-    buyVolume = sqlRow.getLong("buy_volume");
-    buyMinVolume = sqlRow.getLong("buy_min_volume");
-    tradeVolume = sqlRow.getLong("trade_volume");
+    sellQuantity = sqlRow.getLong("sell_quantity");
+    buyQuantity = sqlRow.getLong("buy_quantity");
+    buyMinQuantity = sqlRow.getLong("buy_min_quantity");
+    tradeQuantity = sqlRow.getLong("trade_quantity");
 
     buyLocation = sqlRow.getInteger("buy_location");
     sellLocation = sqlRow.getInteger("sell_location");
@@ -95,36 +95,36 @@ public class OrderSearchResult {
     this.buyPrice = buyPrice;
   }
 
-  public Long getSellVolume() {
-    return sellVolume;
+  public Long getSellQuantity() {
+    return sellQuantity;
   }
 
-  public void setSellVolume(Long sellVolume) {
-    this.sellVolume = sellVolume;
+  public void setSellQuantity(Long sellQuantity) {
+    this.sellQuantity = sellQuantity;
   }
 
-  public Long getBuyVolume() {
-    return buyVolume;
+  public Long getBuyQuantity() {
+    return buyQuantity;
   }
 
-  public void setBuyVolume(Long buyVolume) {
-    this.buyVolume = buyVolume;
+  public void setBuyQuantity(Long buyQuantity) {
+    this.buyQuantity = buyQuantity;
   }
 
-  public Long getBuyMinVolume() {
-    return buyMinVolume;
+  public Long getBuyMinQuantity() {
+    return buyMinQuantity;
   }
 
-  public void setBuyMinVolume(Long buyMinVolume) {
-    this.buyMinVolume = buyMinVolume;
+  public void setBuyMinQuantity(Long buyMinQuantity) {
+    this.buyMinQuantity = buyMinQuantity;
   }
 
-  public Long getTradeVolume() {
-    return tradeVolume;
+  public Long getTradeQuantity() {
+    return tradeQuantity;
   }
 
-  public void setTradeVolume(Long tradeVolume) {
-    this.tradeVolume = tradeVolume;
+  public void setTradeQuantity(Long tradeQuantity) {
+    this.tradeQuantity = tradeQuantity;
   }
 
   public Integer getBuyLocation() {
@@ -169,6 +169,6 @@ public class OrderSearchResult {
 
   @Override
   public String toString() {
-    return "OrderSearchResult{" + "typeId=[" + typeId + "], sellOrderId=[" + sellOrderId + "], buyOrderId=[" + buyOrderId + "], sellPrice=[" + sellPrice + "], buyPrice=[" + buyPrice + "], sellVolume=[" + sellVolume + "], buyVolume=[" + buyVolume + "], buyMinVolume=[" + buyMinVolume + "], buyLocation=[" + buyLocation + "], sellLocation=[" + sellLocation + "], itemCargoVolume=[" + itemCargoVolume + "], itemCargoFreeVolume=[" + itemCargoFreeVolume + "], profit=[" + profit + "]}";
+    return "OrderSearchResult{" + "typeId=[" + typeId + "], sellOrderId=[" + sellOrderId + "], buyOrderId=[" + buyOrderId + "], sellPrice=[" + sellPrice + "], buyPrice=[" + buyPrice + "], sellQuantity=[" + sellQuantity + "], buyQuantity=[" + buyQuantity + "], buyMinQuantity=[" + buyMinQuantity + "], buyLocation=[" + buyLocation + "], sellLocation=[" + sellLocation + "], itemCargoVolume=[" + itemCargoVolume + "], itemCargoFreeVolume=[" + itemCargoFreeVolume + "], profit=[" + profit + "]}";
   }
 }
