@@ -6,4 +6,6 @@ package com.github.jdtk0x5d.eve.jet.tools.pagination;
 public interface Pagination {
 
   void perform();
+
+  void stop();
 }

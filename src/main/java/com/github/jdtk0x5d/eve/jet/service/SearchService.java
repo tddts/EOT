@@ -12,4 +12,6 @@ import java.util.List;
 public interface SearchService {
 
   List<OrderSearchRow> searchForOrders(DotlanRouteOption routeOption, long isk, double volume, double taxRate, Collection<String> regions);
+
+  void cleanUp();
 }

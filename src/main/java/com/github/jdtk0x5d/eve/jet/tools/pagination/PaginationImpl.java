@@ -27,9 +27,9 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination, P
   private final long retryTimeout;
   private final boolean skipPageOnRetry;
 
-  private int page;
-  private int rows;
-  private int retryCount;
+  private volatile int page;
+  private volatile int rows;
+  private volatile int retryCount;
 
   PaginationImpl(Function<Integer, RestResponse<T>> loadFunction,
                  Consumer<T> loadingResultConsumer,
@@ -57,9 +57,9 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination, P
   @Override
   public void perform() {
     do {
-      RestResponse<T> response = loadFunction.apply(page);
+      RestResponse<T> response = load();
       if (response.hasError()) {
-        logger.warn("Error occurred: "+ response.getStatusMessage());
+        logger.warn("Error occurred: " + response.getStatusMessage());
         errorConsumer.accept(this);
       }
       else {
@@ -71,6 +71,10 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination, P
     while (paginationCondition.test(this));
   }
 
+  private synchronized RestResponse<T> load() {
+    return loadFunction.apply(page);
+  }
+
   private void nextPage(T supplied) {
     rows = supplied.size();
     page++;
@@ -78,7 +82,7 @@ public class PaginationImpl<E, T extends Collection<E>> implements Pagination, P
   }
 
   @Override
-  public void stop() {
+  public synchronized void stop() {
     logger.warn("Stopping pagination");
     rows = 0;
     page = 0;

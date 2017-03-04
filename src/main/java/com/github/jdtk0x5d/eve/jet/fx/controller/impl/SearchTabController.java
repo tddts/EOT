@@ -166,6 +166,7 @@ public class SearchTabController {
       searchTable.getItems().addAll(
           searchService.searchForOrders(
               routeOptionBox.getValue(), iskField.getNumber(), cargoField.getNumber(), taxField.getFraction(), getRegions()));
+      searchService.cleanUp();
     });
   }
 
