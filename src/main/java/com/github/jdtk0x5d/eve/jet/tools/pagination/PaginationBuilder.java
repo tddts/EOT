@@ -67,7 +67,7 @@ public class PaginationBuilder<E, T extends Collection<E>> {
 
   public Pagination build() {
     if (loadFunction == null || loadingResultConsumer == null || errorConsumer == null) {
-      throw new IllegalArgumentException("Pagination can not be initialized! Some of required fields are NULL!");
+      throw new IllegalStateException("Pagination can not be initialized! Some of required fields are NULL!");
     }
     return new PaginationImpl<>(loadFunction, loadingResultConsumer, errorConsumer,
         firstPage, lastPage,

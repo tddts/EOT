@@ -17,6 +17,7 @@
         <VBox.margin>
             <Insets />
         </VBox.margin>
+      <ChoiceBox fx:id="dataSourceBox" prefWidth="150.0" />
       <TextField fx:id="characterIdField" focusTraversable="false" prefWidth="120.0" promptText="%login.character.id" />
         <ChoiceBox fx:id="loginChoiceBox" minWidth="120.0" />
         <Button fx:id="loginButton" mnemonicParsing="false" text="%msg.login" />

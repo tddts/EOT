@@ -170,7 +170,9 @@ public class SearchServiceImpl implements SearchService {
     result.setItem(typeName);
     result.setSellingLocation(sellSystem);
     result.setBuyingLocation(buySystem);
-    result.setQuantity(searchResult.getSellVolume());
+    result.setQuantity(searchResult.getTradeVolume());
+    result.setVolume(searchResult.getItemCargoVolume());
+    result.setVolumeRemain(searchResult.getItemCargoFreeVolume());
     result.setJumps(dotlanRoute.getJumpsCount());
     result.setSellPrice(searchResult.getSellPrice());
     result.setBuyPrice(searchResult.getBuyPrice());

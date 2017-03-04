@@ -2,11 +2,12 @@ package com.github.jdtk0x5d.eve.jet.fx.controller.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;
+import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.fx.dialog.DevCredentialsDialog;
+import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageStringConverter;
 import com.github.jdtk0x5d.eve.jet.fx.view.ViewUtil;
 import com.github.jdtk0x5d.eve.jet.service.LoginService;
-import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageStringConverter;
 import com.github.jdtk0x5d.eve.jet.service.UserDataService;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
@@ -41,6 +42,8 @@ public class LoginController {
   @FXML
   private HBox headerHbox;
   @FXML
+  private ChoiceBox<RestDataSource> dataSourceBox;
+  @FXML
   private ChoiceBox<AuthorizationType> loginChoiceBox;
   @FXML
   private TextField characterIdField;
@@ -58,11 +61,15 @@ public class LoginController {
 
   @PostConstruct
   private void init() {
-    loginChoiceBox.setConverter(new MessageStringConverter<>(messageSource,AuthorizationType.values()));
+    loginChoiceBox.setConverter(new MessageStringConverter<>(messageSource, AuthorizationType.values()));
     loginChoiceBox.setItems(FXCollections.observableArrayList(AuthorizationType.values()));
     loginChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldval, val) -> processLoginTypeChange(val));
     loginChoiceBox.getSelectionModel().selectFirst();
     loginButton.setOnAction(event -> processLogin());
+
+    dataSourceBox.setItems(FXCollections.observableArrayList(RestDataSource.values()));
+    dataSourceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldval, val) -> processDataSourceChange(val));
+    dataSourceBox.getSelectionModel().selectFirst();
 
     loginChoiceBox.managedProperty().bind(loginChoiceBox.visibleProperty());
     loginButton.managedProperty().bind(loginButton.visibleProperty());
@@ -76,6 +83,10 @@ public class LoginController {
     loginService.processLoginTypeChange(value);
   }
 
+  private void processDataSourceChange(RestDataSource restDataSource) {
+    loginService.processDataSourceChange(restDataSource);
+  }
+
   private void processLogin() {
     loginService.processLogin(this::getCredentials, ViewUtil::openWebpage);
   }
@@ -84,11 +95,11 @@ public class LoginController {
     return new DevCredentialsDialog(messageCancel).showAndWait();
   }
 
-  private String getCharacterId(){
+  private String getCharacterId() {
     return userDataService.getCharacterId();
   }
 
-  private void setCharacterId(){
+  private void setCharacterId() {
     userDataService.saveCharacterId(characterIdField.getText());
   }
 
@@ -100,7 +111,6 @@ public class LoginController {
       }
       if (authorizationEvent.isExpired()) {
         setExpiredStatus();
-        showExpirationDialog();
       }
     });
   }
@@ -126,12 +136,6 @@ public class LoginController {
     // Show elements
     loginChoiceBox.setVisible(true);
     loginButton.setVisible(true);
-  }
-
-  private void showExpirationDialog() {
-    Alert alert = new Alert(Alert.AlertType.WARNING);
-    alert.setHeaderText(messageDialogExpiration);
-    alert.showAndWait();
   }
 
 }

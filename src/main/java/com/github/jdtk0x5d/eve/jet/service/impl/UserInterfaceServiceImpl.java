@@ -32,12 +32,18 @@ public class UserInterfaceServiceImpl implements UserInterfaceService {
 
   @Override
   public void setBuyWaypoint(OrderSearchRow searchRow) {
-
+    List<Integer> waypoints = searchRow.getDotlanRoute().getWaypoints();
+    if (!waypoints.isEmpty()) {
+      userInterfaceAPI.setWaypoint(waypoints.get(waypoints.size() - 1), false, false);
+    }
   }
 
   @Override
   public void setSellWaypoint(OrderSearchRow searchRow) {
-    userInterfaceAPI.setWaypoint(searchRow.getSearchResultData().getBuyLocation(), true, false);
+    List<Integer> waypoints = searchRow.getDotlanRoute().getWaypoints();
+    if (!waypoints.isEmpty()) {
+      userInterfaceAPI.setWaypoint(waypoints.get(0), false, false);
+    }
   }
 
   @Override

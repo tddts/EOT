@@ -13,6 +13,9 @@ public class OrderSearchRow {
   private StringProperty item = new SimpleStringProperty();
   private LongProperty quantity = new SimpleLongProperty();
 
+  private DoubleProperty volume = new SimpleDoubleProperty();
+  private DoubleProperty volumeRemain = new SimpleDoubleProperty();
+
   private StringProperty sellingLocation = new SimpleStringProperty();
   private StringProperty buyingLocation = new SimpleStringProperty();
 
@@ -58,6 +61,30 @@ public class OrderSearchRow {
 
   public LongProperty quantityProperty() {
     return quantity;
+  }
+
+  public double getVolume() {
+    return volume.get();
+  }
+
+  public DoubleProperty volumeProperty() {
+    return volume;
+  }
+
+  public void setVolume(double volume) {
+    this.volume.set(volume);
+  }
+
+  public double getVolumeRemain() {
+    return volumeRemain.get();
+  }
+
+  public DoubleProperty volumeRemainProperty() {
+    return volumeRemain;
+  }
+
+  public void setVolumeRemain(double volumeRemain) {
+    this.volumeRemain.set(volumeRemain);
   }
 
   public String getSellingLocation() {

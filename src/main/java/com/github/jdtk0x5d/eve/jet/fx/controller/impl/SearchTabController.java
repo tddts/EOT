@@ -4,14 +4,16 @@ package com.github.jdtk0x5d.eve.jet.fx.controller.impl;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.context.events.UserDataEvent;
+import com.github.jdtk0x5d.eve.jet.fx.controls.DoubleTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.ItemListTextField;
+import com.github.jdtk0x5d.eve.jet.fx.controls.LongTextField;
+import com.github.jdtk0x5d.eve.jet.fx.controls.PercentageTextField;
 import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageStringConverter;
 import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
 import com.github.jdtk0x5d.eve.jet.service.SearchService;
 import com.github.jdtk0x5d.eve.jet.service.TaskService;
 import com.github.jdtk0x5d.eve.jet.service.UserDataService;
 import com.github.jdtk0x5d.eve.jet.service.UserInterfaceService;
-import com.github.jdtk0x5d.eve.jet.util.FxUtil;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -42,6 +44,10 @@ public class SearchTabController {
   @FXML
   private TableColumn<OrderSearchRow, String> buyingColumn;
   @FXML
+  private TableColumn<OrderSearchRow, Double> volumeColumn;
+  @FXML
+  private TableColumn<OrderSearchRow, Double> volumeRemainColumn;
+  @FXML
   private TableColumn<OrderSearchRow, Double> sellingPriceColumn;
   @FXML
   private TableColumn<OrderSearchRow, Double> buyingPriceColumn;
@@ -56,11 +62,11 @@ public class SearchTabController {
   private TableView<OrderSearchRow> searchTable;
 
   @FXML
-  private TextField iskField;
+  private LongTextField iskField;
   @FXML
-  private TextField cargoField;
+  private DoubleTextField cargoField;
   @FXML
-  private TextField taxField;
+  private PercentageTextField taxField;
   @FXML
   private ItemListTextField regionsField;
 
@@ -99,7 +105,6 @@ public class SearchTabController {
   @Autowired
   private TaskService taskService;
 
-  //TODO: Change columns to useful ones
   @PostConstruct
   public void init() {
     initTable();
@@ -114,6 +119,9 @@ public class SearchTabController {
 
     sellingColumn.setCellValueFactory(cellData -> cellData.getValue().sellingLocationProperty());
     buyingColumn.setCellValueFactory(cellData -> cellData.getValue().buyingLocationProperty());
+
+    volumeColumn.setCellValueFactory(cellData -> cellData.getValue().volumeProperty().asObject());
+    volumeRemainColumn.setCellValueFactory(cellData -> cellData.getValue().volumeRemainProperty().asObject());
 
     sellingPriceColumn.setCellValueFactory(cellData -> cellData.getValue().sellPriceProperty().asObject());
     buyingPriceColumn.setCellValueFactory(cellData -> cellData.getValue().buyPriceProperty().asObject());
@@ -157,7 +165,7 @@ public class SearchTabController {
     taskService.execute(() -> {
       searchTable.getItems().addAll(
           searchService.searchForOrders(
-              routeOptionBox.getValue(), FxUtil.getLong(iskField), FxUtil.getDouble(cargoField), FxUtil.getPercent(taxField), getRegions()));
+              routeOptionBox.getValue(), iskField.getNumber(), cargoField.getNumber(), taxField.getFraction(), getRegions()));
     });
   }
 

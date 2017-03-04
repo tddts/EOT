@@ -2,6 +2,7 @@ package com.github.jdtk0x5d.eve.jet.service.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;
+import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.oauth.EmbeddedServer;
 import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.github.jdtk0x5d.eve.jet.service.LoginService;
@@ -54,5 +55,10 @@ public class LoginServiceImpl implements LoginService {
   @Override
   public void processLoginTypeChange(AuthorizationType value) {
     userBean.setAuthorizationType(value);
+  }
+
+  @Override
+  public void processDataSourceChange(RestDataSource restDataSource) {
+    userBean.setRestDataSource(restDataSource);
   }
 }

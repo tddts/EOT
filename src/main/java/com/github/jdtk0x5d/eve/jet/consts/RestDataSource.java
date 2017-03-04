@@ -5,20 +5,30 @@ package com.github.jdtk0x5d.eve.jet.consts;
  */
 public enum RestDataSource {
 
-  TRANQULITY("tranquility"),
+  TRANQULITY("tranquility", "Tranquility"),
 
-  SINGULARITY("singularity"),
+  SINGULARITY("singularity", "Singularity"),
 
-  NONE("");
+  NONE("", "None");
 
   private final String value;
+  private final String textValue;
 
-  RestDataSource(String value) {
+  RestDataSource(String value, String textValue) {
     this.value = value;
+    this.textValue = textValue;
   }
 
   public String getValue() {
     return value;
   }
 
+  public String getTextValue() {
+    return textValue;
+  }
+
+  @Override
+  public String toString() {
+    return textValue;
+  }
 }
