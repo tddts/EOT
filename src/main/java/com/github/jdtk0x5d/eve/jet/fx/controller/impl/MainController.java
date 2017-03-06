@@ -45,13 +45,17 @@ public class MainController implements NestedControllerAware {
   @Subscribe
   private void processSearchStatusEvent(SearchStatusEvent event) {
     Platform.runLater(() -> {
-      if (event.isBegin()) searchProgressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-      if (event.isFinished()) searchProgressBar.setProgress(0);
+      if (event.isFinished()) {
+        searchProgressBar.setProgress(0);
+      }
+      else {
+        searchProgressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+      }
       setStatusText(event);
     });
   }
 
-  private void setStatusText(SearchStatusEvent event){
+  private void setStatusText(SearchStatusEvent event) {
     searchStatusLabel.textProperty().setValue(messageSource.getMessage(event.getMessageKey(), new Object[0], Locale.getDefault()));
   }
 }

@@ -10,6 +10,7 @@ import com.github.jdtk0x5d.eve.jet.fx.controls.LongTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.PercentageTextField;
 import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageStringConverter;
 import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
+import com.github.jdtk0x5d.eve.jet.model.app.SearchParams;
 import com.github.jdtk0x5d.eve.jet.service.SearchService;
 import com.github.jdtk0x5d.eve.jet.service.TaskService;
 import com.github.jdtk0x5d.eve.jet.service.UserDataService;
@@ -162,12 +163,19 @@ public class SearchTabController {
   //--------------------------------------------------------------------------------------------------------------------
 
   private void search() {
-    taskService.execute(() -> {
-      searchTable.getItems().addAll(
-          searchService.searchForOrders(
-              routeOptionBox.getValue(), iskField.getNumber(), cargoField.getNumber(), taxField.getFraction(), getRegions()));
-      searchService.cleanUp();
-    });
+    SearchParams searchParams = new SearchParams();
+    searchParams
+        .setIsk(iskField.getNumber())
+        .setCargo(cargoField.getNumber())
+        .setTax(taxField.getFraction())
+        .setRouteOption(routeOptionBox.getValue())
+        .setRegions(getRegions())
+        .setResultConsumer(resultList -> {
+          searchTable.getItems().clear();
+          searchTable.getItems().addAll(resultList);
+        });
+
+    taskService.execute(() -> searchService.searchForOrders(searchParams));
   }
 
   private void addRegion() {

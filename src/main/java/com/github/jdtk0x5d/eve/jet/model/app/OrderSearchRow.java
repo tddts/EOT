@@ -39,6 +39,28 @@ public class OrderSearchRow {
     perJumpProfitText.bindBidirectional(perJumpProfit, numberStringConverter);
   }
 
+  public OrderSearchRow(String typeName, String sellSystem, String buySystem, OrderSearchResult searchResult, DotlanRoute dotlanRoute) {
+    this();
+    setItem(typeName);
+    setSellingLocation(sellSystem);
+    setBuyingLocation(buySystem);
+
+    setQuantity(searchResult.getTradeQuantity());
+    setVolume(searchResult.getItemCargoVolume());
+    setVolumeRemain(searchResult.getItemCargoFreeVolume());
+    setJumps(dotlanRoute.getJumpsCount());
+    setSellPrice(searchResult.getSellPrice());
+    setBuyPrice(searchResult.getBuyPrice());
+    setProfit(searchResult.getProfit());
+
+    int jumpsCount = dotlanRoute.getJumpsCount();
+    int jumps = jumpsCount > 0 ? jumpsCount : 1;
+    setPerJumpProfit(searchResult.getProfit() / jumps);
+
+    setDotlanRoute(dotlanRoute);
+    setSearchResultData(searchResult);
+  }
+
   public String getItem() {
     return item.get();
   }
@@ -67,24 +89,24 @@ public class OrderSearchRow {
     return volume.get();
   }
 
-  public DoubleProperty volumeProperty() {
-    return volume;
-  }
-
   public void setVolume(double volume) {
     this.volume.set(volume);
+  }
+
+  public DoubleProperty volumeProperty() {
+    return volume;
   }
 
   public double getVolumeRemain() {
     return volumeRemain.get();
   }
 
-  public DoubleProperty volumeRemainProperty() {
-    return volumeRemain;
-  }
-
   public void setVolumeRemain(double volumeRemain) {
     this.volumeRemain.set(volumeRemain);
+  }
+
+  public DoubleProperty volumeRemainProperty() {
+    return volumeRemain;
   }
 
   public String getSellingLocation() {
@@ -127,24 +149,24 @@ public class OrderSearchRow {
     return sellPrice.get();
   }
 
-  public DoubleProperty sellPriceProperty() {
-    return sellPrice;
-  }
-
   public void setSellPrice(double sellPrice) {
     this.sellPrice.set(sellPrice);
+  }
+
+  public DoubleProperty sellPriceProperty() {
+    return sellPrice;
   }
 
   public double getBuyPrice() {
     return buyPrice.get();
   }
 
-  public DoubleProperty buyPriceProperty() {
-    return buyPrice;
-  }
-
   public void setBuyPrice(double buyPrice) {
     this.buyPrice.set(buyPrice);
+  }
+
+  public DoubleProperty buyPriceProperty() {
+    return buyPrice;
   }
 
   public double getProfit() {

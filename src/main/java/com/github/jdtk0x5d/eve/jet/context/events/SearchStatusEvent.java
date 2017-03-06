@@ -27,10 +27,6 @@ public enum SearchStatusEvent implements MessageAware {
     return messageKey;
   }
 
-  public boolean isBegin() {
-    return this == CLEARING_CACHE;
-  }
-
   public boolean isFinished() {
     return this == FINISHED || this == NO_ORDERS_FOUND;
   }
