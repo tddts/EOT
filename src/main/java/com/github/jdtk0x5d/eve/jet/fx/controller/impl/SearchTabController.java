@@ -109,7 +109,6 @@ public class SearchTabController {
   @PostConstruct
   public void init() {
     initTable();
-    initFields();
     initButtons();
     initChoiceBoxes();
   }
@@ -133,11 +132,6 @@ public class SearchTabController {
     perJumpColumn.setCellValueFactory(cellData -> cellData.getValue().perJumpProfitProperty().asObject());
 
     searchTable.setItems(FXCollections.observableArrayList());
-  }
-
-  private void initFields() {
-    iskField.setTextFormatter(new TextFormatter<>(new LongStringConverter()));
-    cargoField.setTextFormatter(new TextFormatter<>(new DoubleStringConverter()));
   }
 
   private void initButtons() {
