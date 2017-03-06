@@ -69,6 +69,7 @@ public class SearchServiceImpl implements SearchService {
 
   private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
+  //TODO: replace flags with something else, cuz they wouldnt work on exception
   private volatile boolean searchRunning = false;
   private volatile boolean cleanUpRunning = false;
 
