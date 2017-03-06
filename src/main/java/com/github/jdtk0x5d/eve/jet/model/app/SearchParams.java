@@ -2,7 +2,6 @@ package com.github.jdtk0x5d.eve.jet.model.app;
 
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -15,9 +14,9 @@ public class SearchParams {
   private double cargo;
   private double tax;
 
-  private DotlanRouteOption routeOption = DotlanRouteOption.FASTEST;
-  private List<String> regions = Collections.emptyList();
-  private Consumer<List<OrderSearchRow>> resultConsumer = (res) -> {};
+  private List<String> regions;
+  private DotlanRouteOption routeOption;
+  private Consumer<List<OrderSearchRow>> resultConsumer;
 
   public long getIsk() {
     return isk;
@@ -51,7 +50,7 @@ public class SearchParams {
   }
 
   public SearchParams setRouteOption(DotlanRouteOption routeOption) {
-    if (routeOption != null) this.routeOption = routeOption;
+    this.routeOption = routeOption;
     return this;
   }
 
@@ -60,7 +59,7 @@ public class SearchParams {
   }
 
   public SearchParams setRegions(List<String> regions) {
-    if (regions != null) this.regions = regions;
+    this.regions = regions;
     return this;
   }
 
@@ -69,8 +68,11 @@ public class SearchParams {
   }
 
   public SearchParams setResultConsumer(Consumer<List<OrderSearchRow>> resultConsumer) {
-    if (resultConsumer != null) this.resultConsumer = resultConsumer;
+    this.resultConsumer = resultConsumer;
     return this;
   }
 
+  public boolean isValid() {
+    return regions != null && resultConsumer != null && routeOption != null;
+  }
 }

@@ -76,6 +76,11 @@ public class SearchServiceImpl implements SearchService {
   @Profiling
   public void searchForOrders(SearchParams searchParams) {
 
+    if (!searchParams.isValid()) {
+      logger.warn("Search parameters are invalid. Search not started.");
+      return;
+    }
+
     if (searchRunning || cleanUpRunning) {
       return;
     }
@@ -190,8 +195,10 @@ public class SearchServiceImpl implements SearchService {
   private OrderSearchRow findRoute(OrderSearchResult searchResult, DotlanRouteOption routeOption, String typeName) {
     String sellSystemName = cacheDao.findStationSystemName(searchResult.getSellLocation());
     String buySystemName = cacheDao.findStationSystemName(searchResult.getBuyLocation());
+
     RestResponse<DotlanRoute> dotlanRouteResponse = RestUtil.safeRequest(
         () -> dotlanAPI.getRoute(routeOption, sellSystemName, buySystemName));
+
     return new OrderSearchRow(typeName, sellSystemName, buySystemName, searchResult, dotlanRouteResponse.getObject());
   }
 
