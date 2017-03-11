@@ -7,10 +7,10 @@ import com.github.jdtk0x5d.eve.jet.tools.Action;
  */
 public class TaskImpl implements Task {
 
-  private Action action = () -> {
-  };
-  private Action onStop = () -> {
-  };
+  private static final Action DUMMY_ACTION = () -> {};
+
+  private Action action = DUMMY_ACTION;
+  private Action onStop = DUMMY_ACTION;
 
   TaskImpl(Action action) {
     this.action = action;
