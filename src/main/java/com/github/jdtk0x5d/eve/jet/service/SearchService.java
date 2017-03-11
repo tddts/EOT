@@ -9,4 +9,6 @@ public interface SearchService {
 
   void searchForOrders(SearchParams searchParams);
 
+  void stopSearch();
+
 }

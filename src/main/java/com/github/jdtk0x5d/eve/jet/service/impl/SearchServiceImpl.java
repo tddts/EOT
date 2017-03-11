@@ -5,6 +5,7 @@ import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
+import com.github.jdtk0x5d.eve.jet.exception.ApplicationException;
 import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseName;
@@ -18,21 +19,19 @@ import com.github.jdtk0x5d.eve.jet.rest.api.dotlan.DotlanAPI;
 import com.github.jdtk0x5d.eve.jet.rest.api.esi.MarketAPI;
 import com.github.jdtk0x5d.eve.jet.rest.api.esi.UniverseAPI;
 import com.github.jdtk0x5d.eve.jet.service.SearchService;
+import com.github.jdtk0x5d.eve.jet.tools.pagination.Pagination;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationBuilder;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationErrorHandler;
+import com.github.jdtk0x5d.eve.jet.tools.tasks.TaskQueue;
 import com.github.jdtk0x5d.eve.jet.util.RestUtil;
 import com.google.common.eventbus.EventBus;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -43,8 +42,6 @@ import java.util.stream.Collectors;
 @Component
 @Scope("singleton")
 public class SearchServiceImpl implements SearchService {
-
-  private static final Logger logger = LogManager.getLogger(SearchServiceImpl.class);
 
   @Autowired
   private CacheDao cacheDao;
@@ -64,68 +61,76 @@ public class SearchServiceImpl implements SearchService {
   @Value("${service.search.expiration.timeout}")
   private int expirationTimeout;
 
-  @Value("${service.search.rax.percent}")
-  private int taxPercent;
 
-  private ExecutorService executorService = Executors.newSingleThreadExecutor();
+  private ExecutorService paginationExecutorService = Executors.newFixedThreadPool(7);
 
-  //TODO: replace flags with something else, cuz they wouldnt work on exception
-  private volatile boolean searchRunning = false;
-  private volatile boolean cleanUpRunning = false;
+  private Set<Pagination> paginations = new HashSet<>();
+
+  private TaskQueue taskQueue = TaskQueue.emptyQueue();
 
   @Override
   @Profiling
   public void searchForOrders(SearchParams searchParams) {
-
-    if (!searchParams.isValid()) {
-      logger.warn("Search parameters are invalid. Search not started.");
-      return;
-    }
-
-    if (searchRunning || cleanUpRunning) {
-      return;
-    }
-
-    searchRunning = true;
-
-    loadPrices();
-    loadOrders(searchParams.getRegions());
-    filter(searchParams.getIsk(), searchParams.getCargo());
-    List<OrderSearchRow> result = find(searchParams.getRouteOption(), searchParams.getCargo(), searchParams.getTax());
-
-    if (!result.isEmpty()) searchParams.getResultConsumer().accept(result);
-
-    cleanUpAfter();
-
-    searchRunning = false;
+    createTaskQueue(searchParams).execute();
   }
 
-  private void cleanUpAfter() {
-    executorService.submit(this::cleanUp);
+  /**
+   * Creates new TaskQueue using given parameters
+   *
+   * @param searchParams search parameters
+   */
+  private synchronized TaskQueue createTaskQueue(SearchParams searchParams) {
+
+    if (!taskQueue.isFinished()) taskQueue.stopAndWait();
+
+    taskQueue = TaskQueue.create()
+        // Load market prices
+        .run(this::loadPrices)
+        // Load market orders
+        .run(() -> loadOrders(searchParams.getRegions()))
+        // Stop loading orders when queue execution is stopped
+        .onStop(this::stopOrdersLoading)
+        // Filter loaded orders
+        .run(() -> filter(searchParams.getIsk(), searchParams.getCargo()))
+        // Find profitable orders
+        .supply(() -> find(searchParams.getRouteOption(), searchParams.getCargo(), searchParams.getTax()))
+        // Supply orders to result consumer
+        .consume(searchParams.getResultConsumer())
+        // Clean cached data
+        .finallyAction(this::cleanUp);
+
+    return taskQueue;
   }
 
+  @Override
+  public void stopSearch() {
+    taskQueue.stop();
+  }
+
+  /**
+   * Clear all cached data.
+   */
   private void cleanUp() {
-    cleanUpRunning = true;
-    logger.debug("Clearing cached data...");
     eventBus.post(SearchStatusEvent.CLEARING_CACHE);
     cacheDao.deleteAll(OrderSearchCache.class);
     cacheDao.deleteAll(MarketPriceCache.class);
-    logger.debug("Finished cleanup.");
     eventBus.post(SearchStatusEvent.FINISHED);
-    cleanUpRunning = false;
   }
 
+  /**
+   * Loads prices for all items in the market.
+   */
   private void loadPrices() {
-    logger.debug("Loading prices for items...");
     eventBus.post(SearchStatusEvent.LOADING_PRICES);
-    // Load prices
-    marketAPI.getAllItemPrices()
-        // Convert and save market prices
-        .process(list -> cacheDao.saveAll(list.stream().map(MarketPriceCache::new).collect(Collectors.toList())));
+    marketAPI.getAllItemPrices().process(list -> cacheDao.saveAll(list.stream().map(MarketPriceCache::new).collect(Collectors.toList())));
   }
 
+  /**
+   * Loads orders for given set of regions.
+   *
+   * @param regions set of regions for which orders will be loaded.
+   */
   private void loadOrders(Collection<String> regions) {
-    logger.debug("Loading orders for given regions...");
     eventBus.post(SearchStatusEvent.LOADING_ORDERS);
     // Get region IDs by names
     Collection<Integer> regionIds = regions == null || regions.isEmpty() ?
@@ -133,26 +138,50 @@ public class SearchServiceImpl implements SearchService {
         regionsMap.values() : // or
         // Only required regions
         regions.stream().map(region -> regionsMap.get(region)).collect(Collectors.toList());
-    // Load orders for regions in multiple threads
-    regionIds.parallelStream().forEach(this::loadForRegion);
+
+    regionIds.forEach(this::loadForRegion);
   }
 
+  private void stopOrdersLoading() {
+    paginationExecutorService.shutdownNow();
+    paginations.forEach(Pagination::stop);
+  }
+
+  /**
+   * Load orders for given region.
+   *
+   * @param regionId region id
+   */
   private void loadForRegion(Integer regionId) {
-    new PaginationBuilder<MarketOrder, List<MarketOrder>>()
+    PaginationBuilder<MarketOrder, List<MarketOrder>> builder = new PaginationBuilder<>();
+    builder
         // Load market orders for given region and page
         .loadPage(page -> marketAPI.getOrders(OrderType.ALL, regionId, page))
         // Convert and save loaded orders to DB
         .processPage(orders -> cacheDao.saveAll(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())))
         // Retry page loading on error
-        .onError(PaginationErrorHandler::retryPage)
-        // Build pagination object
-        .build()
-        // Perform pagination
-        .perform();
+        .onError(PaginationErrorHandler::retryPage);
+
+    Pagination pagination = builder.build();
+
+    try {
+      if (!paginationExecutorService.isShutdown()) {
+        paginations.add(pagination);
+        paginationExecutorService.submit(pagination::perform).get();
+      }
+    } catch (InterruptedException | ExecutionException e) {
+      throw new ApplicationException(e);
+    }
   }
 
+  /**
+   * Filter loaded orders by amount of available funds and space.
+   * Also deletes duplicate orders and orders that are soon to expire.
+   *
+   * @param funds  amount of funds available
+   * @param volume amount of cargo volume available
+   */
   private void filter(long funds, double volume) {
-    logger.debug("Filtering loaded data...");
     eventBus.post(SearchStatusEvent.FILTERING_ORDERS);
 
     cacheDao.removeDuplicateOrders();
@@ -162,18 +191,15 @@ public class SearchServiceImpl implements SearchService {
   }
 
   private List<OrderSearchRow> find(DotlanRouteOption routeOption, double volume, double taxRate) {
-    logger.debug("Searching for profitable orders...");
     eventBus.post(SearchStatusEvent.SEARCHING_FOR_PROFIT);
 
     List<OrderSearchResult> searchResults = cacheDao.findProfitableOrders(routeOption.getSecurity(), volume, taxRate);
 
     if (searchResults.isEmpty()) {
-      logger.warn("No profitable orders found!");
       eventBus.post(SearchStatusEvent.NO_ORDERS_FOUND);
       return Collections.emptyList();
     }
 
-    logger.debug("Loading type names...");
     // Get type ids of all loaded orders
     int[] typeIds = searchResults.stream().mapToInt(OrderSearchResult::getTypeId).distinct().toArray();
     // Loaded names for given types
@@ -181,7 +207,6 @@ public class SearchServiceImpl implements SearchService {
         // Convert loaded names to the map of type ids and names
         .getObject().stream().collect(Collectors.toMap(UniverseName::getId, UniverseName::getName));
 
-    logger.debug("Searching for routes...");
     eventBus.post(SearchStatusEvent.SEARCHING_FOR_ROUTES);
 
     List<OrderSearchRow> result = searchResults.stream()
