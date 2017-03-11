@@ -3,7 +3,6 @@ package com.github.jdtk0x5d.eve.jet.service.impl;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
-import com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
 import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
@@ -35,6 +34,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent.*;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -109,17 +110,17 @@ public class SearchServiceImpl implements SearchService {
    * Clear all cached data.
    */
   private void cleanUp() {
-    eventBus.post(SearchStatusEvent.CLEARING_CACHE);
+    eventBus.post(CLEARING_CACHE);
     cacheDao.deleteAll(OrderSearchCache.class);
     cacheDao.deleteAll(MarketPriceCache.class);
-    eventBus.post(SearchStatusEvent.FINISHED);
+    eventBus.post(FINISHED);
   }
 
   /**
    * Loads prices for all items in the market.
    */
   private void loadPrices() {
-    eventBus.post(SearchStatusEvent.LOADING_PRICES);
+    eventBus.post(LOADING_PRICES);
     marketAPI.getAllItemPrices().process(list -> cacheDao.saveAll(list.stream().map(MarketPriceCache::new).collect(Collectors.toList())));
   }
 
@@ -129,7 +130,8 @@ public class SearchServiceImpl implements SearchService {
    * @param regions set of regions for which orders will be loaded.
    */
   private void loadOrders(Collection<String> regions) {
-    eventBus.post(SearchStatusEvent.LOADING_ORDERS);
+    eventBus.post(LOADING_ORDERS);
+
     // Get region IDs by names
     Collection<Integer> regionIds = regions == null || regions.isEmpty() ?
         // All regions
@@ -137,21 +139,27 @@ public class SearchServiceImpl implements SearchService {
         // Only required regions
         regions.stream().map(region -> regionsMap.get(region)).collect(Collectors.toList());
 
-    regionIds.forEach(this::createPaginationForRegion);
-    paginationExecutor.run();
+    // Run paginated loading of orders
+    regionIds.forEach(region -> paginationExecutor.add(createPaginationForRegion(region)));
+    paginationExecutor.execute();
   }
 
-  private void createPaginationForRegion(Integer regionId) {
-    PaginationBuilder<MarketOrder, List<MarketOrder>> builder = new PaginationBuilder<>();
-    builder
+  /**
+   * Creates Pagination object for given region id
+   *
+   * @param regionId region id
+   * @return pagination object
+   */
+  private Pagination createPaginationForRegion(Integer regionId) {
+    return new PaginationBuilder<MarketOrder, List<MarketOrder>>()
         // Load market orders for given region and page
         .loadPage(page -> marketAPI.getOrders(OrderType.ALL, regionId, page))
         // Convert and save loaded orders to DB
         .processPage(orders -> cacheDao.saveAll(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())))
         // Retry page loading on error
-        .onError(PaginationErrorHandler::retryPage);
-
-    paginationExecutor.add(builder.build());
+        .onError(PaginationErrorHandler::retryPage)
+        // Build pagination
+        .build();
   }
 
   /**
@@ -162,7 +170,7 @@ public class SearchServiceImpl implements SearchService {
    * @param volume amount of cargo volume available
    */
   private void filter(long funds, double volume) {
-    eventBus.post(SearchStatusEvent.FILTERING_ORDERS);
+    eventBus.post(FILTERING_ORDERS);
 
     cacheDao.removeDuplicateOrders();
     cacheDao.removeSoonExpiredOrders(expirationTimeout);
@@ -170,34 +178,49 @@ public class SearchServiceImpl implements SearchService {
     cacheDao.removeTooExpensiveOrders(funds);
   }
 
+  /**
+   * Returns list of profitable orders using given parameters
+   *
+   * @param routeOption route option
+   * @param volume      available cargo volume
+   * @param taxRate     tax rate
+   * @return list of profitable orders
+   */
   private List<OrderSearchRow> find(DotlanRouteOption routeOption, double volume, double taxRate) {
-    eventBus.post(SearchStatusEvent.SEARCHING_FOR_PROFIT);
+    eventBus.post(SEARCHING_FOR_PROFIT);
 
     List<OrderSearchResult> searchResults = cacheDao.findProfitableOrders(routeOption.getSecurity(), volume, taxRate);
 
     if (searchResults.isEmpty()) {
-      eventBus.post(SearchStatusEvent.NO_ORDERS_FOUND);
+      eventBus.post(NO_ORDERS_FOUND);
       return Collections.emptyList();
     }
 
-    // Get type ids of all loaded orders
-    int[] typeIds = searchResults.stream().mapToInt(OrderSearchResult::getTypeId).distinct().toArray();
     // Loaded names for given types
-    Map<Integer, String> typeNames = RestUtil.safeRequest(() -> universeAPI.getNames(typeIds))
+    Map<Integer, String> typeNames = RestUtil.safeRequest(() -> universeAPI.getNames(
+        // Get ids of types of loaded items
+        searchResults.stream().mapToInt(OrderSearchResult::getTypeId).distinct().toArray()))
         // Convert loaded names to the map of type ids and names
         .getObject().stream().collect(Collectors.toMap(UniverseName::getId, UniverseName::getName));
 
-    eventBus.post(SearchStatusEvent.SEARCHING_FOR_ROUTES);
+    eventBus.post(SEARCHING_FOR_ROUTES);
 
     List<OrderSearchRow> result = searchResults.stream()
-        // Find route for each search result
         .map(searchResult -> findRoute(searchResult, routeOption, typeNames.get(searchResult.getTypeId())))
         .collect(Collectors.toList());
 
-    eventBus.post(SearchStatusEvent.FINISHED);
+    eventBus.post(FINISHED);
     return result;
   }
 
+  /**
+   * Finds route and creates OrderSearchRow using given parameters
+   *
+   * @param searchResult search result
+   * @param routeOption  route option
+   * @param typeName     item type name
+   * @return new OrderSearchRow
+   */
   private OrderSearchRow findRoute(OrderSearchResult searchResult, DotlanRouteOption routeOption, String typeName) {
     String sellSystemName = cacheDao.findStationSystemName(searchResult.getSellLocation());
     String buySystemName = cacheDao.findStationSystemName(searchResult.getBuyLocation());

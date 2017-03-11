@@ -22,7 +22,7 @@ public interface TaskQueue<T> {
   }
 
   /**
-   * Creates empty finished queue that cannot be run again.
+   * Creates empty finished queue that cannot be execute again.
    *
    * @param <T> object type
    * @return empty queue
@@ -94,9 +94,18 @@ public interface TaskQueue<T> {
    */
   T getResult();
 
+  /**
+   * Stop queue execution.
+   */
   void stop();
 
+  /**
+   * Stop queue execution and wait for it to finish.
+   */
   void stopAndWait();
 
+  /**
+   * @return true if execution is finished, false otherwise.
+   */
   boolean isFinished();
 }

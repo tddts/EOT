@@ -23,7 +23,7 @@ public class PaginationExecutor {
     paginationSet.add(pagination);
   }
 
-  public void run() {
+  public void execute() {
 
     if (paginationSet.isEmpty()) return;
 
