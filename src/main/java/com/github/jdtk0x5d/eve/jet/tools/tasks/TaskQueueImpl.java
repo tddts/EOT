@@ -64,7 +64,7 @@ public class TaskQueueImpl<T> implements TaskQueue<T> {
 
   @Override
   public TaskQueue<T> onStop(Action action) {
-    taskQueue.getFirst().onStop(action);
+    taskQueue.getLast().onStop(action);
     return this;
   }
 
