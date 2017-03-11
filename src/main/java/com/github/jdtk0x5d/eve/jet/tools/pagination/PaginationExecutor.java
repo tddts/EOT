@@ -24,18 +24,18 @@ public class PaginationExecutor {
   }
 
   public void run() {
+
+    if (paginationSet.isEmpty()) return;
+
     ExecutorService executorService = Executors.newFixedThreadPool(getPoolSize());
 
-    if (!executorService.isShutdown()) {
-
-      try {
-        executorService.invokeAll(createCallableList());
-      } catch (InterruptedException e) {
-        throw new ApplicationException(e);
-      } finally {
-        paginationSet.clear();
-        executorService.shutdown();
-      }
+    try {
+      executorService.invokeAll(createCallableList());
+    } catch (InterruptedException e) {
+      throw new ApplicationException(e);
+    } finally {
+      paginationSet.clear();
+      executorService.shutdown();
     }
   }
 
@@ -52,9 +52,7 @@ public class PaginationExecutor {
 
   private int getPoolSize() {
     int size = paginationSet.size();
-    if (size == 0) return 1;
-    if (size > MAX_POOL_SIZE) return MAX_POOL_SIZE;
-    return size;
+    return size > MAX_POOL_SIZE ? MAX_POOL_SIZE : size;
   }
 
   public void stop() {
