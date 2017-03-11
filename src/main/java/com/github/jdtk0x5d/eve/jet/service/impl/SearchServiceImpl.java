@@ -5,7 +5,6 @@ import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
-import com.github.jdtk0x5d.eve.jet.exception.ApplicationException;
 import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseName;
@@ -22,6 +21,7 @@ import com.github.jdtk0x5d.eve.jet.service.SearchService;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.Pagination;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationBuilder;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationErrorHandler;
+import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationExecutor;
 import com.github.jdtk0x5d.eve.jet.tools.tasks.TaskQueue;
 import com.github.jdtk0x5d.eve.jet.util.RestUtil;
 import com.google.common.eventbus.EventBus;
@@ -30,10 +30,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -62,10 +62,7 @@ public class SearchServiceImpl implements SearchService {
   private int expirationTimeout;
 
 
-  private ExecutorService paginationExecutorService = Executors.newFixedThreadPool(7);
-
-  private Set<Pagination> paginations = new HashSet<>();
-
+  private PaginationExecutor paginationExecutor = new PaginationExecutor();
   private TaskQueue taskQueue = TaskQueue.emptyQueue();
 
   @Override
@@ -75,7 +72,8 @@ public class SearchServiceImpl implements SearchService {
   }
 
   /**
-   * Creates new TaskQueue using given parameters
+   * Creates new TaskQueue using given parameters.
+   * Waits for last TaskQueue to finish execution.
    *
    * @param searchParams search parameters
    */
@@ -89,7 +87,7 @@ public class SearchServiceImpl implements SearchService {
         // Load market orders
         .run(() -> loadOrders(searchParams.getRegions()))
         // Stop loading orders when queue execution is stopped
-        .onStop(this::stopOrdersLoading)
+        .onStop(() -> paginationExecutor.stop())
         // Filter loaded orders
         .run(() -> filter(searchParams.getIsk(), searchParams.getCargo()))
         // Find profitable orders
@@ -139,20 +137,11 @@ public class SearchServiceImpl implements SearchService {
         // Only required regions
         regions.stream().map(region -> regionsMap.get(region)).collect(Collectors.toList());
 
-    regionIds.forEach(this::loadForRegion);
+    regionIds.forEach(this::createPaginationForRegion);
+    paginationExecutor.run();
   }
 
-  private void stopOrdersLoading() {
-    paginationExecutorService.shutdownNow();
-    paginations.forEach(Pagination::stop);
-  }
-
-  /**
-   * Load orders for given region.
-   *
-   * @param regionId region id
-   */
-  private void loadForRegion(Integer regionId) {
+  private void createPaginationForRegion(Integer regionId) {
     PaginationBuilder<MarketOrder, List<MarketOrder>> builder = new PaginationBuilder<>();
     builder
         // Load market orders for given region and page
@@ -162,16 +151,7 @@ public class SearchServiceImpl implements SearchService {
         // Retry page loading on error
         .onError(PaginationErrorHandler::retryPage);
 
-    Pagination pagination = builder.build();
-
-    try {
-      if (!paginationExecutorService.isShutdown()) {
-        paginations.add(pagination);
-        paginationExecutorService.submit(pagination::perform).get();
-      }
-    } catch (InterruptedException | ExecutionException e) {
-      throw new ApplicationException(e);
-    }
+    paginationExecutor.add(builder.build());
   }
 
   /**
