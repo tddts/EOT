@@ -12,10 +12,10 @@ public enum AuthorizationEvent {
   }
 
   public boolean isExpired() {
-    return this == REFRESHED;
+    return this == EXPIRED;
   }
 
   public boolean isRefreshed() {
-    return this == EXPIRED;
+    return this == REFRESHED;
   }
 }
