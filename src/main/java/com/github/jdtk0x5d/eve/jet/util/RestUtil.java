@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.util;
 
+import com.github.jdtk0x5d.eve.jet.exception.RestResponseException;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 
 import java.util.function.Supplier;
@@ -9,7 +10,30 @@ import java.util.function.Supplier;
  */
 public class RestUtil {
 
-  public static <T> RestResponse<T> safeRequest(Supplier<RestResponse<T>> responseSupplier){
-    return responseSupplier.get().checkObject(responseSupplier);
+  private static final int DEFAULT_RETRY_COUNT = 3;
+  private static final long DEFAULT_RETRY_TIMEOUT = 100;
+
+  public static <T> RestResponse<T> safeRequest(Supplier<RestResponse<T>> responseSupplier) throws RestResponseException {
+    return safeRequest(DEFAULT_RETRY_COUNT, DEFAULT_RETRY_TIMEOUT, responseSupplier);
   }
+
+  public static <T> RestResponse<T> safeRequest(int retryCount, long retryTimeout, Supplier<RestResponse<T>> responseSupplier) throws RestResponseException {
+    int retries = 0;
+    RestResponse<T> restResponse = responseSupplier.get();
+
+    if(restResponse.isSuccessful()) return restResponse;
+
+    if (restResponse.hasError()) {
+
+      while (restResponse.hasError() && retries < retryCount) {
+        Util.sleepForTimeout(retryTimeout);
+        restResponse = responseSupplier.get();
+        retries++;
+
+        if(restResponse.isSuccessful()) return restResponse;
+      }
+    }
+    throw new RestResponseException(restResponse.getStatus());
+  }
+
 }
