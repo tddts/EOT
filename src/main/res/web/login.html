@@ -1,23 +1,33 @@
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+    function httpGet(theUrl)
+    {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false );
+        xmlHttp.send( null );
+        return xmlHttp.responseText;
+    }
 
-var resultParams = null;
+    function auth()
+    {
+        var resultParams = null;
 
-if(window.location.hash && window.location.hash !== "#_=_") {
-  resultParams = location.hash.substring(1);
-}
-else {
-  resultParams = location.search.substring(1);
-}
+        if(window.location.hash && window.location.hash !== "#_=_") {
+          resultParams = location.hash.substring(1);
+        }
+        else {
+          resultParams = location.search.substring(1);
+        }
 
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
-}
-
-var path = 'http://localhost:55553/trader?' + resultParams;
-var message = httpGet(path);
-alert(message);
-</script>
+        var path = 'http://localhost:55553/trader?' + resultParams;
+        var message = httpGet(path);
+        window.alert(message);
+    }
+    </script>
+</head>
+<body onload="auth()">
+</body>
+</html>
