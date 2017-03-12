@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet;
 
+import com.github.jdtk0x5d.eve.jet.fx.exception.ApplicationExceptionHandler;
 import com.github.jdtk0x5d.eve.jet.fx.view.View;
 import com.github.jdtk0x5d.eve.jet.fx.view.ViewUtil;
 import javafx.application.Application;
@@ -17,6 +18,7 @@ public class App extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
+    Thread.setDefaultUncaughtExceptionHandler(new ApplicationExceptionHandler());
     stage.setTitle("JET v1.0");
     stage.setOnCloseRequest(t -> {
       Platform.exit();
