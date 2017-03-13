@@ -1,7 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.fx.view;
 
 import com.github.jdtk0x5d.eve.jet.exception.BrowserOpeningException;
-import com.github.jdtk0x5d.eve.jet.fx.controller.NestedControllerAware;
+import com.github.jdtk0x5d.eve.jet.fx.tools.NestedControllerAware;
 import com.github.jdtk0x5d.eve.jet.util.SpringUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;

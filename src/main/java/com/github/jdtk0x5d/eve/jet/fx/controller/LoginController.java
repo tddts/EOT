@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.fx.controller.impl;
+package com.github.jdtk0x5d.eve.jet.fx.controller;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;

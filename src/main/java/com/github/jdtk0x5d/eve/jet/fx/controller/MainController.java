@@ -1,7 +1,7 @@
-package com.github.jdtk0x5d.eve.jet.fx.controller.impl;
+package com.github.jdtk0x5d.eve.jet.fx.controller;
 
 import com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent;
-import com.github.jdtk0x5d.eve.jet.fx.controller.NestedControllerAware;
+import com.github.jdtk0x5d.eve.jet.fx.tools.NestedControllerAware;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
