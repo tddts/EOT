@@ -1,8 +1,9 @@
 package com.github.jdtk0x5d.eve.jet.fx.view;
 
+import com.github.jdtk0x5d.eve.jet.exception.ApplicationException;
 import com.github.jdtk0x5d.eve.jet.exception.BrowserOpeningException;
-import com.github.jdtk0x5d.eve.jet.fx.tools.NestedControllerAware;
 import com.github.jdtk0x5d.eve.jet.util.SpringUtil;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.Background;
@@ -12,8 +13,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.net.URI;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -32,12 +35,23 @@ public class ViewUtil {
   }
 
   private static void wireNestedControllers(Object controller) {
-    if (controller instanceof NestedControllerAware) {
-      NestedControllerAware nestedControllerAware = (NestedControllerAware) controller;
-      for (Object nestedController : nestedControllerAware.getNestedControllers()) {
-        wireController(nestedController);
-        wireNestedControllers(nestedController);
+    Class<?> type = controller.getClass();
+    List<Object> controllers = new ArrayList<>();
+    // Find injected controller fields
+    try {
+      for (Field field : type.getDeclaredFields()) {
+        if (field.isAnnotationPresent(FXML.class) && field.getName().endsWith("Controller")) {
+          field.setAccessible(true);
+          controllers.add(field.get(controller));
+        }
       }
+    } catch (IllegalAccessException e) {
+      throw new ApplicationException(e);
+    }
+    // Wire nested controllers
+    for (Object nestedController : controllers) {
+      wireController(nestedController);
+      wireNestedControllers(nestedController);
     }
   }
 

@@ -1,7 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.fx.controller;
 
 import com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent;
-import com.github.jdtk0x5d.eve.jet.fx.tools.NestedControllerAware;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -17,7 +16,7 @@ import java.util.Locale;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class MainController implements NestedControllerAware {
+public class MainController {
 
   @FXML
   private Label searchStatusLabel;
@@ -35,11 +34,6 @@ public class MainController implements NestedControllerAware {
   @PostConstruct
   public void init() {
     setStatusText(SearchStatusEvent.NO_ORDERS_FOUND);
-  }
-
-  @Override
-  public Object[] getNestedControllers() {
-    return new Object[]{headerController, searchTabController};
   }
 
   @Subscribe
