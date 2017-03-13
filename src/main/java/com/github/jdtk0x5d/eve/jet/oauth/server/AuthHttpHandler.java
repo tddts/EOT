@@ -33,6 +33,7 @@ public class AuthHttpHandler implements HttpHandler {
   public void handle(HttpExchange exchange) throws IOException {
 
     String response = "";
+    int status = HttpStatus.OK.value();
 
     try {
 
@@ -48,17 +49,22 @@ public class AuthHttpHandler implements HttpHandler {
         if (requestURI.getQuery() == null) {
           logger.debug("Query is null.");
           response = responseText;
-          exchange.sendResponseHeaders(HttpStatus.OK.value(), 0);
         }
         else {
           logger.debug("Query is not null.");
-          HttpStatus status = authService.processAuthorization(requestURI.getQuery());
-          response = status.is2xxSuccessful() ? response : status.getReasonPhrase();
-          exchange.sendResponseHeaders(status.value(), 0);
+          HttpStatus httpStatus = authService.processAuthorization(requestURI.getQuery());
+          response = httpStatus.is2xxSuccessful() ? response : httpStatus.getReasonPhrase();
+          status = httpStatus.value();
         }
       }
 
+    } catch (Throwable e) {
+
+      status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+
     } finally {
+
+      exchange.sendResponseHeaders(status, 0);
 
       logger.debug("Response: \n" + response + "");
 
@@ -69,7 +75,5 @@ public class AuthHttpHandler implements HttpHandler {
 
       logger.debug("Response stream closed.");
     }
-
-
   }
 }
