@@ -80,7 +80,7 @@ public class SearchServiceImpl implements SearchService {
    */
   private synchronized TaskQueue createTaskQueue(SearchParams searchParams) {
 
-    if (!taskQueue.isFinished()) taskQueue.stopAndWait();
+    taskQueue.stopAndWait();
 
     taskQueue = TaskQueue.create()
         // Load market prices

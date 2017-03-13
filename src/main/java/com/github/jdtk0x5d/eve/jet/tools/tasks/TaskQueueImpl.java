@@ -85,6 +85,7 @@ public class TaskQueueImpl<T> implements TaskQueue<T> {
 
     } finally {
       finallyActions.forEach(Action::doAction);
+      running.set(false);
       finished.set(true);
       notifyAwaiting();
     }
@@ -113,6 +114,7 @@ public class TaskQueueImpl<T> implements TaskQueue<T> {
   }
 
   private boolean stopInternal() {
+    if (!finished.get()) return false;
     running.set(false);
     if (currentTask != null) {
       currentTask.stop();
