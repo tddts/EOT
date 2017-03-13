@@ -26,9 +26,7 @@ public class ViewUtil {
 
   public static void wire(View<?> view) {
     Object controller = view.getController();
-
     if (controller == null) return;
-
     wireController(controller);
     wireNestedControllers(controller);
   }
@@ -52,8 +50,8 @@ public class ViewUtil {
   }
 
   public static void openWebpage(URI uri) throws BrowserOpeningException {
-    // it would freeze in JavaFX thread
-    Executors.newSingleThreadExecutor().execute(() -> openPage(uri));
+    Thread thread = new Thread(() -> openPage(uri));
+    thread.start();
   }
 
   private static void openPage(URI uri) {
@@ -74,7 +72,6 @@ public class ViewUtil {
   }
 
   public static ModalView<?> loadModalView(String fileName, Node node) {
-
     return loadModalView(fileName, getStage(node));
   }
 
