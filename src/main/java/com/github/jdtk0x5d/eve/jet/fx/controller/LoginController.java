@@ -4,6 +4,7 @@ import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;
 import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
+import com.github.jdtk0x5d.eve.jet.fx.annotations.FXController;
 import com.github.jdtk0x5d.eve.jet.fx.dialog.DevCredentialsDialog;
 import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageStringConverter;
 import com.github.jdtk0x5d.eve.jet.fx.view.ViewUtil;
@@ -28,6 +29,7 @@ import java.util.Optional;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@FXController(view = "fxml/header.fxml")
 public class LoginController {
 
   @Message("login.authorized")

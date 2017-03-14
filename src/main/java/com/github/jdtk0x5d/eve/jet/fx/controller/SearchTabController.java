@@ -4,6 +4,7 @@ package com.github.jdtk0x5d.eve.jet.fx.controller;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.context.events.UserDataEvent;
+import com.github.jdtk0x5d.eve.jet.fx.annotations.FXController;
 import com.github.jdtk0x5d.eve.jet.fx.controls.DoubleTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.ItemListTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.LongTextField;
@@ -19,8 +20,6 @@ import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -34,6 +33,7 @@ import java.util.function.Consumer;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@FXController(view = "fxml/tab_search.fxml")
 public class SearchTabController {
 
   @FXML

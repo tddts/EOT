@@ -1,6 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.fx.controller;
 
 import com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent;
+import com.github.jdtk0x5d.eve.jet.fx.annotations.FXController;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import java.util.Locale;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@FXController(view = "fxml/main.fxml")
 public class MainController {
 
   @FXML
