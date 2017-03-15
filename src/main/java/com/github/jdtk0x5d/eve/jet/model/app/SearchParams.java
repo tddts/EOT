@@ -67,6 +67,10 @@ public class SearchParams {
     return resultConsumer;
   }
 
+  public void consumeResult(List<OrderSearchRow> result){
+    resultConsumer.accept(result);
+  }
+
   public SearchParams setResultConsumer(Consumer<List<OrderSearchRow>> resultConsumer) {
     this.resultConsumer = resultConsumer;
     return this;

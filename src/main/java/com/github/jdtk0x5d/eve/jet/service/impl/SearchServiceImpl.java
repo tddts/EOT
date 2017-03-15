@@ -21,6 +21,7 @@ import com.github.jdtk0x5d.eve.jet.tools.pagination.Pagination;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationBuilder;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationErrorHandler;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationExecutor;
+import com.github.jdtk0x5d.eve.jet.tools.tasks.ReusableTaskQueue;
 import com.github.jdtk0x5d.eve.jet.tools.tasks.TaskQueue;
 import com.github.jdtk0x5d.eve.jet.util.RestUtil;
 import com.google.common.eventbus.EventBus;
@@ -64,25 +65,13 @@ public class SearchServiceImpl implements SearchService {
 
 
   private PaginationExecutor paginationExecutor = new PaginationExecutor();
-  private TaskQueue taskQueue = TaskQueue.emptyQueue();
 
-  @Override
-  @Profiling
-  public void searchForOrders(SearchParams searchParams) {
-    createTaskQueue(searchParams).execute();
-  }
+  private TaskQueue<?> taskQueue;
+  private SearchParams searchParams;
 
-  /**
-   * Creates new TaskQueue using given parameters.
-   * Waits for last TaskQueue to finish execution.
-   *
-   * @param searchParams search parameters
-   */
-  private synchronized TaskQueue createTaskQueue(SearchParams searchParams) {
-
-    taskQueue.stopAndWait();
-
-    taskQueue = TaskQueue.create()
+  public SearchServiceImpl() {
+    // Build TaskQueue
+    taskQueue = new ReusableTaskQueue<>()
         // Load market prices
         .run(this::loadPrices)
         // Load market orders
@@ -94,11 +83,16 @@ public class SearchServiceImpl implements SearchService {
         // Find profitable orders
         .supply(() -> find(searchParams.getRouteOption(), searchParams.getCargo(), searchParams.getTax()))
         // Supply orders to result consumer
-        .consume(searchParams.getResultConsumer())
+        .consume((result) -> searchParams.consumeResult(result))
         // Clean cached data
         .finallyAction(this::cleanUp);
+  }
 
-    return taskQueue;
+  @Override
+  @Profiling
+  public void searchForOrders(SearchParams searchParams) {
+    this.searchParams = searchParams;
+    taskQueue.execute();
   }
 
   @Override

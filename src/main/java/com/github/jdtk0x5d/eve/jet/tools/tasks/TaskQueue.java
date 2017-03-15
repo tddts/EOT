@@ -12,26 +12,6 @@ import java.util.function.Supplier;
 public interface TaskQueue<T> {
 
   /**
-   * Creates new TaskQueue
-   *
-   * @param <T> object type
-   * @return new TaskQueue
-   */
-  static <T> TaskQueue<T> create() {
-    return new TaskQueueImpl<>();
-  }
-
-  /**
-   * Creates empty finished queue that cannot be execute again.
-   *
-   * @param <T> object type
-   * @return empty queue
-   */
-  static <T> TaskQueue<T> emptyQueue() {
-    return new TaskQueueImpl<T>().execute();
-  }
-
-  /**
    * Add new task to queue.
    *
    * @param action task action
