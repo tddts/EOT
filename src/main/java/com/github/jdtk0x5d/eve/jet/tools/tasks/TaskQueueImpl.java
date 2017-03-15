@@ -13,7 +13,8 @@ import java.util.function.Supplier;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class TaskQueueImpl<T> implements TaskQueue<T> {
-
+//TODO: make it reusable
+//TODO: introduce actual synchorization instead of this bullshit and it better be non-blocking
   private final AtomicBoolean running = new AtomicBoolean(true);
   private final AtomicBoolean finished = new AtomicBoolean(false);
 
