@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 /**
  * {@code TaskQueue} allows to build an "assembly line" using such functional interfaces
- * as {@link Action}, {@link Consumer}, {@link Supplier} and {@link Function}, then perform it and get some result.
+ * as {@link Action}, {@link Consumer}, {@link Supplier} and {@link Function}, then run it and get some result.
  * For example:
  * <pre>
  * ResultObj result = new TaskQueueImpl<>()
