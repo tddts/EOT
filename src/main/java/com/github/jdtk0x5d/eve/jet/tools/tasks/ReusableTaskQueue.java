@@ -32,7 +32,7 @@ public class ReusableTaskQueue<T> implements TaskQueue<T> {
   }
 
   @Override
-  public TaskQueue<T> run(Action action) {
+  public TaskQueue<T> perform(Action action) {
     taskList.add(new TaskImpl(action));
     return this;
   }
@@ -104,7 +104,7 @@ public class ReusableTaskQueue<T> implements TaskQueue<T> {
     finallyActionList.forEach(Action::doAction);
     running = false;
     finished = true;
-    notifyAwaiting();
+    notifyAll();
   }
 
 
@@ -135,10 +135,6 @@ public class ReusableTaskQueue<T> implements TaskQueue<T> {
   @Override
   public boolean isFinished() {
     return finished;
-  }
-
-  private synchronized void notifyAwaiting() {
-    notifyAll();
   }
 
   private void await() {

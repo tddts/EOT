@@ -7,6 +7,23 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
+ * {@code TaskQueue} allows to build an "assembly line" using such functional interfaces
+ * as {@link Action}, {@link Consumer}, {@link Supplier} and {@link Function}, then perform it and get some result.
+ * For example:
+ * <pre>
+ * ResultObj result = new TaskQueueImpl<>()
+ * .perform(() -> doSomething())
+ * .perform(() -> doSomethingElse())
+ * .onStop(() -> stopSomethingElse())
+ * .perform(() -> doAnotherThing())
+ * .supply(() -> getTestObject())
+ * .process(testObject -> getResultFromObject(testObject))
+ * .execute()
+ * .getResult();
+ * </pre>
+ * It is not supposed to be executed in multiple threads, but it is possible to stop execution by calling
+ * {@link #stop()} or {@link #stopAndWait()} from another thread.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface TaskQueue<T> {
@@ -17,7 +34,7 @@ public interface TaskQueue<T> {
    * @param action task action
    * @return current TaskQueue
    */
-  TaskQueue<T> run(Action action);
+  TaskQueue<T> perform(Action action);
 
   /**
    * Add new task that consumes last result of current task queue.
