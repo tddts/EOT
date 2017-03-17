@@ -73,13 +73,13 @@ public class SearchServiceImpl implements SearchService {
     // Build TaskQueue
     taskQueue = new ReusableTaskQueue<>()
         // Load market prices
-        .run(this::loadPrices)
+        .perform(this::loadPrices)
         // Load market orders
-        .run(() -> loadOrders(searchParams.getRegions()))
+        .perform(() -> loadOrders(searchParams.getRegions()))
         // Stop loading orders when queue execution is stopped
         .onStop(() -> paginationExecutor.stop())
         // Filter loaded orders
-        .run(() -> filter(searchParams.getIsk(), searchParams.getCargo()))
+        .perform(() -> filter(searchParams.getIsk(), searchParams.getCargo()))
         // Find profitable orders
         .supply(() -> find(searchParams.getRouteOption(), searchParams.getCargo(), searchParams.getTax()))
         // Supply orders to result consumer
