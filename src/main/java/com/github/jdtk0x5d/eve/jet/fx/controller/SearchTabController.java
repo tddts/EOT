@@ -4,7 +4,7 @@ package com.github.jdtk0x5d.eve.jet.fx.controller;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.context.events.UserDataEvent;
-import com.github.jdtk0x5d.eve.jet.fx.annotations.FXController;
+import com.github.jdtk0x5d.eve.jet.fx.config.annotations.FXController;
 import com.github.jdtk0x5d.eve.jet.fx.controls.DoubleTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.ItemListTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.LongTextField;
@@ -164,12 +164,14 @@ public class SearchTabController {
         .setTax(taxField.getFraction())
         .setRouteOption(routeOptionBox.getValue())
         .setRegions(getRegions())
-        .setResultConsumer(resultList -> {
-          searchTable.getItems().clear();
-          searchTable.getItems().addAll(resultList);
-        });
+        .setResultConsumer(this::fillSearchTable);
 
     taskService.execute(() -> searchService.searchForOrders(searchParams));
+  }
+
+  private void fillSearchTable(List<OrderSearchRow> resultList){
+    searchTable.getItems().clear();
+    searchTable.getItems().addAll(resultList);
   }
 
   private void addRegion() {

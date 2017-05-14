@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@Scope("singleton")
 public class EventLogger {
 
   private static final Logger logger = LogManager.getLogger(EventLogger.class);

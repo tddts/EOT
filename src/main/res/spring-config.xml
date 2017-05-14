@@ -12,9 +12,9 @@
     <!-- Basic configurations -->
     <aop:aspectj-autoproxy/>
     <context:component-scan base-package="com.github.jdtk0x5d.eve.jet.*"/>
-    <util:properties id="applicationProperties" location="classpath:application.properties,
-        classpath:static_data.properties,
-        classpath:sql/sql.properties"/>
+    <util:properties id="applicationProperties"
+        location="classpath:application.properties,
+        classpath:static_data.properties"/>
     <context:property-placeholder properties-ref="applicationProperties"/>
 
     <!-- Bean postprocessors -->
@@ -84,7 +84,7 @@
 
     <bean id="transactionManager" class="io.ebean.spring.txn.SpringJdbcTransactionManager"/>
 
-    <!-- SQLite DB -->
+    <!-- H2 DB -->
     <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource">
         <property name="url" value="${jdbc.url}"/>
     </bean>

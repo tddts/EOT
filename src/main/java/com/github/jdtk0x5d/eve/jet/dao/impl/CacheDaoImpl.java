@@ -17,24 +17,24 @@ import java.util.stream.Collectors;
 @Component
 public class CacheDaoImpl extends AbstractDao implements CacheDao {
 
-  @LoadContent("sql.file.delete.expired")
+  @LoadContent("/sql/delete_expired.sql")
   private String sql_delete_expired;
-  @LoadContent("sql.file.delete.duplicate")
+  @LoadContent("/sql/delete_duplicate.sql")
   private String sql_delete_duplicate;
-  @LoadContent("sql.file.delete.large")
+  @LoadContent("/sql/delete_large.sql")
   private String sql_delete_large;
 
-  @LoadContent("sql.file.find.systems")
+  @LoadContent("/sql/find_systems.sql")
   private String sql_find_systems;
 
-  @LoadContent("sql.file.search.update.create.tables")
+  @LoadContent("/sql/search_update_create_tables.sql")
   private String sql_update_searchCreateTables;
-  @LoadContent("sql.file.search.update.insert.stations")
+  @LoadContent("/sql/search_update_insert_stations.sql")
   private String sql_update_searchInsertStations;
-  @LoadContent("sql.file.search.update.insert.orders")
+  @LoadContent("/sql/search_update_insert_orders.sql")
   private String sql_update_searchInsertOrders;
 
-  @LoadContent("sql.file.search.select")
+  @LoadContent("/sql/search_select.sql")
   private String sql_select_search;
 
   @Override

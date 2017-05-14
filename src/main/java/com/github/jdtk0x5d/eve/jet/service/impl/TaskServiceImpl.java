@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@Scope("singleton")
 public class TaskServiceImpl implements TaskService {
 
   private final ExecutorService executorService = Executors.newCachedThreadPool();

@@ -31,7 +31,7 @@ public class EmbeddedServerImpl implements EmbeddedServer {
   @Value("${server.timeout}")
   private long timeout;
 
-  @LoadContent("auth.implicit.response.html")
+  @LoadContent("/web/login.html")
   private String implicitSuccessResponse;
 
   @Message("enum.auth.success")

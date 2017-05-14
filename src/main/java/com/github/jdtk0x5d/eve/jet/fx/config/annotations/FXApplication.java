@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.config.spring.annotations;
+package com.github.jdtk0x5d.eve.jet.fx.config.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,11 +8,9 @@ import java.lang.annotation.Target;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LoadContent {
+public @interface FXApplication {
 
-  String value() default "";
-
-  boolean property() default false;
+  Class<?> controller();
 }

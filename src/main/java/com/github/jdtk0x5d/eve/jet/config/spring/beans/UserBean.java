@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@Scope("singleton")
 public class UserBean {
 
   private final Logger logger = LogManager.getLogger(UserBean.class);

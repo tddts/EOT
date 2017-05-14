@@ -10,7 +10,6 @@ import java.util.Properties;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@Scope("singleton")
 public class PropertyHolder {
 
   @Resource(name = "applicationProperties")

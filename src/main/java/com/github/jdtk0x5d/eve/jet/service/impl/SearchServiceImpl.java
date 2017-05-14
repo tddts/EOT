@@ -27,7 +27,6 @@ import com.github.jdtk0x5d.eve.jet.util.RestUtil;
 import com.google.common.eventbus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -42,7 +41,6 @@ import static com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent.*;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@Scope("singleton")
 public class SearchServiceImpl implements SearchService {
 
   @Autowired
@@ -191,7 +189,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     // Loaded names for given types
-    Map<Integer, String> typeNames = RestUtil.safeRequest(() -> universeAPI.getNames(
+    Map<Integer, String> typeNames = RestUtil.requestWithRetry(() -> universeAPI.getNames(
         // Get ids of types of loaded items
         searchResults.stream().mapToInt(OrderSearchResult::getTypeId).distinct().toArray()))
         // Convert loaded names to the map of type ids and names
@@ -219,7 +217,7 @@ public class SearchServiceImpl implements SearchService {
     String sellSystemName = cacheDao.findStationSystemName(searchResult.getSellLocation());
     String buySystemName = cacheDao.findStationSystemName(searchResult.getBuyLocation());
 
-    RestResponse<DotlanRoute> dotlanRouteResponse = RestUtil.safeRequest(
+    RestResponse<DotlanRoute> dotlanRouteResponse = RestUtil.requestWithRetry(
         () -> dotlanAPI.getRoute(routeOption, sellSystemName, buySystemName));
 
     return new OrderSearchRow(typeName, sellSystemName, buySystemName, searchResult, dotlanRouteResponse.getObject());

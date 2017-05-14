@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@Scope("singleton")
 public class SessionDaemonImpl implements SessionDaemon {
 
   private final Logger logger = LogManager.getLogger(SessionDaemonImpl.class);

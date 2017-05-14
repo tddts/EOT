@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.fx.annotations;
+package com.github.jdtk0x5d.eve.jet.fx.config.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,11 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Tigran_Dadaiants@epam.com
+ * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FXController {
+public @interface NamedColor {
 
-  String view() default "";
+  String value();
 }

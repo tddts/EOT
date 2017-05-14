@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component("resourceBundleContainer")
-@Scope("singleton")
 public class ResourceBundleContainer {
 
   @Value("${resource.bundle.path}")
