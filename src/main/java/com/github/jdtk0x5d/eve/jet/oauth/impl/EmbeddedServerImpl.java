@@ -34,7 +34,7 @@ public class EmbeddedServerImpl implements EmbeddedServer {
   @LoadContent("/web/login.html")
   private String implicitSuccessResponse;
 
-  @Message("enum.auth.success")
+  @Message("login.success")
   private String successMessage;
 
   @Autowired
