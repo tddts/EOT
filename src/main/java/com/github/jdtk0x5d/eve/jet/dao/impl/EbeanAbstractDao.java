@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public abstract class AbstractDao implements GenericDao {
+public abstract class EbeanAbstractDao implements GenericDao {
 
   @Autowired
   private EbeanServer ebeanServer;

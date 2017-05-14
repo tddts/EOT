@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-public class CacheDaoImpl extends AbstractDao implements CacheDao {
+public class CacheDaoImplEbean extends EbeanAbstractDao implements CacheDao {
 
   @LoadContent("/sql/delete_expired.sql")
   private String sql_delete_expired;
