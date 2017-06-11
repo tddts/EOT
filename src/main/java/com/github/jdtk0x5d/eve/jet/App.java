@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet;
 
+import com.github.jdtk0x5d.eve.jet.context.Context;
 import com.github.jdtk0x5d.eve.jet.fx.exception.ApplicationExceptionHandler;
 import com.github.jdtk0x5d.eve.jet.fx.view.View;
 import com.github.jdtk0x5d.eve.jet.fx.view.ViewUtil;
@@ -24,7 +25,7 @@ public class App extends Application {
       System.exit(0);
     });
 
-    View view = new View("fxml/main.fxml");
+    View view = new View("fxml/main.fxml", Context.getResourceBundle());
     ViewUtil.wire(view);
     Scene scene = new Scene(view.getRoot(), 1024, 600);
 

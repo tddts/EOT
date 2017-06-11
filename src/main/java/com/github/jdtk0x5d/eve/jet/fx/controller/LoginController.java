@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FXController(view = "fxml/header.fxml")
+@FXController("fxml/header.fxml")
 public class LoginController {
 
   @Message("login.authorized")

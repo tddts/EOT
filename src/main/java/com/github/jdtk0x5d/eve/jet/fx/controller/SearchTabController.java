@@ -19,7 +19,10 @@ import com.github.jdtk0x5d.eve.jet.service.UserInterfaceService;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -33,7 +36,7 @@ import java.util.function.Consumer;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FXController(view = "fxml/tab_search.fxml")
+@FXController("fxml/tab_search.fxml")
 public class SearchTabController {
 
   @FXML

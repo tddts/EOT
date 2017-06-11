@@ -1,24 +1,24 @@
 package com.github.jdtk0x5d.eve.jet.config.spring.config;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.LoadContent;
-import com.github.jdtk0x5d.eve.jet.config.spring.beans.PropertyHolder;
 import com.github.jdtk0x5d.eve.jet.util.SpringUtil;
 import com.github.jdtk0x5d.eve.jet.util.Util;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Field;
+import java.util.Properties;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class LoadContentAnnotationBeanPostProcessor implements BeanPostProcessor {
 
-  @Autowired
-  private PropertyHolder propertyHolder;
+  @Resource(name = "applicationProperties")
+  private Properties properties;
 
   @Override
   public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -36,7 +36,7 @@ public class LoadContentAnnotationBeanPostProcessor implements BeanPostProcessor
 
           String fileName =
               annotation.value().isEmpty() ? (String) field.get(target) :
-                  annotation.property() ? propertyHolder.getProperty(annotation.value()) : annotation.value();
+                  annotation.property() ? properties.getProperty(annotation.value()) : annotation.value();
 
           if (fileName != null && !fileName.isEmpty()) {
             field.set(target, Util.loadContent(fileName));

@@ -17,7 +17,7 @@ import java.util.Locale;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FXController(view = "fxml/main.fxml")
+@FXController("fxml/main.fxml")
 public class MainController {
 
   @FXML

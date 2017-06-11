@@ -1,6 +1,5 @@
 package com.github.jdtk0x5d.eve.jet.fx.view;
 
-import com.github.jdtk0x5d.eve.jet.context.Context;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
@@ -27,7 +26,7 @@ public class View<T> {
     this.fileName = fileName;
 
     if (bundle == null) {
-      loader = new FXMLLoader(getFileURL(), Context.getResourceBundle());
+      loader = new FXMLLoader(getFileURL());
     }
     else {
       loader = new FXMLLoader(getFileURL(), bundle);
