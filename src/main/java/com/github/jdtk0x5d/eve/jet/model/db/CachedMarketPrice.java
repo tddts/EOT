@@ -10,7 +10,7 @@ import javax.persistence.Id;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Entity
-public class MarketPriceCache {
+public class CachedMarketPrice {
 
   @Column
   private double averagePrice;
@@ -20,16 +20,16 @@ public class MarketPriceCache {
   @Column
   private double typeId;
 
-  public MarketPriceCache() {
+  public CachedMarketPrice() {
   }
 
-  public MarketPriceCache(MarketPrice marketPrice) {
+  public CachedMarketPrice(MarketPrice marketPrice) {
     averagePrice = marketPrice.getAverage_price();
     averagePrice = marketPrice.getAdjusted_price();
     typeId = marketPrice.getType_id();
   }
 
-  public MarketPriceCache(double averagePrice, double adjustedPrice, double typeId) {
+  public CachedMarketPrice(double averagePrice, double adjustedPrice, double typeId) {
     this.averagePrice = averagePrice;
     this.adjustedPrice = adjustedPrice;
     this.typeId = typeId;

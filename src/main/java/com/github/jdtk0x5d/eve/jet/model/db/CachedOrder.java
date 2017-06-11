@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  */
 @Table
 @Entity
-public class OrderSearchCache {
+public class CachedOrder {
 
   @Id
   @Column
@@ -51,10 +51,10 @@ public class OrderSearchCache {
   @Column
   private Long volumeTotal;
 
-  public OrderSearchCache() {
+  public CachedOrder() {
   }
 
-  public OrderSearchCache(MarketOrder order) {
+  public CachedOrder(MarketOrder order) {
     this.buyOrder = order.getIs_buy_order();
     this.duration = order.getDuration();
     this.price = order.getPrice();
@@ -169,7 +169,7 @@ public class OrderSearchCache {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    OrderSearchCache that = (OrderSearchCache) o;
+    CachedOrder that = (CachedOrder) o;
 
     return orderId.equals(that.orderId);
   }

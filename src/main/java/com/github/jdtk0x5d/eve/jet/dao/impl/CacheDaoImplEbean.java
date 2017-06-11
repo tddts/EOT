@@ -2,8 +2,8 @@ package com.github.jdtk0x5d.eve.jet.dao.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.LoadContent;
 import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
-import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchCache;
-import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
+import com.github.jdtk0x5d.eve.jet.model.db.CachedOrder;
+import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
 import io.ebean.SqlRow;
 import io.ebean.annotation.Transactional;
 import org.springframework.stereotype.Component;
@@ -54,12 +54,12 @@ public class CacheDaoImplEbean extends EbeanAbstractDao implements CacheDao {
 
   @Override
   public int removeTooExpensiveOrders(long funds) {
-    return ebeans().find(OrderSearchCache.class).where().eq("buyOrder", false).gt("price", funds).delete();
+    return ebeans().find(CachedOrder.class).where().eq("buyOrder", false).gt("price", funds).delete();
   }
 
   @Override
   @Transactional
-  public List<OrderSearchResult> findProfitableOrders(double security, double cargoVolume, double taxRate) {
+  public List<ResultOrder> findProfitableOrders(double security, double cargoVolume, double taxRate) {
     // Create and fill temporary tables
     ebeans().createSqlUpdate(sql_update_searchCreateTables).execute();
     ebeans().createSqlUpdate(sql_update_searchInsertStations).setParameter("security_status", security).execute();
@@ -69,8 +69,8 @@ public class CacheDaoImplEbean extends EbeanAbstractDao implements CacheDao {
         .setParameter("cargo_volume", cargoVolume)
         .setParameter("tax_rate", taxRate)
         .findList();
-    // Convert SqlRow to OrderSearchResult
-    return searchRows.stream().map(OrderSearchResult::new).collect(Collectors.toList());
+    // Convert SqlRow to ResultOrder
+    return searchRows.stream().map(ResultOrder::new).collect(Collectors.toList());
   }
 
   @Override

@@ -1,6 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.dao;
 
-import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
+import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface CacheDao extends GenericDao {
 
   int removeTooExpensiveOrders(long funds);
 
-  List<OrderSearchResult> findProfitableOrders(double security, double cargoVolume, double taxRate);
+  List<ResultOrder> findProfitableOrders(double security, double cargoVolume, double taxRate);
 
   String findStationSystemName(long station);
 

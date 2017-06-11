@@ -1,7 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.model.app;
 
 import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
-import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
+import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
 import javafx.beans.property.*;
 import javafx.util.converter.NumberStringConverter;
 
@@ -31,7 +31,7 @@ public class OrderSearchRow {
   private StringProperty perJumpProfitText = new SimpleStringProperty();
 
   private DotlanRoute dotlanRoute;
-  private OrderSearchResult searchResultData;
+  private ResultOrder searchResultData;
 
   public OrderSearchRow() {
     NumberStringConverter numberStringConverter = new NumberStringConverter("###.##");
@@ -39,7 +39,7 @@ public class OrderSearchRow {
     perJumpProfitText.bindBidirectional(perJumpProfit, numberStringConverter);
   }
 
-  public OrderSearchRow(String typeName, String sellSystem, String buySystem, OrderSearchResult searchResult, DotlanRoute dotlanRoute) {
+  public OrderSearchRow(String typeName, String sellSystem, String buySystem, ResultOrder searchResult, DotlanRoute dotlanRoute) {
     this();
     setItem(typeName);
     setSellingLocation(sellSystem);
@@ -226,11 +226,11 @@ public class OrderSearchRow {
     this.dotlanRoute = dotlanRoute;
   }
 
-  public OrderSearchResult getSearchResultData() {
+  public ResultOrder getSearchResultData() {
     return searchResultData;
   }
 
-  public void setSearchResultData(OrderSearchResult searchResultData) {
+  public void setSearchResultData(ResultOrder searchResultData) {
     this.searchResultData = searchResultData;
   }
 }

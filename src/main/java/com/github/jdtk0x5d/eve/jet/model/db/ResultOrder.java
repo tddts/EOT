@@ -6,7 +6,7 @@ import io.ebean.SqlRow;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class OrderSearchResult {
+public class ResultOrder {
 
   private Integer typeId;
 
@@ -29,10 +29,10 @@ public class OrderSearchResult {
 
   private Double profit;
 
-  public OrderSearchResult() {
+  public ResultOrder() {
   }
 
-  public OrderSearchResult(SqlRow sqlRow) {
+  public ResultOrder(SqlRow sqlRow) {
     typeId = sqlRow.getInteger("type_id");
 
     sellOrderId = sqlRow.getInteger("sell_order_id");
@@ -169,6 +169,6 @@ public class OrderSearchResult {
 
   @Override
   public String toString() {
-    return "OrderSearchResult{" + "typeId=[" + typeId + "], sellOrderId=[" + sellOrderId + "], buyOrderId=[" + buyOrderId + "], sellPrice=[" + sellPrice + "], buyPrice=[" + buyPrice + "], sellQuantity=[" + sellQuantity + "], buyQuantity=[" + buyQuantity + "], buyMinQuantity=[" + buyMinQuantity + "], buyLocation=[" + buyLocation + "], sellLocation=[" + sellLocation + "], itemCargoVolume=[" + itemCargoVolume + "], itemCargoFreeVolume=[" + itemCargoFreeVolume + "], profit=[" + profit + "]}";
+    return "ResultOrder{" + "typeId=[" + typeId + "], sellOrderId=[" + sellOrderId + "], buyOrderId=[" + buyOrderId + "], sellPrice=[" + sellPrice + "], buyPrice=[" + buyPrice + "], sellQuantity=[" + sellQuantity + "], buyQuantity=[" + buyQuantity + "], buyMinQuantity=[" + buyMinQuantity + "], buyLocation=[" + buyLocation + "], sellLocation=[" + sellLocation + "], itemCargoVolume=[" + itemCargoVolume + "], itemCargoFreeVolume=[" + itemCargoFreeVolume + "], profit=[" + profit + "]}";
   }
 }

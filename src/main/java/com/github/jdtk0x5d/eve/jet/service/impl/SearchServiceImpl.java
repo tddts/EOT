@@ -9,9 +9,9 @@ import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketOrder;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseName;
 import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
 import com.github.jdtk0x5d.eve.jet.model.app.SearchParams;
-import com.github.jdtk0x5d.eve.jet.model.db.MarketPriceCache;
-import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchCache;
-import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
+import com.github.jdtk0x5d.eve.jet.model.db.CachedMarketPrice;
+import com.github.jdtk0x5d.eve.jet.model.db.CachedOrder;
+import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.rest.client.dotlan.DotlanClient;
 import com.github.jdtk0x5d.eve.jet.rest.client.esi.MarketClient;
@@ -103,8 +103,8 @@ public class SearchServiceImpl implements SearchService {
    */
   private void cleanUp() {
     eventBus.post(CLEARING_CACHE);
-    cacheDao.deleteAll(OrderSearchCache.class);
-    cacheDao.deleteAll(MarketPriceCache.class);
+    cacheDao.deleteAll(CachedOrder.class);
+    cacheDao.deleteAll(CachedMarketPrice.class);
     eventBus.post(FINISHED);
   }
 
@@ -113,7 +113,7 @@ public class SearchServiceImpl implements SearchService {
    */
   private void loadPrices() {
     eventBus.post(LOADING_PRICES);
-    marketClient.getAllItemPrices().process(list -> cacheDao.saveAll(list.stream().map(MarketPriceCache::new).collect(Collectors.toList())));
+    marketClient.getAllItemPrices().process(list -> cacheDao.saveAll(list.stream().map(CachedMarketPrice::new).collect(Collectors.toList())));
   }
 
   /**
@@ -147,7 +147,7 @@ public class SearchServiceImpl implements SearchService {
         // Load market orders for given region and page
         .loadPage(page -> marketClient.getOrders(OrderType.ALL, regionId, page))
         // Convert and save loaded orders to DB
-        .processPage(orders -> cacheDao.saveAll(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())))
+        .processPage(orders -> cacheDao.saveAll(orders.stream().map(CachedOrder::new).collect(Collectors.toList())))
         // Retry page loading on error
         .onError(PaginationErrorHandler::retryPage)
         // Build pagination
@@ -181,7 +181,7 @@ public class SearchServiceImpl implements SearchService {
   private List<OrderSearchRow> find(DotlanRouteOption routeOption, double volume, double taxRate) {
     eventBus.post(SEARCHING_FOR_PROFIT);
 
-    List<OrderSearchResult> searchResults = cacheDao.findProfitableOrders(routeOption.getSecurity(), volume, taxRate);
+    List<ResultOrder> searchResults = cacheDao.findProfitableOrders(routeOption.getSecurity(), volume, taxRate);
 
     if (searchResults.isEmpty()) {
       eventBus.post(NO_ORDERS_FOUND);
@@ -191,7 +191,7 @@ public class SearchServiceImpl implements SearchService {
     // Loaded names for given types
     Map<Integer, String> typeNames = RestUtil.requestWithRetry(() -> universeClient.getNames(
         // Get ids of types of loaded items
-        searchResults.stream().mapToInt(OrderSearchResult::getTypeId).distinct().toArray()))
+        searchResults.stream().mapToInt(ResultOrder::getTypeId).distinct().toArray()))
         // Convert loaded names to the map of type ids and names
         .getObject().stream().collect(Collectors.toMap(UniverseName::getId, UniverseName::getName));
 
@@ -213,7 +213,7 @@ public class SearchServiceImpl implements SearchService {
    * @param typeName     item type name
    * @return new OrderSearchRow
    */
-  private OrderSearchRow findRoute(OrderSearchResult searchResult, DotlanRouteOption routeOption, String typeName) {
+  private OrderSearchRow findRoute(ResultOrder searchResult, DotlanRouteOption routeOption, String typeName) {
     String sellSystemName = cacheDao.findStationSystemName(searchResult.getSellLocation());
     String buySystemName = cacheDao.findStationSystemName(searchResult.getBuyLocation());
 
