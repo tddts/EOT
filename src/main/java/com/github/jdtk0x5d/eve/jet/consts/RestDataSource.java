@@ -23,10 +23,6 @@ public enum RestDataSource {
     return value;
   }
 
-  public String getTextValue() {
-    return textValue;
-  }
-
   @Override
   public String toString() {
     return textValue;
