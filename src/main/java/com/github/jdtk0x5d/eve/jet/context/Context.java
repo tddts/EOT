@@ -22,27 +22,8 @@ public class Context {
 
   private static final ResourceBundleContainer RESOURCE_BUNDLE_CONTAINER = SPRING_CONTEXT.getBean(ResourceBundleContainer.class);
 
-  private static final Properties APP_PROPERTIES;
-
-  static {
-    try {
-      APP_PROPERTIES = SPRING_CONTEXT.getBean(PropertiesFactoryBean.class).getObject();
-    } catch (IOException e) {
-      throw new ApplicationException(e);
-    }
-  }
-
-
-  public static ClassPathXmlApplicationContext getAppContext() {
-    return SPRING_CONTEXT;
-  }
-
   public static AutowireCapableBeanFactory getBeanFactory() {
     return BEAN_FACTORY;
-  }
-
-  public static UserBean getUserBean() {
-    return SPRING_CONTEXT.getBean(UserBean.class);
   }
 
   public static ResourceBundle getResourceBundle() {
@@ -51,10 +32,6 @@ public class Context {
 
   public static <T> T getBean(Class<T> type) {
     return SPRING_CONTEXT.getBean(type);
-  }
-
-  public static Properties getAppProperties() {
-    return APP_PROPERTIES;
   }
 
 }

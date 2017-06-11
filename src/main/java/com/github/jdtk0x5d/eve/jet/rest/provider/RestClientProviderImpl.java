@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.rest.provider;
 
+import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.context.Context;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.sso.AccessToken;
@@ -34,6 +35,8 @@ public class RestClientProviderImpl implements RestClientProvider {
 
   @Autowired
   private RestOperations restOperations;
+  @Autowired
+  private UserBean userBean;
 
   @Override
   public RestOperations restOperations() {
@@ -73,14 +76,14 @@ public class RestClientProviderImpl implements RestClientProvider {
   public HttpEntity<?> authorizedEntity(Object body) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    AccessToken token = Context.getUserBean().getAccessToken();
+    AccessToken token = userBean.getAccessToken();
     String authValue = token == null ? EMPTY_TOKEN : token.getFullValue();
     headers.set(authHeader, authValue);
     return new HttpEntity<>(body, headers);
   }
 
   private UriComponentsBuilder setDefaultParameters(UriComponentsBuilder builder) {
-    RestDataSource restDataSource = Context.getUserBean().getRestDataSource();
+    RestDataSource restDataSource = userBean.getRestDataSource();
     if (restDataSource != null) builder.queryParam(dataSourceQueryParam, restDataSource.getValue());
     return builder;
   }
