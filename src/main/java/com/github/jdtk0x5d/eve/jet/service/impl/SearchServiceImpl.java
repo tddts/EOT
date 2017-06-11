@@ -14,10 +14,9 @@ import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseName;
 import com.github.jdtk0x5d.eve.jet.model.db.CachedMarketPrice;
 import com.github.jdtk0x5d.eve.jet.model.db.CachedOrder;
 import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
-import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
-import com.github.jdtk0x5d.eve.jet.rest.client.dotlan.DotlanClient;
 import com.github.jdtk0x5d.eve.jet.rest.client.esi.MarketClient;
 import com.github.jdtk0x5d.eve.jet.rest.client.esi.UniverseClient;
+import com.github.jdtk0x5d.eve.jet.service.DotlanService;
 import com.github.jdtk0x5d.eve.jet.service.SearchService;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.Pagination;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationBuilder;
@@ -53,7 +52,7 @@ public class SearchServiceImpl implements SearchService {
   @Autowired
   private MarketClient marketClient;
   @Autowired
-  private DotlanClient dotlanClient;
+  private DotlanService dotlanService;
   @Autowired
   private UniverseClient universeClient;
 
@@ -222,8 +221,8 @@ public class SearchServiceImpl implements SearchService {
   private OrderSearchRow findRoute(ResultOrder searchResult, DotlanRouteOption routeOption, String typeName) {
     String sellSystemName = stationDao.findStationSystemName(searchResult.getSellLocation());
     String buySystemName = stationDao.findStationSystemName(searchResult.getBuyLocation());
-    RestResponse<DotlanRoute> dotlanRouteResponse = dotlanClient.getRoute(routeOption, sellSystemName, buySystemName);
-    return new OrderSearchRow(typeName, sellSystemName, buySystemName, searchResult, dotlanRouteResponse.getObject());
+    DotlanRoute dotlanRoute = dotlanService.getRoute(routeOption, sellSystemName, buySystemName);
+    return new OrderSearchRow(typeName, sellSystemName, buySystemName, searchResult, dotlanRoute);
   }
 
 }
