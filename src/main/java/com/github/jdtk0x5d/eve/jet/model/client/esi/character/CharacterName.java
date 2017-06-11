@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.model.api.esi.character;
+package com.github.jdtk0x5d.eve.jet.model.client.esi.character;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com

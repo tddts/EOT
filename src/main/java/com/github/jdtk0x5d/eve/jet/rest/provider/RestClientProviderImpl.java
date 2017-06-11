@@ -2,7 +2,7 @@ package com.github.jdtk0x5d.eve.jet.rest.provider;
 
 import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.context.Context;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.sso.AccessToken;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.sso.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.model.api.dotlan;
+package com.github.jdtk0x5d.eve.jet.model.client.dotlan;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com

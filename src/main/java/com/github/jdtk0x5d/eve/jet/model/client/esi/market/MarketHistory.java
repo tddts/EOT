@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.model.api.esi.market;
+package com.github.jdtk0x5d.eve.jet.model.client.esi.market;
 
 import java.time.LocalDateTime;
 

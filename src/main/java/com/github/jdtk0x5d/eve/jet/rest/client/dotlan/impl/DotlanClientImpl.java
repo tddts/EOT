@@ -4,7 +4,7 @@ import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestClient;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.exception.DotlanResponseParsingException;
-import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
+import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
 import com.github.jdtk0x5d.eve.jet.rest.client.dotlan.DotlanClient;
 import com.github.jdtk0x5d.eve.jet.rest.provider.RestClientProvider;
 import com.google.gson.Gson;

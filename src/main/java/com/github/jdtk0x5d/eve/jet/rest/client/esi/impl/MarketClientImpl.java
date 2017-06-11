@@ -2,9 +2,9 @@ package com.github.jdtk0x5d.eve.jet.rest.client.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestClient;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketHistory;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketPrice;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketHistory;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketOrder;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketPrice;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.rest.client.esi.MarketClient;
 import com.github.jdtk0x5d.eve.jet.rest.provider.RestClientProvider;

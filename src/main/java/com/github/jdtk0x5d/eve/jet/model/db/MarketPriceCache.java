@@ -1,6 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.model.db;
 
-import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketPrice;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketPrice;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

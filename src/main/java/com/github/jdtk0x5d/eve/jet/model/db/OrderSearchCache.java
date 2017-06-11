@@ -1,6 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.model.db;
 
-import com.github.jdtk0x5d.eve.jet.model.api.esi.market.MarketOrder;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketOrder;
 import io.ebean.annotation.Index;
 
 import javax.persistence.Column;

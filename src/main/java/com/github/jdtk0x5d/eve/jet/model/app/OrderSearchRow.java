@@ -1,6 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.model.app;
 
-import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
+import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
 import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
 import javafx.beans.property.*;
 import javafx.util.converter.NumberStringConverter;

@@ -41,7 +41,7 @@
     <bean id="gsonFactory" class="com.github.jdtk0x5d.eve.jet.config.spring.factory.GsonFactoryBean">
         <property name="deserializers">
             <map>
-                <entry key="com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute"
+                <entry key="com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute"
                        value="com.github.jdtk0x5d.eve.jet.config.gson.DotlanRouteJsonDeserializer"/>
 
                 <entry key="java.time.LocalDateTime"

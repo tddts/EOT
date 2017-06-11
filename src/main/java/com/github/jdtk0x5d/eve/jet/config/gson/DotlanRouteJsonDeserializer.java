@@ -1,8 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.config.gson;
 
-import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanJump;
-import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
-import com.github.jdtk0x5d.eve.jet.util.Util;
+import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanJump;
+import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;

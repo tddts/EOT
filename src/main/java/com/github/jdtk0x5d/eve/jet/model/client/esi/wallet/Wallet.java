@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.model.api.esi.wallet;
+package com.github.jdtk0x5d.eve.jet.model.client.esi.wallet;
 
 import java.math.BigDecimal;
 

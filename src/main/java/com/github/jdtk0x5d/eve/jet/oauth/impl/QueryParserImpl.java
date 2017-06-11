@@ -1,6 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.oauth.impl;
 
-import com.github.jdtk0x5d.eve.jet.model.api.esi.sso.AccessToken;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.sso.AccessToken;
 import com.github.jdtk0x5d.eve.jet.oauth.QueryParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;

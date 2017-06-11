@@ -2,10 +2,9 @@ package com.github.jdtk0x5d.eve.jet.config.spring.beans;
 
 import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;
 import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.sso.AccessToken;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.sso.AccessToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**

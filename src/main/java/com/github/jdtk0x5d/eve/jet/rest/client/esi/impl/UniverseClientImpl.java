@@ -1,10 +1,10 @@
 package com.github.jdtk0x5d.eve.jet.rest.client.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestClient;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseName;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseStation;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseStructure;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.universe.UniverseType;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseName;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseStation;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseStructure;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseType;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.rest.client.esi.UniverseClient;
 import com.github.jdtk0x5d.eve.jet.rest.provider.RestClientProvider;

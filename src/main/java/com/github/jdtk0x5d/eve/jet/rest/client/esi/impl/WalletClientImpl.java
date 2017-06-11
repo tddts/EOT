@@ -1,7 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.rest.client.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestClient;
-import com.github.jdtk0x5d.eve.jet.model.api.esi.wallet.Wallet;
+import com.github.jdtk0x5d.eve.jet.model.client.esi.wallet.Wallet;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.rest.client.esi.WalletClient;
 import com.github.jdtk0x5d.eve.jet.rest.provider.RestClientProvider;
