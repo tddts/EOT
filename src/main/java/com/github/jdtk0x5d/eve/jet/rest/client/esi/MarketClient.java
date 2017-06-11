@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.rest.api.esi;
+package com.github.jdtk0x5d.eve.jet.rest.client.esi;
 
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface MarketAPI {
+public interface MarketClient {
 
   RestResponse<List<MarketOrder>> getOrders(OrderType orderType, long regionId, int page) throws RestClientException;
 

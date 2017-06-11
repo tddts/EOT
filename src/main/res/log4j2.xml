@@ -4,16 +4,22 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%highlight{[%d{HH:mm:ss.SSS dd.MM.yyyy}] [%t] [%-5level] [%logger{1}]: %msg%n%throwable}{FATAL=red, ERROR=red, WARN=blue, INFO=black, DEBUG=black, TRACE=black}"/>
         </Console>
+        <File name="LogFile" fileName="logs/app.log">
+            <PatternLayout pattern="%highlight{[%d{HH:mm:ss.SSS dd.MM.yyyy}] [%t] [%-5level] [%logger{1}]: %msg%n%throwable}{FATAL=red, ERROR=red, WARN=blue, INFO=black, DEBUG=black, TRACE=black}"/>
+        </File>
     </Appenders>
     <Loggers>
         <Root level="ERROR">
             <AppenderRef ref="Console"/>
+            <AppenderRef ref="LogFile"/>
         </Root>
-        <Logger name="org.springframework.web.client.RestTemplate" level="OFF" additivity="false">
+        <Logger name="org.springframework" level="DEBUG" additivity="false">
             <Appender-ref ref="Console"/>
+            <AppenderRef ref="LogFile"/>
         </Logger>
         <Logger name="com.github.jdtk0x5d.eve.jet" level="DEBUG" additivity="false">
             <Appender-ref ref="Console"/>
+            <AppenderRef ref="LogFile"/>
         </Logger>
     </Loggers>
 </Configuration>

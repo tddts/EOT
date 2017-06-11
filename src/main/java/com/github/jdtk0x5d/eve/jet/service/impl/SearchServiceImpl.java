@@ -13,9 +13,9 @@ import com.github.jdtk0x5d.eve.jet.model.db.MarketPriceCache;
 import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchCache;
 import com.github.jdtk0x5d.eve.jet.model.db.OrderSearchResult;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
-import com.github.jdtk0x5d.eve.jet.rest.api.dotlan.DotlanAPI;
-import com.github.jdtk0x5d.eve.jet.rest.api.esi.MarketAPI;
-import com.github.jdtk0x5d.eve.jet.rest.api.esi.UniverseAPI;
+import com.github.jdtk0x5d.eve.jet.rest.client.dotlan.DotlanClient;
+import com.github.jdtk0x5d.eve.jet.rest.client.esi.MarketClient;
+import com.github.jdtk0x5d.eve.jet.rest.client.esi.UniverseClient;
 import com.github.jdtk0x5d.eve.jet.service.SearchService;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.Pagination;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationBuilder;
@@ -46,11 +46,11 @@ public class SearchServiceImpl implements SearchService {
   @Autowired
   private CacheDao cacheDao;
   @Autowired
-  private MarketAPI marketAPI;
+  private MarketClient marketClient;
   @Autowired
-  private DotlanAPI dotlanAPI;
+  private DotlanClient dotlanClient;
   @Autowired
-  private UniverseAPI universeAPI;
+  private UniverseClient universeClient;
 
   @Autowired
   private EventBus eventBus;
@@ -113,7 +113,7 @@ public class SearchServiceImpl implements SearchService {
    */
   private void loadPrices() {
     eventBus.post(LOADING_PRICES);
-    marketAPI.getAllItemPrices().process(list -> cacheDao.saveAll(list.stream().map(MarketPriceCache::new).collect(Collectors.toList())));
+    marketClient.getAllItemPrices().process(list -> cacheDao.saveAll(list.stream().map(MarketPriceCache::new).collect(Collectors.toList())));
   }
 
   /**
@@ -145,7 +145,7 @@ public class SearchServiceImpl implements SearchService {
   private Pagination createPaginationForRegion(Integer regionId) {
     return new PaginationBuilder<MarketOrder, List<MarketOrder>>()
         // Load market orders for given region and page
-        .loadPage(page -> marketAPI.getOrders(OrderType.ALL, regionId, page))
+        .loadPage(page -> marketClient.getOrders(OrderType.ALL, regionId, page))
         // Convert and save loaded orders to DB
         .processPage(orders -> cacheDao.saveAll(orders.stream().map(OrderSearchCache::new).collect(Collectors.toList())))
         // Retry page loading on error
@@ -189,7 +189,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     // Loaded names for given types
-    Map<Integer, String> typeNames = RestUtil.requestWithRetry(() -> universeAPI.getNames(
+    Map<Integer, String> typeNames = RestUtil.requestWithRetry(() -> universeClient.getNames(
         // Get ids of types of loaded items
         searchResults.stream().mapToInt(OrderSearchResult::getTypeId).distinct().toArray()))
         // Convert loaded names to the map of type ids and names
@@ -218,7 +218,7 @@ public class SearchServiceImpl implements SearchService {
     String buySystemName = cacheDao.findStationSystemName(searchResult.getBuyLocation());
 
     RestResponse<DotlanRoute> dotlanRouteResponse = RestUtil.requestWithRetry(
-        () -> dotlanAPI.getRoute(routeOption, sellSystemName, buySystemName));
+        () -> dotlanClient.getRoute(routeOption, sellSystemName, buySystemName));
 
     return new OrderSearchRow(typeName, sellSystemName, buySystemName, searchResult, dotlanRouteResponse.getObject());
   }

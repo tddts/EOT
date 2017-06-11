@@ -1,31 +1,28 @@
-package com.github.jdtk0x5d.eve.jet.rest.api.dotlan.impl;
+package com.github.jdtk0x5d.eve.jet.rest.client.dotlan.impl;
 
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestClient;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
-import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestApi;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.exception.DotlanResponseParsingException;
 import com.github.jdtk0x5d.eve.jet.model.api.dotlan.DotlanRoute;
-import com.github.jdtk0x5d.eve.jet.rest.api.dotlan.DotlanAPI;
-import com.github.jdtk0x5d.eve.jet.util.RequestUtil;
+import com.github.jdtk0x5d.eve.jet.rest.client.dotlan.DotlanClient;
+import com.github.jdtk0x5d.eve.jet.rest.provider.RestClientProvider;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.restOperations;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@RestApi
-public class DotlanAPIImpl implements DotlanAPI {
+@RestClient
+public class DotlanClientImpl implements DotlanClient {
 
   @Value("${url.dotlan.route}")
   private String addressDotlan;
@@ -36,6 +33,9 @@ public class DotlanAPIImpl implements DotlanAPI {
   @Autowired
   private Gson gson;
 
+  @Autowired
+  private RestClientProvider client;
+
   @Override
   public RestResponse<DotlanRoute> getRoute(DotlanRouteOption dotlanRouteOption, String... waypoints) {
     String routeOption = dotlanRouteOption == DotlanRouteOption.FASTEST ? "" : dotlanRouteOption.getValue() + ":";
@@ -45,7 +45,7 @@ public class DotlanAPIImpl implements DotlanAPI {
     headers.setAccept(Collections.singletonList(new MediaType("image", "svg+xml")));
     HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 
-    ResponseEntity<String> response = restOperations().exchange(url, HttpMethod.GET, entity, String.class);
+    ResponseEntity<String> response = client.restOperations().exchange(url, HttpMethod.GET, entity, String.class);
 
     DotlanRoute route = gson.fromJson(getPathJson(response.getBody()), DotlanRoute.class);
     return new RestResponse<>(route, response.getStatusCode());

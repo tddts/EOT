@@ -15,7 +15,6 @@ public class App extends Application {
     launch(args);
   }
 
-
   @Override
   public void start(Stage stage) throws Exception {
     Thread.setDefaultUncaughtExceptionHandler(new ApplicationExceptionHandler());
@@ -28,6 +27,15 @@ public class App extends Application {
     View view = new View("fxml/main.fxml");
     ViewUtil.wire(view);
     Scene scene = new Scene(view.getRoot(), 1024, 600);
+
+    ViewUtil.wire(view);
+
+    stage.setOnCloseRequest(event -> {
+      Platform.exit();
+      System.exit(0);
+    });
+
+    stage.setTitle("JET v1.1");
     stage.setScene(scene);
     stage.show();
   }

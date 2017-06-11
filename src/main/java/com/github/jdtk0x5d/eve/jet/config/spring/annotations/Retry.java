@@ -8,7 +8,11 @@ import java.lang.annotation.Target;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RestApi {
+public @interface Retry {
+
+  int timeout() default 100;
+
+  int retries() default 3;
 }

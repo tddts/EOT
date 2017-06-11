@@ -1,10 +1,11 @@
-package com.github.jdtk0x5d.eve.jet.rest.api.esi.impl;
+package com.github.jdtk0x5d.eve.jet.rest.client.esi.impl;
 
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
-import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestApi;
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestClient;
 import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.sso.AccessToken;
-import com.github.jdtk0x5d.eve.jet.rest.api.esi.AuthAPI;
+import com.github.jdtk0x5d.eve.jet.rest.client.esi.AuthClient;
+import com.github.jdtk0x5d.eve.jet.rest.provider.RestClientProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -17,28 +18,28 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
-import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.authUriBuilder;
-import static com.github.jdtk0x5d.eve.jet.util.RequestUtil.restOperations;
-
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@RestApi
-public class AuthAPIImpl implements AuthAPI {
+@RestClient
+public class AuthClientImpl implements AuthClient {
 
-  @Value("${url.auth.authorize}")
+  @Value("${path.auth.authorize}")
   private String addressAuthorize;
 
-  @Value("${url.auth.token}")
+  @Value("${path.auth.token}")
   private String addressToken;
 
   @Autowired
   private UserBean userBean;
 
+  @Autowired
+  private RestClientProvider client;
+
   @Override
   public RestResponse<AccessToken> getToken(String authCode) {
-    URI uri = authUriBuilder(addressAuthorize)
+    URI uri = client.authUriBuilder(addressAuthorize)
         .queryParam("grant_type", "authorization_code")
         .queryParam("code", authCode)
         .build().toUri();
@@ -48,7 +49,7 @@ public class AuthAPIImpl implements AuthAPI {
 
   @Override
   public RestResponse<AccessToken> refreshToken() {
-    URI uri = authUriBuilder(addressToken)
+    URI uri = client.authUriBuilder(addressToken)
         .queryParam("grant_type", "refresh_token")
         .queryParam("refresh_token", userBean.getAccessToken().getRefresh_token())
         .build().toUri();
@@ -57,7 +58,7 @@ public class AuthAPIImpl implements AuthAPI {
   }
 
   private RestResponse<AccessToken> getToken(URI uri) {
-    return new RestResponse<>(restOperations().exchange(uri, HttpMethod.POST, basicAuthEntity(), AccessToken.class));
+    return new RestResponse<>(client.restOperations().exchange(uri, HttpMethod.POST, basicAuthEntity(), AccessToken.class));
   }
 
   private HttpEntity<?> basicAuthEntity() {

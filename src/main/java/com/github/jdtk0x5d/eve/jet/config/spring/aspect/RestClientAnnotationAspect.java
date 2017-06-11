@@ -12,9 +12,9 @@ import org.springframework.web.client.HttpStatusCodeException;
  */
 @Aspect
 @Component
-public class RestApiAnnotationAspect {
+public class RestClientAnnotationAspect {
 
-  @Around("@within(com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestApi)" +
+  @Around("@within(com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestClient)" +
       " && execution(public com.github.jdtk0x5d.eve.jet.rest.RestResponse *(..))")
   public Object annotationPointcut(ProceedingJoinPoint joinPoint) throws Throwable {
     try {

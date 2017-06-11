@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NullOnException {
+public @interface RestClient {
 }

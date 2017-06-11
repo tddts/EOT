@@ -4,7 +4,7 @@ import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.context.events.UserDataEvent;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.wallet.Wallet;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
-import com.github.jdtk0x5d.eve.jet.rest.api.esi.WalletAPI;
+import com.github.jdtk0x5d.eve.jet.rest.client.esi.WalletClient;
 import com.github.jdtk0x5d.eve.jet.service.UserDataService;
 import com.github.jdtk0x5d.eve.jet.util.Util;
 import com.google.common.eventbus.EventBus;
@@ -32,7 +32,7 @@ public class UserDataServiceImpl implements UserDataService {
   @Autowired
   private UserBean userBean;
   @Autowired
-  private WalletAPI walletAPI;
+  private WalletClient walletClient;
   @Autowired
   private EventBus eventBus;
 
@@ -47,7 +47,7 @@ public class UserDataServiceImpl implements UserDataService {
 
     if (characterId == 0) return 0;
 
-    RestResponse<List<Wallet>> wallets = walletAPI.getWallets(characterId);
+    RestResponse<List<Wallet>> wallets = walletClient.getWallets(characterId);
     if (wallets.hasObject()) {
       long sum = 0;
       List<Wallet> walletList = wallets.getObject();

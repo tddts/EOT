@@ -5,7 +5,7 @@ import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.model.api.esi.sso.AccessToken;
 import com.github.jdtk0x5d.eve.jet.oauth.QueryParser;
-import com.github.jdtk0x5d.eve.jet.rest.api.esi.AuthAPI;
+import com.github.jdtk0x5d.eve.jet.rest.client.esi.AuthClient;
 import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.google.common.eventbus.EventBus;
 import org.apache.logging.log4j.LogManager;
@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
   private EventBus eventBus;
 
   @Autowired
-  private AuthAPI authAPI;
+  private AuthClient authClient;
 
 
   @Override
@@ -100,7 +100,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public HttpStatus processAuthorizationCode(String query) {
-    RestResponse<AccessToken> response = authAPI.getToken(queryParser.parseAuthCode(query));
+    RestResponse<AccessToken> response = authClient.getToken(queryParser.parseAuthCode(query));
 
     if (response.isSuccessful()) {
       userBean.setAccessToken(response.getObject());
@@ -112,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public void refreshAccessToken() {
-    RestResponse<AccessToken> response = authAPI.refreshToken();
+    RestResponse<AccessToken> response = authClient.refreshToken();
 
     if (response.isSuccessful()) {
       userBean.setAccessToken(response.getObject());
