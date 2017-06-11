@@ -6,11 +6,11 @@ import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.dao.MarketPriceDao;
 import com.github.jdtk0x5d.eve.jet.dao.OrderDao;
 import com.github.jdtk0x5d.eve.jet.dao.StationDao;
+import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
+import com.github.jdtk0x5d.eve.jet.model.app.SearchParams;
 import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketOrder;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseName;
-import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
-import com.github.jdtk0x5d.eve.jet.model.app.SearchParams;
 import com.github.jdtk0x5d.eve.jet.model.db.CachedMarketPrice;
 import com.github.jdtk0x5d.eve.jet.model.db.CachedOrder;
 import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
@@ -25,7 +25,6 @@ import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationErrorHandler;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationExecutor;
 import com.github.jdtk0x5d.eve.jet.tools.tasks.ReusableTaskQueue;
 import com.github.jdtk0x5d.eve.jet.tools.tasks.TaskQueue;
-import com.github.jdtk0x5d.eve.jet.util.RestUtil;
 import com.google.common.eventbus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -196,9 +195,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     // Loaded names for given types
-    Map<Integer, String> typeNames = RestUtil.requestWithRetry(() -> universeClient.getNames(
+    Map<Integer, String> typeNames = universeClient.getNames(
         // Get ids of types of loaded items
-        searchResults.stream().mapToInt(ResultOrder::getTypeId).distinct().toArray()))
+        searchResults.stream().mapToInt(ResultOrder::getTypeId).distinct().toArray())
         // Convert loaded names to the map of type ids and names
         .getObject().stream().collect(Collectors.toMap(UniverseName::getId, UniverseName::getName));
 
@@ -223,10 +222,7 @@ public class SearchServiceImpl implements SearchService {
   private OrderSearchRow findRoute(ResultOrder searchResult, DotlanRouteOption routeOption, String typeName) {
     String sellSystemName = stationDao.findStationSystemName(searchResult.getSellLocation());
     String buySystemName = stationDao.findStationSystemName(searchResult.getBuyLocation());
-
-    RestResponse<DotlanRoute> dotlanRouteResponse = RestUtil.requestWithRetry(
-        () -> dotlanClient.getRoute(routeOption, sellSystemName, buySystemName));
-
+    RestResponse<DotlanRoute> dotlanRouteResponse = dotlanClient.getRoute(routeOption, sellSystemName, buySystemName);
     return new OrderSearchRow(typeName, sellSystemName, buySystemName, searchResult, dotlanRouteResponse.getObject());
   }
 

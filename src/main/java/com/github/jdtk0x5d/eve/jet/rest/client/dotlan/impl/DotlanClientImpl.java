@@ -1,6 +1,7 @@
 package com.github.jdtk0x5d.eve.jet.rest.client.dotlan.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.RestClient;
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Retry;
 import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.exception.DotlanResponseParsingException;
@@ -36,6 +37,7 @@ public class DotlanClientImpl implements DotlanClient {
   @Autowired
   private RestClientProvider client;
 
+  @Retry
   @Override
   public RestResponse<DotlanRoute> getRoute(DotlanRouteOption dotlanRouteOption, String... waypoints) {
     String routeOption = dotlanRouteOption == DotlanRouteOption.FASTEST ? "" : dotlanRouteOption.getValue() + ":";
