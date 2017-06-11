@@ -33,7 +33,7 @@ public class RestClientProviderImpl implements RestClientProvider {
   private String dataSourceQueryParam;
 
   @Autowired
-  private  RestOperations restOperations;
+  private RestOperations restOperations;
 
   @Override
   public RestOperations restOperations() {
@@ -81,9 +81,7 @@ public class RestClientProviderImpl implements RestClientProvider {
 
   private UriComponentsBuilder setDefaultParameters(UriComponentsBuilder builder) {
     RestDataSource restDataSource = Context.getUserBean().getRestDataSource();
-    if (!RestDataSource.NONE.equals(restDataSource)) {
-      builder.queryParam(dataSourceQueryParam, restDataSource.getValue());
-    }
+    if (restDataSource != null) builder.queryParam(dataSourceQueryParam, restDataSource.getValue());
     return builder;
   }
 }

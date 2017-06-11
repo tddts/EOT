@@ -68,6 +68,7 @@ public class LoginController {
     loginChoiceBox.getSelectionModel().selectFirst();
     loginButton.setOnAction(event -> processLogin());
 
+    dataSourceBox.setConverter(messageHelper.getConverter(RestDataSource.values()));
     dataSourceBox.setItems(FXCollections.observableArrayList(RestDataSource.values()));
     dataSourceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldval, val) -> processDataSourceChange(val));
     dataSourceBox.getSelectionModel().selectFirst();
