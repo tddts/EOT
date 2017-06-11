@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Component("resourceBundleContainer")
+@Component
 public class ResourceBundleContainer {
 
   @Value("${resource.bundle.path}")
