@@ -3,7 +3,9 @@ package com.github.jdtk0x5d.eve.jet.service.impl;
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Profiling;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.consts.OrderType;
-import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
+import com.github.jdtk0x5d.eve.jet.dao.MarketPriceDao;
+import com.github.jdtk0x5d.eve.jet.dao.OrderDao;
+import com.github.jdtk0x5d.eve.jet.dao.StationDao;
 import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketOrder;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseName;
@@ -44,7 +46,11 @@ import static com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent.*;
 public class SearchServiceImpl implements SearchService {
 
   @Autowired
-  private CacheDao cacheDao;
+  private OrderDao orderDao;
+  @Autowired
+  private MarketPriceDao marketPriceDao;
+  @Autowired
+  private StationDao stationDao;
   @Autowired
   private MarketClient marketClient;
   @Autowired
@@ -103,8 +109,8 @@ public class SearchServiceImpl implements SearchService {
    */
   private void cleanUp() {
     eventBus.post(CLEARING_CACHE);
-    cacheDao.deleteAll(CachedOrder.class);
-    cacheDao.deleteAll(CachedMarketPrice.class);
+    orderDao.deleteAll();
+    marketPriceDao.deleteAll();
     eventBus.post(FINISHED);
   }
 
@@ -113,7 +119,8 @@ public class SearchServiceImpl implements SearchService {
    */
   private void loadPrices() {
     eventBus.post(LOADING_PRICES);
-    marketClient.getAllItemPrices().process(list -> cacheDao.saveAll(list.stream().map(CachedMarketPrice::new).collect(Collectors.toList())));
+    marketClient.getAllItemPrices().process(list ->
+        marketPriceDao.saveAll(list.stream().map(CachedMarketPrice::new).collect(Collectors.toList())));
   }
 
   /**
@@ -147,7 +154,7 @@ public class SearchServiceImpl implements SearchService {
         // Load market orders for given region and page
         .loadPage(page -> marketClient.getOrders(OrderType.ALL, regionId, page))
         // Convert and save loaded orders to DB
-        .processPage(orders -> cacheDao.saveAll(orders.stream().map(CachedOrder::new).collect(Collectors.toList())))
+        .processPage(orders -> orderDao.saveAll(orders.stream().map(CachedOrder::new).collect(Collectors.toList())))
         // Retry page loading on error
         .onError(PaginationErrorHandler::retryPage)
         // Build pagination
@@ -164,10 +171,10 @@ public class SearchServiceImpl implements SearchService {
   private void filter(long funds, double volume) {
     eventBus.post(FILTERING_ORDERS);
 
-    cacheDao.removeDuplicateOrders();
-    cacheDao.removeSoonExpiredOrders(expirationTimeout);
-    cacheDao.removeLargeItemOrders(volume);
-    cacheDao.removeTooExpensiveOrders(funds);
+    orderDao.removeDuplicateOrders();
+    orderDao.removeSoonExpiredOrders(expirationTimeout);
+    orderDao.removeLargeItemOrders(volume);
+    orderDao.removeTooExpensiveOrders(funds);
   }
 
   /**
@@ -181,7 +188,7 @@ public class SearchServiceImpl implements SearchService {
   private List<OrderSearchRow> find(DotlanRouteOption routeOption, double volume, double taxRate) {
     eventBus.post(SEARCHING_FOR_PROFIT);
 
-    List<ResultOrder> searchResults = cacheDao.findProfitableOrders(routeOption.getSecurity(), volume, taxRate);
+    List<ResultOrder> searchResults = orderDao.findProfitableOrders(routeOption.getSecurity(), volume, taxRate);
 
     if (searchResults.isEmpty()) {
       eventBus.post(NO_ORDERS_FOUND);
@@ -214,8 +221,8 @@ public class SearchServiceImpl implements SearchService {
    * @return new OrderSearchRow
    */
   private OrderSearchRow findRoute(ResultOrder searchResult, DotlanRouteOption routeOption, String typeName) {
-    String sellSystemName = cacheDao.findStationSystemName(searchResult.getSellLocation());
-    String buySystemName = cacheDao.findStationSystemName(searchResult.getBuyLocation());
+    String sellSystemName = stationDao.findStationSystemName(searchResult.getSellLocation());
+    String buySystemName = stationDao.findStationSystemName(searchResult.getBuyLocation());
 
     RestResponse<DotlanRoute> dotlanRouteResponse = RestUtil.requestWithRetry(
         () -> dotlanClient.getRoute(routeOption, sellSystemName, buySystemName));

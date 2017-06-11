@@ -9,10 +9,16 @@ import java.util.Collection;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public abstract class EbeanAbstractDao implements GenericDao {
+public abstract class EbeanAbstractDao<T> implements GenericDao<T> {
+
+  private final Class<T> type;
 
   @Autowired
   private EbeanServer ebeanServer;
+
+  public EbeanAbstractDao(Class<T> type) {
+    this.type = type;
+  }
 
   protected EbeanServer ebeans() {
     return ebeanServer;
@@ -24,22 +30,22 @@ public abstract class EbeanAbstractDao implements GenericDao {
   }
 
   @Override
-  public int saveAll(Collection<?> collection) {
+  public int saveAll(Collection<T> collection) {
     return ebeanServer.saveAll(collection);
   }
 
   @Override
-  public boolean delete(Object object) {
+  public boolean delete(T object) {
     return ebeanServer.delete(object);
   }
 
   @Override
-  public int deleteAll(Collection<?> collection) {
+  public int deleteAll(Collection<T> collection) {
     return ebeanServer.deleteAll(collection);
   }
 
   @Override
-  public int deleteAll(Class<?> type) {
+  public int deleteAll() {
     return ebeanServer.find(type).delete();
   }
 }

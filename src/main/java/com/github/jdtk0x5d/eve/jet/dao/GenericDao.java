@@ -5,16 +5,16 @@ import java.util.Collection;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface GenericDao {
+public interface GenericDao<T> {
 
-  void save(Object object);
+  void save(T object);
 
-  int saveAll(Collection<?> collection);
+  int saveAll(Collection<T> collection);
 
-  boolean delete(Object object);
+  boolean delete(T object);
 
-  int deleteAll(Collection<?> collection);
+  int deleteAll(Collection<T> collection);
 
-  int deleteAll(Class<?> type);
+  int deleteAll();
 
 }

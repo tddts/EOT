@@ -1,12 +1,13 @@
 package com.github.jdtk0x5d.eve.jet.dao.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.LoadContent;
-import com.github.jdtk0x5d.eve.jet.dao.CacheDao;
+import com.github.jdtk0x5d.eve.jet.dao.GenericDao;
+import com.github.jdtk0x5d.eve.jet.dao.OrderDao;
 import com.github.jdtk0x5d.eve.jet.model.db.CachedOrder;
 import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
 import io.ebean.SqlRow;
 import io.ebean.annotation.Transactional;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Component
-public class CacheDaoImplEbean extends EbeanAbstractDao implements CacheDao {
+@Repository
+public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements OrderDao{
 
   @LoadContent("/sql/delete_expired.sql")
   private String sql_delete_expired;
@@ -23,9 +24,6 @@ public class CacheDaoImplEbean extends EbeanAbstractDao implements CacheDao {
   private String sql_delete_duplicate;
   @LoadContent("/sql/delete_large.sql")
   private String sql_delete_large;
-
-  @LoadContent("/sql/find_systems.sql")
-  private String sql_find_systems;
 
   @LoadContent("/sql/search_update_create_tables.sql")
   private String sql_update_searchCreateTables;
@@ -36,6 +34,10 @@ public class CacheDaoImplEbean extends EbeanAbstractDao implements CacheDao {
 
   @LoadContent("/sql/search_select.sql")
   private String sql_select_search;
+
+  public OrderDaoImplEbean() {
+    super(CachedOrder.class);
+  }
 
   @Override
   public int removeSoonExpiredOrders(int time) {
@@ -72,11 +74,4 @@ public class CacheDaoImplEbean extends EbeanAbstractDao implements CacheDao {
     // Convert SqlRow to ResultOrder
     return searchRows.stream().map(ResultOrder::new).collect(Collectors.toList());
   }
-
-  @Override
-  public String findStationSystemName(long station) {
-    SqlRow system = ebeans().createSqlQuery(sql_find_systems).setParameter("station",station).findUnique();
-    return system.getString("solar_system_name");
-  }
-
 }
