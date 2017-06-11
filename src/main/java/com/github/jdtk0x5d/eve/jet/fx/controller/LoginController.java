@@ -6,7 +6,7 @@ import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.fx.config.annotations.FXController;
 import com.github.jdtk0x5d.eve.jet.fx.dialog.DevCredentialsDialog;
-import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageStringConverter;
+import com.github.jdtk0x5d.eve.jet.fx.tools.message.provider.MessageHelper;
 import com.github.jdtk0x5d.eve.jet.fx.view.ViewUtil;
 import com.github.jdtk0x5d.eve.jet.service.LoginService;
 import com.github.jdtk0x5d.eve.jet.service.UserDataService;
@@ -20,7 +20,6 @@ import javafx.scene.paint.Color;
 import javafx.util.converter.IntegerStringConverter;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 
 import javax.annotation.PostConstruct;
 import java.util.Optional;
@@ -55,7 +54,7 @@ public class LoginController {
   private Label loginStatusLabel;
 
   @Autowired
-  private MessageSource messageSource;
+  private MessageHelper messageHelper;
   @Autowired
   private LoginService loginService;
   @Autowired
@@ -63,7 +62,7 @@ public class LoginController {
 
   @PostConstruct
   private void init() {
-    loginChoiceBox.setConverter(new MessageStringConverter<>(messageSource, AuthorizationType.values()));
+    loginChoiceBox.setConverter(messageHelper.getConverter(AuthorizationType.values()));
     loginChoiceBox.setItems(FXCollections.observableArrayList(AuthorizationType.values()));
     loginChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldval, val) -> processLoginTypeChange(val));
     loginChoiceBox.getSelectionModel().selectFirst();

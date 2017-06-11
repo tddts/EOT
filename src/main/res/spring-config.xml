@@ -29,8 +29,11 @@
     <!-- Message source -->
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basename">
-            <value>locale/messages</value>
+        <property name="basenames">
+            <array>
+                <value>locale/messages</value>
+                <value>locale/type_messages</value>
+            </array>
         </property>
     </bean>
 

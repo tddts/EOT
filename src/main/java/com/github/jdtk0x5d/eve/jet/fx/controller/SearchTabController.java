@@ -9,7 +9,7 @@ import com.github.jdtk0x5d.eve.jet.fx.controls.DoubleTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.ItemListTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.LongTextField;
 import com.github.jdtk0x5d.eve.jet.fx.controls.PercentageTextField;
-import com.github.jdtk0x5d.eve.jet.fx.tools.message.MessageStringConverter;
+import com.github.jdtk0x5d.eve.jet.fx.tools.message.provider.MessageHelper;
 import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
 import com.github.jdtk0x5d.eve.jet.model.app.SearchParams;
 import com.github.jdtk0x5d.eve.jet.service.SearchService;
@@ -25,7 +25,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -98,8 +97,7 @@ public class SearchTabController {
   private Set<String> regionNames;
 
   @Autowired
-  private MessageSource messageSource;
-
+  private MessageHelper messageHelper;
   @Autowired
   private SearchService searchService;
   @Autowired
@@ -149,7 +147,7 @@ public class SearchTabController {
   }
 
   private void initChoiceBoxes() {
-    routeOptionBox.setConverter(new MessageStringConverter<>(messageSource, DotlanRouteOption.values()));
+    routeOptionBox.setConverter(messageHelper.getConverter(DotlanRouteOption.values()));
     routeOptionBox.setItems(FXCollections.observableArrayList(DotlanRouteOption.values()));
     routeOptionBox.getSelectionModel().selectFirst();
 

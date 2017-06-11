@@ -2,6 +2,7 @@ package com.github.jdtk0x5d.eve.jet.fx.controller;
 
 import com.github.jdtk0x5d.eve.jet.context.events.SearchStatusEvent;
 import com.github.jdtk0x5d.eve.jet.fx.config.annotations.FXController;
+import com.github.jdtk0x5d.eve.jet.fx.tools.message.provider.MessageHelper;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,10 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 
 import javax.annotation.PostConstruct;
-import java.util.Locale;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -31,7 +30,7 @@ public class MainController {
   private SearchTabController searchTabController;
 
   @Autowired
-  private MessageSource messageSource;
+  private MessageHelper messageHelper;
 
   @PostConstruct
   public void init() {
@@ -52,6 +51,6 @@ public class MainController {
   }
 
   private void setStatusText(SearchStatusEvent event) {
-    searchStatusLabel.textProperty().setValue(messageSource.getMessage(event.getMessageKey(), new Object[0], Locale.getDefault()));
+    searchStatusLabel.textProperty().setValue(messageHelper.getMessage(event));
   }
 }

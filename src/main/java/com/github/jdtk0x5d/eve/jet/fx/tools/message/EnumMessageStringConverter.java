@@ -1,22 +1,21 @@
 package com.github.jdtk0x5d.eve.jet.fx.tools.message;
 
+import com.github.jdtk0x5d.eve.jet.fx.tools.message.provider.MessageHelper;
 import javafx.util.StringConverter;
-import org.springframework.context.MessageSource;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class MessageStringConverter<T extends MessageAware> extends StringConverter<T> {
+public class EnumMessageStringConverter<T extends Enum<T>> extends StringConverter<T> {
 
   private final Map<T, String> values = new HashMap<>();
 
-  public MessageStringConverter(MessageSource messageSource, T[] values) {
+  public EnumMessageStringConverter(MessageHelper messageHelper, T[] values) {
     for (T type : values) {
-      this.values.put(type, messageSource.getMessage(type.getMessageKey(), new Object[0], Locale.getDefault()));
+      this.values.put(type, messageHelper.getMessage(type));
     }
   }
 
