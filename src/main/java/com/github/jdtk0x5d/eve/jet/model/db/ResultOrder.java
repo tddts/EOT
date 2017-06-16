@@ -32,29 +32,6 @@ public class ResultOrder {
   public ResultOrder() {
   }
 
-  public ResultOrder(SqlRow sqlRow) {
-    typeId = sqlRow.getInteger("type_id");
-
-    sellOrderId = sqlRow.getInteger("sell_order_id");
-    buyOrderId = sqlRow.getInteger("buy_order_id");
-
-    sellPrice = sqlRow.getDouble("sell_price");
-    buyPrice = sqlRow.getDouble("buy_price");
-
-    sellQuantity = sqlRow.getLong("sell_quantity");
-    buyQuantity = sqlRow.getLong("buy_quantity");
-    buyMinQuantity = sqlRow.getLong("buy_min_quantity");
-    tradeQuantity = sqlRow.getLong("trade_quantity");
-
-    buyLocation = sqlRow.getInteger("buy_location");
-    sellLocation = sqlRow.getInteger("sell_location");
-
-    itemCargoVolume = sqlRow.getDouble("item_cargo_volume");
-    itemCargoFreeVolume = sqlRow.getDouble("item_cargo_free_volume");
-
-    profit = sqlRow.getDouble("profit");
-  }
-
   public Integer getTypeId() {
     return typeId;
   }

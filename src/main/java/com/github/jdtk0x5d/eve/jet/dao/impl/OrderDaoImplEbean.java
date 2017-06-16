@@ -1,12 +1,13 @@
 package com.github.jdtk0x5d.eve.jet.dao.impl;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.LoadContent;
-import com.github.jdtk0x5d.eve.jet.dao.GenericDao;
 import com.github.jdtk0x5d.eve.jet.dao.OrderDao;
+import com.github.jdtk0x5d.eve.jet.mapper.ResultOrderMapper;
 import com.github.jdtk0x5d.eve.jet.model.db.CachedOrder;
 import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
 import io.ebean.SqlRow;
 import io.ebean.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Repository
-public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements OrderDao{
+public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements OrderDao {
 
   @LoadContent("/sql/delete_expired.sql")
   private String sql_delete_expired;
@@ -34,6 +35,9 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
 
   @LoadContent("/sql/search_select.sql")
   private String sql_select_search;
+
+  @Autowired
+  private ResultOrderMapper resultOrderMapper;
 
   public OrderDaoImplEbean() {
     super(CachedOrder.class);
@@ -72,6 +76,6 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
         .setParameter("tax_rate", taxRate)
         .findList();
     // Convert SqlRow to ResultOrder
-    return searchRows.stream().map(ResultOrder::new).collect(Collectors.toList());
+    return searchRows.stream().map(sqlRow -> resultOrderMapper.convert(sqlRow)).collect(Collectors.toList());
   }
 }
