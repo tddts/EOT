@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.view.fx.view;
+package com.github.jdtk0x5d.eve.jet.util;
 
 import com.github.jdtk0x5d.eve.jet.exception.ApplicationException;
 import com.github.jdtk0x5d.eve.jet.exception.BrowserOpeningException;
@@ -22,10 +22,6 @@ import java.util.List;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class ViewUtil {
-
-  public static Stage getStage(Node node) {
-    return (Stage) node.getScene().getWindow();
-  }
 
   public static void openWebpage(URI uri) throws BrowserOpeningException {
     Thread thread = new Thread(() -> openPage(uri));

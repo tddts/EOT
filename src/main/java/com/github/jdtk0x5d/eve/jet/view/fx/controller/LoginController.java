@@ -10,7 +10,7 @@ import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXController;
 import com.github.jdtk0x5d.eve.jet.view.fx.dialog.DevCredentialsDialog;
 import com.github.jdtk0x5d.eve.jet.view.fx.spring.DialogProvider;
 import com.github.jdtk0x5d.eve.jet.view.fx.tools.message.provider.MessageHelper;
-import com.github.jdtk0x5d.eve.jet.view.fx.view.ViewUtil;
+import com.github.jdtk0x5d.eve.jet.util.ViewUtil;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
