@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jdtk0x5d.eve.jet.view.fx.view;
+package com.github.jdtk0x5d.eve.jet.view.fx.exception;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com

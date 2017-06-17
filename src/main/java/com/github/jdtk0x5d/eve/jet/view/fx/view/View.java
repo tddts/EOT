@@ -16,6 +16,7 @@
 
 package com.github.jdtk0x5d.eve.jet.view.fx.view;
 
+import com.github.jdtk0x5d.eve.jet.view.fx.exception.ViewException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
