@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <!-- Ebean ORM-->
+    <bean id="ebeanServerConfig" class="io.ebean.config.ServerConfig">
+        <property name="name" value="ebeanServerConfig"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packages">
+            <list>
+                <value>com.github.jdtk0x5d.eve.jet.model.db</value>
+                <value>com.github.jdtk0x5d.eve.jet.config.ebean</value>
+            </list>
+        </property>
+        <property name="ddlGenerate" value="true"/>
+        <property name="ddlRun" value="true"/>
+        <property name="ddlInitSql" value="sql/startup.sql"/>
+    </bean>
+
+    <bean class="com.github.jdtk0x5d.eve.jet.config.ebean.EbeanServerFactoryBean">
+        <property name="serverConfig" ref="ebeanServerConfig"/>
+    </bean>
+
+    <bean id="transactionManager" class="io.ebean.spring.txn.SpringJdbcTransactionManager"/>
+
+    <!-- H2 DB -->
+    <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource">
+        <property name="url" value="${jdbc.url}"/>
+    </bean>
+
+</beans>

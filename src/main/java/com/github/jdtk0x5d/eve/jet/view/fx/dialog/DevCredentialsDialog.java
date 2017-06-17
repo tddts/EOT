@@ -1,5 +1,6 @@
 package com.github.jdtk0x5d.eve.jet.view.fx.dialog;
 
+import com.github.jdtk0x5d.eve.jet.view.fx.view.View;
 import com.github.jdtk0x5d.eve.jet.view.fx.view.ViewUtil;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -15,7 +16,8 @@ public class DevCredentialsDialog extends Dialog<Pair<String, String>> {
     ButtonType cancelButtonType = new ButtonType(cancelMessage, ButtonBar.ButtonData.CANCEL_CLOSE);
     getDialogPane().getButtonTypes().addAll(ButtonType.OK, cancelButtonType);
     // Load fx
-    Parent viewRoot = ViewUtil.loadView("fxml/dialog-devc.fxml").getRoot();
+    //TODO: wire view
+    Parent viewRoot = new View("fxml/dialog-devc.fxml").getRoot();
     // Set vew as dialog content
     getDialogPane().setContent(viewRoot);
     // Get fields from fx

@@ -10,34 +10,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class App extends Application {
+public class App{
 
   public static void main(String[] args) throws Exception {
-    launch(args);
-  }
-
-  @Override
-  public void start(Stage stage) throws Exception {
-    Thread.setDefaultUncaughtExceptionHandler(new ApplicationExceptionHandler());
-    stage.setTitle("JET v1.0");
-    stage.setOnCloseRequest(t -> {
-      Platform.exit();
-      System.exit(0);
-    });
-
-    View view = new View("fxml/main.fxml", Context.getResourceBundle());
-    ViewUtil.wire(view);
-    Scene scene = new Scene(view.getRoot(), 1024, 600);
-
-    ViewUtil.wire(view);
-
-    stage.setOnCloseRequest(event -> {
-      Platform.exit();
-      System.exit(0);
-    });
-
-    stage.setTitle("JET v1.1");
-    stage.setScene(scene);
-    stage.show();
+    Context.initialize("spring-config.xml");
   }
 }

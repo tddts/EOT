@@ -26,10 +26,4 @@ public class SpringUtil {
     }
   }
 
-  public static void initBean(Object object, String name) {
-    AutowireCapableBeanFactory beanFactory = Context.getBeanFactory();
-    beanFactory.autowireBean(object);
-    beanFactory.initializeBean(object, name);
-  }
-
 }

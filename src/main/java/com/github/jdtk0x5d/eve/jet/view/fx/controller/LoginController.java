@@ -14,7 +14,11 @@ import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.converter.IntegerStringConverter;
@@ -30,6 +34,8 @@ import java.util.Optional;
  */
 @FXController("fxml/header.fxml")
 public class LoginController {
+
+  private static final Background BACKGROUND_RED = new Background(new BackgroundFill(Color.web("#ed4949"), CornerRadii.EMPTY, Insets.EMPTY));
 
   @Message("login.authorized")
   private String messageAuthorized;
@@ -134,7 +140,7 @@ public class LoginController {
     loginStatusLabel.setText(messageUnauthorized);
     // Set color to background and text
     loginStatusLabel.setTextFill(Color.BLACK);
-    headerHbox.setBackground(ViewUtil.BACKGROUND_RED);
+    headerHbox.setBackground(BACKGROUND_RED);
     // Show elements
     loginChoiceBox.setVisible(true);
     loginButton.setVisible(true);

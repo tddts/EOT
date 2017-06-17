@@ -17,7 +17,8 @@ import java.util.Locale;
  */
 public class ExceptionDialog extends Alert {
 
-  private MessageSource messageSource = Context.getBean(MessageSource.class);
+  //TODO: get message source
+  private MessageSource messageSource = null;
 
   public ExceptionDialog(Throwable ex) {
     super(AlertType.ERROR);

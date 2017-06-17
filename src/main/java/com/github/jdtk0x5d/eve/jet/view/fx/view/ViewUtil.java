@@ -23,42 +23,6 @@ import java.util.List;
  */
 public class ViewUtil {
 
-  public static final Background BACKGROUND_RED = new Background(new BackgroundFill(Color.web("#ed4949"), CornerRadii.EMPTY, Insets.EMPTY));
-  public static final Background BACKGROUND_GREEN = new Background(new BackgroundFill(Color.web("#d4fcd9"), CornerRadii.EMPTY, Insets.EMPTY));
-
-
-  public static void wire(View<?> view) {
-    Object controller = view.getController();
-    if (controller == null) return;
-    wireController(controller);
-    wireNestedControllers(controller);
-  }
-
-  private static void wireNestedControllers(Object controller) {
-    Class<?> type = controller.getClass();
-    List<Object> controllers = new ArrayList<>();
-    // Find injected controller fields
-    try {
-      for (Field field : type.getDeclaredFields()) {
-        if (field.isAnnotationPresent(FXML.class) && field.getName().endsWith("Controller")) {
-          field.setAccessible(true);
-          controllers.add(field.get(controller));
-        }
-      }
-    } catch (IllegalAccessException e) {
-      throw new ApplicationException(e);
-    }
-    // Wire nested controllers
-    for (Object nestedController : controllers) {
-      wireController(nestedController);
-      wireNestedControllers(nestedController);
-    }
-  }
-
-  private static void wireController(Object controller) {
-    SpringUtil.initBean(controller, controller.getClass().getSimpleName());
-  }
-
   public static Stage getStage(Node node) {
     return (Stage) node.getScene().getWindow();
   }
@@ -77,22 +41,6 @@ public class ViewUtil {
         throw new BrowserOpeningException(e);
       }
     }
-  }
-
-  public static View<?> loadView(String fileName) {
-    View view = new View(fileName);
-    wire(view);
-    return view;
-  }
-
-  public static ModalView<?> loadModalView(String fileName, Node node) {
-    return loadModalView(fileName, getStage(node));
-  }
-
-  public static ModalView<?> loadModalView(String fileName, Stage stage) {
-    ModalView view = new ModalView(fileName, stage);
-    wire(view);
-    return view;
   }
 
 }
