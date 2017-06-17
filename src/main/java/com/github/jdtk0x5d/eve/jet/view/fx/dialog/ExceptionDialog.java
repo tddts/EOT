@@ -17,13 +17,12 @@ import java.util.Locale;
  */
 public class ExceptionDialog extends Alert {
 
-  //TODO: get message source
-  private MessageSource messageSource = null;
+  private MessageSource messageSource;
 
-  public ExceptionDialog(Throwable ex) {
+  public ExceptionDialog(Throwable ex, MessageSource messageSource) {
     super(AlertType.ERROR);
-
-    if (messageSource != null) init(ex);
+    this.messageSource = messageSource;
+    init(ex);
   }
 
   private void init(Throwable ex) {

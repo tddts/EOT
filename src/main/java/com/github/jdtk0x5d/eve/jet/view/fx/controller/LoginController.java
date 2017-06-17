@@ -4,12 +4,13 @@ import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.consts.AuthorizationType;
 import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
-import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXController;
-import com.github.jdtk0x5d.eve.jet.view.fx.dialog.DevCredentialsDialog;
-import com.github.jdtk0x5d.eve.jet.view.fx.tools.message.provider.MessageHelper;
-import com.github.jdtk0x5d.eve.jet.view.fx.view.ViewUtil;
 import com.github.jdtk0x5d.eve.jet.service.LoginService;
 import com.github.jdtk0x5d.eve.jet.service.UserDataService;
+import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXController;
+import com.github.jdtk0x5d.eve.jet.view.fx.dialog.DevCredentialsDialog;
+import com.github.jdtk0x5d.eve.jet.view.fx.spring.DialogProvider;
+import com.github.jdtk0x5d.eve.jet.view.fx.tools.message.provider.MessageHelper;
+import com.github.jdtk0x5d.eve.jet.view.fx.view.ViewUtil;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -41,8 +42,6 @@ public class LoginController {
   private String messageAuthorized;
   @Message("login.unauthorized")
   private String messageUnauthorized;
-  @Message("msg.cancel")
-  private String messageCancel;
   @Message("dialog.auth.expiration")
   private String messageDialogExpiration;
 
@@ -65,6 +64,8 @@ public class LoginController {
   private LoginService loginService;
   @Autowired
   private UserDataService userDataService;
+  @Autowired
+  private DialogProvider dialogProvider;
 
   @PostConstruct
   private void init() {
@@ -100,7 +101,7 @@ public class LoginController {
   }
 
   private Optional<Pair<String, String>> getCredentials() {
-    return new DevCredentialsDialog(messageCancel).showAndWait();
+    return dialogProvider.getDialog(DevCredentialsDialog.class).showAndWait();
   }
 
   private String getCharacterId() {

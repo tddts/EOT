@@ -6,11 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Tigran_Dadaiants@epam.com
+ * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FXDialog {
-
-  String value();
+public @interface Init {
 }

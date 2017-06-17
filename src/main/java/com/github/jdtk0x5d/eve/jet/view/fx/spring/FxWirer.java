@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class FxViewWirer {
+public class FxWirer {
 
   private static final String CONTROLLER_SUFFIX = "Controller";
 
@@ -49,11 +49,11 @@ public class FxViewWirer {
   }
 
   private void wireController(Object controller) {
-    initBean(controller, controller.getClass().getSimpleName());
+    initBean(controller);
   }
 
-  private void initBean(Object object, String name) {
+  public void initBean(Object object) {
     beanFactory.autowireBean(object);
-    beanFactory.initializeBean(object, name);
+    beanFactory.initializeBean(object, object.getClass().getSimpleName());
   }
 }

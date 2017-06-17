@@ -20,7 +20,7 @@ public class FxViewProvider {
   private int height;
 
   @Autowired
-  private FxViewWirer fxViewWirer;
+  private FxWirer fxWirer;
   @Autowired
   private ResourceBundleContainer resourceBundleContainer;
 
@@ -28,7 +28,7 @@ public class FxViewProvider {
   public void showView(Stage stage, EventHandler<WindowEvent> onCloseEvent) {
 
     View<?> view = new View<>(file, resourceBundleContainer.getResourceBundle());
-    fxViewWirer.wire(view);
+    fxWirer.wire(view);
 
     Scene scene = new Scene(view.getRoot(), width, height);
     stage.setOnCloseRequest(onCloseEvent);

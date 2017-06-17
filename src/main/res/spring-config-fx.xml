@@ -3,7 +3,7 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <bean id="viewWirer" class="com.github.jdtk0x5d.eve.jet.view.fx.spring.FxViewWirer"/>
+    <bean id="viewWirer" class="com.github.jdtk0x5d.eve.jet.view.fx.spring.FxWirer"/>
 
     <bean id="viewProvider" class="com.github.jdtk0x5d.eve.jet.view.fx.spring.FxViewProvider">
         <property name="file" value="${view.main}"/>
@@ -13,5 +13,7 @@
     </bean>
 
     <bean id="fxAppStartProvider" class="com.github.jdtk0x5d.eve.jet.view.fx.spring.FxApplicationStartProvider"/>
+
+    <bean id="dialogProvider" class="com.github.jdtk0x5d.eve.jet.view.fx.spring.DialogProvider"/>
 
 </beans>
