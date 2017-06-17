@@ -1,4 +1,4 @@
-package com.github.jdtk0x5d.eve.jet.config.spring.config;
+package com.github.jdtk0x5d.eve.jet.config.spring.postprocessor;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.util.SpringUtil;
