@@ -7,8 +7,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.github.jdtk0x5d.eve.jet.view.fx.controller.SearchTabController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.jdtk0x5d.eve.jet.view.fx.controller.SearchTabController">
     <top>
         <VBox maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="5.0">
