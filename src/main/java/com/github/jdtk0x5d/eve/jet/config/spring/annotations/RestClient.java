@@ -16,13 +16,21 @@
 
 package com.github.jdtk0x5d.eve.jet.config.spring.annotations;
 
+import com.github.jdtk0x5d.eve.jet.config.spring.aspect.RestClientAnnotationAspect;
+import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation for classes implementing REST client logic.
+ * All methods in a class marked with such annotations and returning {@link RestResponse} will be wrapped with
+ * exception handling logic.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
+ * @see RestClientAnnotationAspect
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

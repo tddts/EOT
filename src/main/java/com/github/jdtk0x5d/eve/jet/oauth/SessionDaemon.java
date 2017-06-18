@@ -17,6 +17,8 @@
 package com.github.jdtk0x5d.eve.jet.oauth;
 
 /**
+ * {@code SessionDaemon} represents a daemon that expires or/and refreshes authorization session.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface SessionDaemon {

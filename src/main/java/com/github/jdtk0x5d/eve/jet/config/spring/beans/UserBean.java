@@ -24,6 +24,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
+ * {@code UserBean} is a bean that contains all User data required for authentication and authorization.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component

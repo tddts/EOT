@@ -18,11 +18,22 @@ package com.github.jdtk0x5d.eve.jet.service;
 
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
+
 /**
+ * {@code DotlanService} represents a service providing access to navigation at
+ * <a href="http://evemaps.dotlan.net/">evemaps.dotlan.net</a>
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface DotlanService {
 
+  /**
+   * Get route for given waypoints and options.
+   *
+   * @param dotlanRouteOption route options
+   * @param waypoints         array of waypoints
+   * @return route
+   */
   DotlanRoute getRoute(DotlanRouteOption dotlanRouteOption, String... waypoints);
 
 }

@@ -14,32 +14,26 @@
  * limitations under the License.
  */
 
-package com.github.jdtk0x5d.eve.jet.config.spring.beans;
+package com.github.jdtk0x5d.eve.jet.view.fx.annotations;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.ResourceBundle;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * Annotation marking a filed in which certain color will be injected.
+ * Contains name for a required color.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Component
-public class ResourceBundleContainer {
+//TODO: implement named colors
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface NamedColor {
 
-  @Value("${resource.bundle.path}")
-  private String bundlePath;
-
-  private ResourceBundle resourceBundle;
-
-  @PostConstruct
-  public void init() {
-    resourceBundle = ResourceBundle.getBundle(bundlePath);
-  }
-
-  public ResourceBundle getResourceBundle() {
-    return resourceBundle;
-  }
+  /**
+   * Color name.
+   */
+  String value();
 }

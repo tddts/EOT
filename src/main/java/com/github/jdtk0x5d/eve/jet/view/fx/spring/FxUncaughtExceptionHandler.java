@@ -22,6 +22,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * {@code FxUncaughtExceptionHandler} is a simple implementation of {@link Thread.UncaughtExceptionHandler}
+ * that shows dialog with error message.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class FxUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {

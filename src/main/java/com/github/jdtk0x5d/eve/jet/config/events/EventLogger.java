@@ -22,6 +22,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
+ * {@code EventLogger} represents a logger that tracks all application events.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component

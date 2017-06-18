@@ -17,6 +17,9 @@
 package com.github.jdtk0x5d.eve.jet.oauth;
 
 /**
+ *{@code EmbeddedServer} represents an embedded HTTP server that is used in OAUTH 2.0 authorization and
+ * authentication process.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface EmbeddedServer {

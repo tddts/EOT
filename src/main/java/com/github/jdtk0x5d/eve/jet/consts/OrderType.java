@@ -17,6 +17,8 @@
 package com.github.jdtk0x5d.eve.jet.consts;
 
 /**
+ * {@code OrderType} represents a enumeration of order types.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public enum OrderType {
@@ -29,6 +31,9 @@ public enum OrderType {
     this.value = value;
   }
 
+  /**
+   * @return http URL parameter value
+   */
   public String getValue() {
     return value;
   }

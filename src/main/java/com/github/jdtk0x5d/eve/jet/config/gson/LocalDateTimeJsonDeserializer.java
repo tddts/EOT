@@ -25,6 +25,8 @@ import java.lang.reflect.Type;
 import java.time.*;
 
 /**
+ * {@link JsonDeserializer} for {@link LocalDateTime} objects.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class LocalDateTimeJsonDeserializer implements JsonDeserializer<LocalDateTime> {
@@ -33,7 +35,7 @@ public class LocalDateTimeJsonDeserializer implements JsonDeserializer<LocalDate
   public LocalDateTime deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
     Instant timeInstant = Instant.parse(jsonElement.getAsJsonPrimitive().getAsString());
     // Convert Zulu time to system time zone
-    //TODO: Convert time somwhere else
+    //TODO: Convert time somewhere else
     return ZonedDateTime.ofInstant(timeInstant, ZoneId.systemDefault()).toLocalDateTime();
   }
 }

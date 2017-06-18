@@ -27,13 +27,31 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
+ * {@code LoginService} represents a service processing user login and it's parameters.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface LoginService {
 
+  /**
+   * Generate full login URI using given credentials an supplies them to given consumer.
+   *
+   * @param credentialsSupplier credentials supplier
+   * @param loginUriConsumer    login URI consumer
+   */
   void processLogin(Supplier<Optional<Pair<String, String>>> credentialsSupplier, Consumer<URI> loginUriConsumer);
 
+  /**
+   * Sets new login type.
+   *
+   * @param value authorization type.
+   */
   void processLoginTypeChange(AuthorizationType value);
 
+  /**
+   * Sets new data source.
+   *
+   * @param restDataSource REST data source
+   */
   void processDataSourceChange(RestDataSource restDataSource);
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jdtk0x5d.eve.jet.view.fx.config.annotations;
+package com.github.jdtk0x5d.eve.jet.view.fx.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,11 +22,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation for marking JavaFX dialog classes.
+ * Contains path to corresponding FXML file.
+ * Used load JavaFX nodes from FXML and create dialog object.
+ *
  * @author Tigran_Dadaiants@epam.com
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FXController {
+public @interface FXDialog {
 
-  String value() default "";
+  /**
+   * Path to FXML file.
+   */
+  String value();
+
+  /**
+   * Determines if loaded JavaFX nodes will be put under "expandable content" of dialog pane or not.
+   */
+  boolean expandable() default false;
 }

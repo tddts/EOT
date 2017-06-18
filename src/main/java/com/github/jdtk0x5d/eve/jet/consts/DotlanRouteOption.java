@@ -17,12 +17,26 @@
 package com.github.jdtk0x5d.eve.jet.consts;
 
 /**
+ * {@code DotlanRouteOption} represents a enumeration of route options available on
+ * <a href="http://evemaps.dotlan.net/">evemaps.dotlan.net</a>
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public enum DotlanRouteOption {
 
+  /**
+   * Fastest route.
+   */
   FASTEST("", -1),
+
+  /**
+   * Route through only high-security systems.
+   */
   HIGH_SEC("2", 0.5),
+
+  /**
+   * Route through only low-security systems.
+   */
   LOW_SEC("3", 0);
 
   private final String value;
@@ -33,10 +47,16 @@ public enum DotlanRouteOption {
     this.security = security;
   }
 
+  /**
+   * @return http URL parameter value
+   */
   public String getValue() {
     return value;
   }
 
+  /**
+   * @return route overall security level
+   */
   public double getSecurity() {
     return security;
   }

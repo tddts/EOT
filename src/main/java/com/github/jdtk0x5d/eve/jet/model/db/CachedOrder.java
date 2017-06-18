@@ -26,6 +26,8 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
+ * {@code CachedOrder} represents a market order cached in database.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Table

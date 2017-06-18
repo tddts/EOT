@@ -20,9 +20,10 @@ import com.github.jdtk0x5d.eve.jet.view.fx.tools.ApplicationStartProvider;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 
 /**
+ * {@code FxApplicationStartProvider} is a {@link ApplicationStartProvider} implementation for JavaFX application.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class FxApplicationStartProvider extends Application implements ApplicationStartProvider {

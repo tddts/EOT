@@ -17,18 +17,18 @@
 package com.github.jdtk0x5d.eve.jet.view.fx.dialog;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
-import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXDialog;
-import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.Init;
+import com.github.jdtk0x5d.eve.jet.view.fx.annotations.FXDialog;
+import com.github.jdtk0x5d.eve.jet.view.fx.annotations.Init;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
 
-import javax.annotation.PostConstruct;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
+ * Simple dialog displaying exception and it's stack trace.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @FXDialog(value = "fxml/dialog-exception.fxml", expandable = true)

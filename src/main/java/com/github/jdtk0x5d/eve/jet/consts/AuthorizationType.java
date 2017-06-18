@@ -17,11 +17,26 @@
 package com.github.jdtk0x5d.eve.jet.consts;
 
 /**
+ * {@code AuthorizationType} represents a enumeration of authorization types available.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public enum AuthorizationType {
 
+  /**
+   * Implicit authorization.
+   * Does not require client ID and key.
+   * Lasts only 20 minutes.
+   * Authorization token received by such method <b>cannot be refreshed</b>.
+   */
   IMPLICIT,
+
+  /**
+   * Developer authorization.
+   * Requires client ID and key.
+   * Lasts only 20 minutes.
+   * Authorization token received by such method <b>can be refreshed</b>.
+   */
   DEV;
 
   public boolean isImplicit() {

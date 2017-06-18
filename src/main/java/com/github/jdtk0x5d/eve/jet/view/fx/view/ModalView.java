@@ -23,6 +23,9 @@ import javafx.stage.Stage;
 import java.util.ResourceBundle;
 
 /**
+ * {@code ModalView} represents modal JavaFX view.
+ * Automatically loads view from {@code FXML} file when created,
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class ModalView<T> extends View<T> {
@@ -51,18 +54,36 @@ public class ModalView<T> extends View<T> {
     return dialog;
   }
 
+  /**
+   * Get this view's Stage.
+   * @return Stage
+   */
   public Stage getStage() {
     return stage;
   }
 
+  /**
+   * Get this view's Scene
+   * @return Scene
+   */
   public Scene getScene() {
     return scene;
   }
 
+  /**
+   *  Show this view.
+   *
+   *  @see Stage#show()
+   */
   public void show() {
     stage.show();
   }
 
+  /**
+   *  Show this view and wait.
+   *
+   *  @see Stage#showAndWait()
+   */
   public void showAndWait() {
     stage.showAndWait();
   }

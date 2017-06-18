@@ -17,6 +17,9 @@
 package com.github.jdtk0x5d.eve.jet.model.client.dotlan;
 
 /**
+ * {@code DotlanJump} represents a jump between two systems in
+ * <a href="http://evemaps.dotlan.net/">evemaps.dotlan.net</a>
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class DotlanJump {

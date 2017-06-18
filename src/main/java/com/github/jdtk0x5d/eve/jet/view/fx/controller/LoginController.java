@@ -22,7 +22,7 @@ import com.github.jdtk0x5d.eve.jet.consts.RestDataSource;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.service.LoginService;
 import com.github.jdtk0x5d.eve.jet.service.UserDataService;
-import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXController;
+import com.github.jdtk0x5d.eve.jet.view.fx.annotations.FXController;
 import com.github.jdtk0x5d.eve.jet.view.fx.dialog.DevCredentialsDialog;
 import com.github.jdtk0x5d.eve.jet.view.fx.spring.DialogProvider;
 import com.github.jdtk0x5d.eve.jet.view.fx.tools.message.provider.MessageHelper;

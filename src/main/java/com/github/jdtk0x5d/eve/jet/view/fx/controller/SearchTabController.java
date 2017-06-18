@@ -20,7 +20,7 @@ package com.github.jdtk0x5d.eve.jet.view.fx.controller;
 import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.context.events.UserDataEvent;
-import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXController;
+import com.github.jdtk0x5d.eve.jet.view.fx.annotations.FXController;
 import com.github.jdtk0x5d.eve.jet.view.fx.controls.DoubleTextField;
 import com.github.jdtk0x5d.eve.jet.view.fx.controls.ItemListTextField;
 import com.github.jdtk0x5d.eve.jet.view.fx.controls.LongTextField;

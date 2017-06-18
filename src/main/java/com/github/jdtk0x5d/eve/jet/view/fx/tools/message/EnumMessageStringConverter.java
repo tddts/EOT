@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * {@link StringConverter} implementation that provides mssages for Enum objects.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class EnumMessageStringConverter<T extends Enum<T>> extends StringConverter<T> {

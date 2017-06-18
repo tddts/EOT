@@ -21,6 +21,8 @@ import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
+ * {@code RestClientProvider} is an interface providing tools for REST client implementations.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface RestClientProvider {

@@ -17,12 +17,20 @@
 package com.github.jdtk0x5d.eve.jet.consts;
 
 /**
+ * {@code RestDataSource} represents a enumeration of REST data sources.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public enum RestDataSource {
 
+  /**
+   * "Tranquility" - main server.
+   */
   TRANQULITY("tranquility"),
 
+  /**
+   * "Singularity" - test server.
+   */
   SINGULARITY("singularity");
 
   private final String value;
@@ -31,6 +39,9 @@ public enum RestDataSource {
     this.value = value;
   }
 
+  /**
+   * @return http URL parameter value
+   */
   public String getValue() {
     return value;
   }

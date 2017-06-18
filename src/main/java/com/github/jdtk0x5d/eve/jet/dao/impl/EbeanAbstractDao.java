@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Collection;
 
 /**
+ * {@code EbeanAbstractDao}represents an abstract DAO implementation using {@link EbeanServer}.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public abstract class EbeanAbstractDao<T> implements GenericDao<T> {

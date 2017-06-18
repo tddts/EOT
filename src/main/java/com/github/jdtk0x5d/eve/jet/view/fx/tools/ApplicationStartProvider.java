@@ -17,9 +17,14 @@
 package com.github.jdtk0x5d.eve.jet.view.fx.tools;
 
 /**
+ * {@code ApplicationStartProvider} is an interface for an object that handles application start.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface ApplicationStartProvider {
 
+  /**
+   * Start application.
+   */
   void startApplication();
 }

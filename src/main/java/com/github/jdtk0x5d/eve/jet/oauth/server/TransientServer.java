@@ -30,6 +30,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * {@code TransientServer} represents a server that can be started for a short period of time just to receive
+ * OAUTH 2.0 requests.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class TransientServer {

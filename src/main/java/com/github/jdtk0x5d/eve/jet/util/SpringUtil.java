@@ -22,11 +22,20 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanInitializationException;
 
 /**
+ * Utility class for operations with Spring objects.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class SpringUtil {
 
-  public static Pair<Class<?>, Object> checkForDinamicProxy(Object bean) throws BeanInitializationException{
+  /**
+   * Checks if given bean is a dynamic proxy and if it is so returns actual bean behind proxy and it's type.
+   *
+   * @param bean bean object
+   * @return pair containing of bean and it's class
+   * @throws BeanInitializationException in case of any exception
+   */
+  public static Pair<Class<?>, Object> checkForDinamicProxy(Object bean) throws BeanInitializationException {
     try {
       Class<?> type = bean.getClass();
       if (AopUtils.isJdkDynamicProxy(bean)) {
@@ -39,7 +48,6 @@ public class SpringUtil {
       throw new BeanInitializationException(e.getMessage(), e);
     }
   }
-
 
 
 }

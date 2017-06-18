@@ -19,15 +19,37 @@ package com.github.jdtk0x5d.eve.jet.service;
 import com.github.jdtk0x5d.eve.jet.model.app.OrderSearchRow;
 
 /**
+ * {@code UserInterfaceService} represents a service providing access to in-game user interface.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface UserInterfaceService {
 
+  /**
+   * Set route in in-game user interface from selling order location to buying order location using given row.
+   *
+   * @param searchRow order search result row
+   */
   void setFullRoute(OrderSearchRow searchRow);
 
+  /**
+   * Set waypoint to buy order location in in-game user interface using given row.
+   *
+   * @param searchRow order search result row
+   */
   void setBuyWaypoint(OrderSearchRow searchRow);
 
+  /**
+   * Set waypoint to sell order location in in-game user interface using given row.
+   *
+   * @param searchRow order search result row
+   */
   void setSellWaypoint(OrderSearchRow searchRow);
 
+  /**
+   * Open market details for item from given row.
+   *
+   * @param searchRow order search result row
+   */
   void openMarketDetails(OrderSearchRow searchRow);
 }

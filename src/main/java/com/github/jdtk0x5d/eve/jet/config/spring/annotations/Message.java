@@ -16,17 +16,36 @@
 
 package com.github.jdtk0x5d.eve.jet.config.spring.annotations;
 
+import com.github.jdtk0x5d.eve.jet.config.spring.postprocessor.MessageAnnotationBeanPostProcessor;
+import org.springframework.context.MessageSource;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Marks a field or a method to be provided with text message with given key.
+ * <p>
+ * Note that actual processing of the {@code @Value} annotation is performed
+ * by a {@link org.springframework.beans.factory.config.BeanPostProcessor
+ * BeanPostProcessor} which in turn means that you <em>cannot</em> use
+ * {@code @Value} within
+ * {@link org.springframework.beans.factory.config.BeanPostProcessor
+ * BeanPostProcessor} or
+ * {@link org.springframework.beans.factory.config.BeanFactoryPostProcessor BeanFactoryPostProcessor}
+ * types.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
+ * @see MessageSource
+ * @see MessageAnnotationBeanPostProcessor
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Message {
 
+  /**
+   * Message key.
+   */
   String value();
 }

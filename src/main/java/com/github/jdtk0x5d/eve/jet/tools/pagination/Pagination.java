@@ -17,11 +17,19 @@
 package com.github.jdtk0x5d.eve.jet.tools.pagination;
 
 /**
+ * {@code Pagination} is an interface for classes performing any type of pagination process.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface Pagination {
 
+  /**
+   * Perform pagination.
+   */
   void perform();
 
+  /**
+   * Stop pagination process.
+   */
   void stop();
 }

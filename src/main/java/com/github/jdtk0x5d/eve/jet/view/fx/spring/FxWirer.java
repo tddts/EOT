@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * {@code FxWirer} provides functionality for wiring JavaFX objects to Spring context.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class FxWirer {
@@ -36,11 +38,26 @@ public class FxWirer {
   @Autowired
   private AutowireCapableBeanFactory beanFactory;
 
+  /**
+   * View given view's controller to Spring context.
+   *
+   * @param view view
+   */
   public void wire(View<?> view) {
     Object controller = view.getController();
     if (controller == null) return;
     wireController(controller);
     wireNestedControllers(controller);
+  }
+
+  /**
+   * Wire object to Spring context using class simple name as a bean's name.
+   *
+   * @param object object
+   */
+  public void initBean(Object object) {
+    beanFactory.autowireBean(object);
+    beanFactory.initializeBean(object, object.getClass().getSimpleName());
   }
 
   private void wireNestedControllers(Object controller) {
@@ -66,10 +83,5 @@ public class FxWirer {
 
   private void wireController(Object controller) {
     initBean(controller);
-  }
-
-  public void initBean(Object object) {
-    beanFactory.autowireBean(object);
-    beanFactory.initializeBean(object, object.getClass().getSimpleName());
   }
 }

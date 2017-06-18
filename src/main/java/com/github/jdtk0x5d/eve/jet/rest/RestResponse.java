@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
+ * {@code RestResponse} represents a response received from REST server.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class RestResponse<T> {

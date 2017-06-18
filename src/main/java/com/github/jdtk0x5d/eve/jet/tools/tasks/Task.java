@@ -19,13 +19,26 @@ package com.github.jdtk0x5d.eve.jet.tools.tasks;
 import com.github.jdtk0x5d.eve.jet.tools.Action;
 
 /**
+ * {@code Task} represents a simple task that can be executed by {@link TaskQueue}.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface Task {
 
+  /**
+   * Run task.
+   */
   void run();
 
+  /**
+   * Stop task execution.
+   */
   void stop();
 
+  /**
+   * Set on-stop action.
+   *
+   * @param action on-stop action.
+   */
   void onStop(Action action);
 }

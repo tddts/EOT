@@ -19,11 +19,25 @@ package com.github.jdtk0x5d.eve.jet.oauth;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.sso.AccessToken;
 
 /**
+ * {@code QueryParser} represents a parser for access tokens and authorization codes.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface QueryParser {
 
+  /**
+   * Get access token from given URI query.
+   *
+   * @param query URI query
+   * @return access token
+   */
   AccessToken parseAccessToken(String query);
 
+  /**
+   * Get authorization code from given URI query
+   *
+   * @param query URI query
+   * @return authorization code
+   */
   String parseAuthCode(String query);
 }

@@ -16,12 +16,17 @@
 
 package com.github.jdtk0x5d.eve.jet.config.spring.annotations;
 
+import com.github.jdtk0x5d.eve.jet.config.spring.aspect.ProfilingAnnotationAspect;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Marks a method to measure execution time.
+ *
+ * @see ProfilingAnnotationAspect
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Target(ElementType.METHOD)

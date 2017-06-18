@@ -16,29 +16,24 @@
 
 package com.github.jdtk0x5d.eve.jet.util;
 
-import com.github.jdtk0x5d.eve.jet.exception.ApplicationException;
 import com.github.jdtk0x5d.eve.jet.exception.BrowserOpeningException;
-import com.github.jdtk0x5d.eve.jet.util.SpringUtil;
-import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.awt.*;
-import java.lang.reflect.Field;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
+ * Class providing utility methods used for view.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class ViewUtil {
 
+  /**
+   * Open given URI in Web Browser.
+   *
+   * @param uri page URI
+   * @throws BrowserOpeningException in case of any errors
+   */
   public static void openWebpage(URI uri) throws BrowserOpeningException {
     Thread thread = new Thread(() -> openPage(uri));
     thread.start();

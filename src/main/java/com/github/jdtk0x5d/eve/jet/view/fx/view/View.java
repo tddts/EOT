@@ -25,6 +25,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
+ * {@code View} represents JavaFX view.
+ * Automatically loads view from {@code FXML} file when created,
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class View<T> {
@@ -59,22 +62,42 @@ public class View<T> {
     controller = loader.getController();
   }
 
-  public String getFileName() {
-    return fileName;
-  }
-
   private URL getFileURL() {
     return Thread.currentThread().getContextClassLoader().getResource(fileName);
   }
 
+  /**
+   * Get name of FXML file used for this view.
+   *
+   * @return .fxml file name.
+   */
+  public String getFileName() {
+    return fileName;
+  }
+
+  /**
+   * Get {@link FXMLLoader} used to load this view.
+   *
+   * @return FXML loader
+   */
   public FXMLLoader getLoader() {
     return loader;
   }
 
+  /**
+   * Get this view's controller object.
+   *
+   * @return controller
+   */
   public T getController() {
     return controller;
   }
 
+  /**
+   * Get this view's root node.
+   *
+   * @return root node
+   */
   public Parent getRoot() {
     return root;
   }

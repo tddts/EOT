@@ -19,6 +19,8 @@ package com.github.jdtk0x5d.eve.jet.mapper;
 import io.ebean.SqlRow;
 
 /**
+ * {@code Mapper} is an interface for converting {@link SqlRow} to a certain object.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface Mapper<T> {

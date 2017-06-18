@@ -23,6 +23,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
+ * {@code CachedMarketPrice} represents a market price cached in database.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Entity

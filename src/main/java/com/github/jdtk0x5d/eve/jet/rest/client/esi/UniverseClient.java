@@ -25,6 +25,9 @@ import com.github.jdtk0x5d.eve.jet.model.client.esi.universe.UniverseType;
 import java.util.List;
 
 /**
+ * {@code UniverseClient} represents a REST client which deals with in-game universe data through
+ * EVE Swagger Interface (an OpenAPI for EVE Online) providing API for Location
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface UniverseClient {

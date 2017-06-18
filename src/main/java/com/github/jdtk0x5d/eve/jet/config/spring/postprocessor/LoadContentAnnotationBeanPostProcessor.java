@@ -29,6 +29,9 @@ import java.lang.reflect.Field;
 import java.util.Properties;
 
 /**
+ * {@code LoadContentAnnotationBeanPostProcessor} is a {@link BeanPostProcessor} that inserts content of files into
+ * fields marked by {@link LoadContent} annotation presenting in processed beans.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class LoadContentAnnotationBeanPostProcessor implements BeanPostProcessor {

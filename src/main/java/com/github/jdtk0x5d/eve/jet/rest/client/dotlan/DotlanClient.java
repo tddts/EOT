@@ -21,6 +21,8 @@ import com.github.jdtk0x5d.eve.jet.consts.DotlanRouteOption;
 import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
 
 /**
+ * {@code DotlanClient} represents REST client for <a href="http://evemaps.dotlan.net/">evemaps.dotlan.net</a>
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface DotlanClient {

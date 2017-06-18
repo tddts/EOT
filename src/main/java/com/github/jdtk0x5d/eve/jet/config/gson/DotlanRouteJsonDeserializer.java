@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * {@link JsonDeserializer} for {@link DotlanRoute} objects.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class DotlanRouteJsonDeserializer implements JsonDeserializer<DotlanRoute> {

@@ -31,6 +31,8 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 /**
+ * {@code RetryAnnotationAspect} as an Aspect definition implementing retry logic for REST client methods.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Aspect

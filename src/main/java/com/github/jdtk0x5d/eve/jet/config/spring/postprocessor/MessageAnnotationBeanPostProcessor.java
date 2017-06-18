@@ -35,6 +35,9 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 /**
+ * {@code MessageAnnotationBeanPostProcessor} is a {@link BeanPostProcessor} that inserts messages to fields and methods
+ * of processed beans which are marked by {@link Message} annotation.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {

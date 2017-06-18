@@ -19,6 +19,9 @@ package com.github.jdtk0x5d.eve.jet.model.client.dotlan;
 import java.util.List;
 
 /**
+ * {@code DotlanRoute} represents a route between two systems in
+ * <a href="http://evemaps.dotlan.net/">evemaps.dotlan.net</a>
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class DotlanRoute {

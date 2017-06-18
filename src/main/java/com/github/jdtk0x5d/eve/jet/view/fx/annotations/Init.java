@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jdtk0x5d.eve.jet.view.fx.config.annotations;
+package com.github.jdtk0x5d.eve.jet.view.fx.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,6 +22,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotations marking any king of initialization method.
+ * Can be used in Dialogs to mark initialization method receiving any required parameters.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Target(ElementType.METHOD)

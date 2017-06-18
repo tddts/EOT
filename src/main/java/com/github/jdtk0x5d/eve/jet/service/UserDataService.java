@@ -17,15 +17,37 @@
 package com.github.jdtk0x5d.eve.jet.service;
 
 /**
+ * {@code UserDataService} represents a service providing access to user data.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface UserDataService {
 
+  /**
+   * Get amount of ISK in all user's wallets.
+   *
+   * @return amount of ISK.
+   */
   long getWalletsAmount();
 
+  /**
+   * Get amount of ISK in all user's wallets as String.
+   *
+   * @return amount of ISK as String.
+   */
   String getWalletsAmountAsString();
 
+  /**
+   * Save given character ID
+   *
+   * @param idString character ID
+   */
   void saveCharacterId(String idString);
 
+  /**
+   * Get current character ID.
+   *
+   * @return character ID.
+   */
   String getCharacterId();
 }

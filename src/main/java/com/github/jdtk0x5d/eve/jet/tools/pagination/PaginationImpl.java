@@ -27,6 +27,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
+ * {@code PaginationImpl} is a {@link Pagination} implementation performing pagination over REST resource.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class PaginationImpl<E, T extends Collection<E>> implements Pagination, PaginationErrorHandler {

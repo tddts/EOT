@@ -22,6 +22,9 @@ import com.github.jdtk0x5d.eve.jet.model.client.esi.wallet.Wallet;
 import java.util.List;
 
 /**
+ * {@code WalletClient} represents a REST client which deals with in-game user wallet data through
+ * EVE Swagger Interface (an OpenAPI for EVE Online) providing API for Location
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface WalletClient {

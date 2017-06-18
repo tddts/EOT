@@ -28,10 +28,19 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 /**
+ * Class providing various utility methods.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class Util {
 
+  /**
+   * Load content of given resource as String.
+   *
+   * @param resourceName path to resource
+   * @return file content as String
+   * @throws FileLoadingException in case of any errors
+   */
   public static String loadContent(String resourceName) throws FileLoadingException {
     try (InputStream inputStream = Util.class.getResourceAsStream(resourceName)) {
       if (inputStream == null) {
@@ -43,6 +52,12 @@ public class Util {
     }
   }
 
+  /**
+   * Sleep for given timeout.
+   * Simple wrap for {@link Thread#sleep(long)}
+   *
+   * @param timeout timeout
+   */
   public static void sleepForTimeout(long timeout) {
     try {
       Thread.sleep(timeout);
@@ -51,6 +66,13 @@ public class Util {
     }
   }
 
+  /**
+   * Save given property to given propeorty file.
+   *
+   * @param fileName property file path
+   * @param key      property key
+   * @param value    property value
+   */
   public static void saveProperty(String fileName, String key, String value) {
     try {
       File file = new File(fileName);
@@ -72,6 +94,13 @@ public class Util {
     }
   }
 
+  /**
+   * Load property with given key from given property file.
+   *
+   * @param fileName property file path
+   * @param key      property key
+   * @return property value
+   */
   public static String loadProperty(String fileName, String key) {
     try {
       File file = new File(fileName);

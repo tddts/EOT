@@ -17,9 +17,16 @@
 package com.github.jdtk0x5d.eve.jet.service;
 
 /**
+ * {@code TaskService} represents a simple service for task execution.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface TaskService {
 
+  /**
+   *  Run given Runnable in a new thread.
+   *
+   * @param runnable runnable.
+   */
   void execute(Runnable runnable);
 }

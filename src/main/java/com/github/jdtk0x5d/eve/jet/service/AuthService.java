@@ -17,28 +17,70 @@
 package com.github.jdtk0x5d.eve.jet.service;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.client.RestClientException;
 
 import java.net.URI;
 
 /**
+ * {@code AuthService} represents a service providing access to EVE Swagger Interface
+ * (an OpenAPI for EVE Online) authorization.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface AuthService {
 
+  /**
+   * Get EVE Online login page URL.
+   *
+   * @return login page URL as String.
+   */
   String getLoginPage();
 
-  URI getLoginPageURI();
-
+  /**
+   * Get EVE Online login page URL for given client id.
+   *
+   * @param clientId client id
+   * @return login page URL as String.
+   */
   String getLoginPage(String clientId);
 
+  /**
+   * Get EVE Online login page URI.
+   *
+   * @return login page URI.
+   */
+  URI getLoginPageURI();
+
+  /**
+   * Get EVE Online login page URI for given client id.
+   *
+   * @param clientId client id
+   * @return login page URI.
+   */
   URI getLoginPageURI(String clientId);
 
+  /**
+   * Process access token in given URI quiery
+   *
+   * @param query URI query
+   */
   void processAccessToken(String query);
 
-  HttpStatus processAuthorizationCode(String query) throws RestClientException;
+  /**
+   * Process authorization code in given URI quiery
+   *
+   * @param query URI query
+   */
+  HttpStatus processAuthorizationCode(String query);
 
-  void refreshAccessToken() throws RestClientException;
+  /**
+   * Refresh existing access token.
+   */
+  void refreshAccessToken();
 
-  HttpStatus processAuthorization(String query) throws RestClientException;
+  /**
+   * Process either access code or authorization code from given query depending on it's content.
+   *
+   * @param query URI query
+   */
+  HttpStatus processAuthorization(String query);
 }

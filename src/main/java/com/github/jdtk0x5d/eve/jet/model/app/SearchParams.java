@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
+ * {@code SearchParams} is a DTO with parameters for order search.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class SearchParams {
@@ -83,13 +85,13 @@ public class SearchParams {
     return resultConsumer;
   }
 
-  public void consumeResult(List<OrderSearchRow> result){
-    resultConsumer.accept(result);
-  }
-
   public SearchParams setResultConsumer(Consumer<List<OrderSearchRow>> resultConsumer) {
     this.resultConsumer = resultConsumer;
     return this;
+  }
+
+  public void consumeResult(List<OrderSearchRow> result) {
+    resultConsumer.accept(result);
   }
 
   public boolean isValid() {

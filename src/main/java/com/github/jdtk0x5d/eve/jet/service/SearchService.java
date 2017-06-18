@@ -19,12 +19,23 @@ package com.github.jdtk0x5d.eve.jet.service;
 import com.github.jdtk0x5d.eve.jet.model.app.SearchParams;
 
 /**
+ * {@code SearchService} represents a service processing search of most profitable orders.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface SearchService {
 
+  /**
+   * Find a list of most profitable orders.
+   * Result is supplied to consumer defined in {@link SearchParams} object.
+   *
+   * @param searchParams search parameters
+   */
   void searchForOrders(SearchParams searchParams);
 
+  /**
+   * Stop current search process.
+   */
   void stopSearch();
 
 }

@@ -17,9 +17,9 @@
 package com.github.jdtk0x5d.eve.jet.model.db;
 
 
-import io.ebean.SqlRow;
-
 /**
+ * {@code ResultOrder} represents a single result of order search.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class ResultOrder {

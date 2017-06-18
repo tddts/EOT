@@ -19,11 +19,26 @@ package com.github.jdtk0x5d.eve.jet.view.fx.tools.message.provider;
 import javafx.util.StringConverter;
 
 /**
+ * {@code MessageHelper} is a helper class that provides api to receive messages for various situations.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface MessageHelper {
 
+  /**
+   * Returns message for given Enum object.
+   *
+   * @param object Enum object
+   * @return message for given object
+   */
   String getMessage(Enum object);
 
+  /**
+   * Returns {@link StringConverter} for given array of Enums.
+   *
+   * @param values array of Enums.
+   * @param <T> type of Enum
+   * @return string converter for given array
+   */
   <T extends Enum<T>> StringConverter<T> getConverter(T[] values);
 }

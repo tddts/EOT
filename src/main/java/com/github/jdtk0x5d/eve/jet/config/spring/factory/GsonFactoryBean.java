@@ -25,6 +25,9 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.Map;
 
 /**
+ * {@code GsonFactoryBean} is a {@link FactoryBean} for {@link Gson}.
+ * Can be provided with custom {@link JsonDeserializer} implementations.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class GsonFactoryBean implements FactoryBean<Gson>, InitializingBean {

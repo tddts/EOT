@@ -23,7 +23,13 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
+ * {@code ApplicationStarterBean} is a bean that starts application after Spring context have been initialized.
+ * Actual application starting logic is implemented inside {@link ApplicationStartProvider} implementation which
+ * allows to separate core logic from framework-specific code.
+ * You must create such implementation in order to launch application.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
+ * @see ApplicationStartProvider
  */
 @Component
 public class ApplicationStarterBean {

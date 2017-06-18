@@ -19,12 +19,20 @@ package com.github.jdtk0x5d.eve.jet.context;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
+ * {@code Context} represents an application context.
+ * Contains Spring's {@link ClassPathXmlApplicationContext}.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class Context {
 
   private static ClassPathXmlApplicationContext SPRING_CONTEXT;
 
+  /**
+   * Initializes application contentx by loading Spring context from given file.
+   *
+   * @param configLocation spring configuration file location
+   */
   public static synchronized void initialize(String configLocation) {
     if (SPRING_CONTEXT == null) {
       new ClassPathXmlApplicationContext(configLocation);

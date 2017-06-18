@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jdtk0x5d.eve.jet.view.fx.config.annotations;
+package com.github.jdtk0x5d.eve.jet.view.fx.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,11 +22,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Tigran_Dadaiants dtkcommon@gmail.com
+ * Annotation for marking JavaFX controllers.
+ * Contains path to corresponding FXML file for external usage.
+ *
+ * @author Tigran_Dadaiants@epam.com
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NamedColor {
+public @interface FXController {
 
+  /**
+   * FXML file path.
+   */
   String value();
 }

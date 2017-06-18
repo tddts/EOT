@@ -19,9 +19,13 @@ package com.github.jdtk0x5d.eve.jet.config.ebean;
 
 import com.github.jdtk0x5d.eve.jet.model.client.dotlan.DotlanRoute;
 import com.google.gson.Gson;
+import io.ebeaninternal.server.type.ScalarType;
 import io.ebeaninternal.server.type.ScalarTypeBaseVarchar;
 
 /**
+ * {@link ScalarType} for {@link DotlanRoute}.
+ * Implements saving {@link DotlanRoute} object as a JSON string.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class ScalarTypeDotlanRoute extends ScalarTypeBaseVarchar<DotlanRoute> {

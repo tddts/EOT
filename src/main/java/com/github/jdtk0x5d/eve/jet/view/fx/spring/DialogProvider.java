@@ -16,9 +16,9 @@
 
 package com.github.jdtk0x5d.eve.jet.view.fx.spring;
 
-import com.github.jdtk0x5d.eve.jet.config.spring.beans.ResourceBundleContainer;
-import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXDialog;
-import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.Init;
+import com.github.jdtk0x5d.eve.jet.config.spring.beans.ResourceBundleProvider;
+import com.github.jdtk0x5d.eve.jet.view.fx.annotations.FXDialog;
+import com.github.jdtk0x5d.eve.jet.view.fx.annotations.Init;
 import com.github.jdtk0x5d.eve.jet.view.fx.exception.DialogException;
 import com.github.jdtk0x5d.eve.jet.view.fx.view.View;
 import javafx.fxml.FXML;
@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Dialog;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +35,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * {@code DialogProvider} creates {@link Dialog} objects by processing classes with special annotations.
+ * {@code DialogProvider} is capable of injecting dialog with FXML nodes similar to JavaFX controllers,
+ * and also capable processing Dialog as a Spring bean (including injection of dependencies).
+ * <p>
+ * To create a Dialog via {@code DialogProvider} you should mark corresponding Dialog implementation with
+ * {@link FXDialog} annotation and describe path to FXML file with dialog content.
+ * <p>
+ * To initialize dialog crate a method with required parameters and mark by {@link Init} annotation.
+ * This initialization method will be invoked every time this dialog is called.
+ * <p>
+ * Such dialog would also support {@link PostConstruct} annotation as a Spring-processed bean.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class DialogProvider {
@@ -46,13 +59,28 @@ public class DialogProvider {
   @Autowired
   private FxWirer fxWirer;
   @Autowired
-  private ResourceBundleContainer resourceBundleContainer;
+  private ResourceBundleProvider resourceBundleProvider;
 
+  /**
+   * Create dialog of given type.
+   *
+   * @param type dialog class
+   * @param <T>  dialog generic type
+   * @return dialog of given type.
+   */
   @SuppressWarnings("unchecked")
   public <T extends Dialog<?>> T getDialog(Class<T> type) {
     return getDialog(type, EMPTY_ARGS);
   }
 
+  /**
+   * Create dialog of given type using given arguments.
+   *
+   * @param type dialog class
+   * @param <T>  dialog generic type
+   * @param args dialog arguments
+   * @return dialog of given type.
+   */
   @SuppressWarnings("unchecked")
   public <T extends Dialog<?>> T getDialog(Class<T> type, Object... args) {
     // Try to use cached dialog
@@ -133,9 +161,10 @@ public class DialogProvider {
 
   private void setDialogContent(Dialog<?> dialog, Node root, FXDialog dialogAnnotation) {
     boolean expandable = dialogAnnotation.expandable();
-    if(expandable){
+    if (expandable) {
       dialog.getDialogPane().setExpandableContent(root);
-    }else {
+    }
+    else {
       dialog.getDialogPane().setContent(root);
     }
   }
@@ -149,6 +178,6 @@ public class DialogProvider {
       throw new DialogException("@FXDialog should contain path to FXML file!");
     }
 
-    return new View<>(filePath, resourceBundleContainer.getResourceBundle());
+    return new View<>(filePath, resourceBundleProvider.getResourceBundle());
   }
 }

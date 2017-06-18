@@ -17,6 +17,8 @@
 package com.github.jdtk0x5d.eve.jet.context.events;
 
 /**
+ * {@code SearchStatusEvent} represents a enumeration of events occurring in a order search process.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public enum SearchStatusEvent {

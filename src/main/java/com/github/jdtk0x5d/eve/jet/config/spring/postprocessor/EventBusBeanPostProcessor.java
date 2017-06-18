@@ -29,6 +29,9 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import java.lang.reflect.Method;
 
 /**
+ * {@code EventBusBeanPostProcessor} is {@link BeanPostProcessor} that registers beans to {@link EventBus} if they
+ * have methods marked with {@link Subscribe} annotation.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class EventBusBeanPostProcessor implements BeanPostProcessor {

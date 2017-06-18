@@ -16,7 +16,7 @@
 
 package com.github.jdtk0x5d.eve.jet.view.fx.spring;
 
-import com.github.jdtk0x5d.eve.jet.config.spring.beans.ResourceBundleContainer;
+import com.github.jdtk0x5d.eve.jet.config.spring.beans.ResourceBundleProvider;
 import com.github.jdtk0x5d.eve.jet.view.fx.view.View;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -38,12 +38,12 @@ public class FxViewProvider {
   @Autowired
   private FxWirer fxWirer;
   @Autowired
-  private ResourceBundleContainer resourceBundleContainer;
+  private ResourceBundleProvider resourceBundleProvider;
 
 
   public void showView(Stage stage, EventHandler<WindowEvent> onCloseEvent) {
 
-    View<?> view = new View<>(file, resourceBundleContainer.getResourceBundle());
+    View<?> view = new View<>(file, resourceBundleProvider.getResourceBundle());
     fxWirer.wire(view);
 
     Scene scene = new Scene(view.getRoot(), width, height);

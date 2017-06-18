@@ -25,6 +25,9 @@ import org.springframework.beans.factory.FactoryBean;
 import javax.annotation.PostConstruct;
 
 /**
+ * Factory bean for {@link EbeanServer} object.
+ * Crates {@link EbeanServer} from given {@link ServerConfig} object.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class EbeanServerFactoryBean implements FactoryBean<EbeanServer> {

@@ -22,13 +22,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Marker for methods implementing REST client logic.
+ * Method marked with such annotation will be repeated if REST-specific exception is thrown.
+ * Class in which this method defined should have {@link RestClient} annotation.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
+ * @see com.github.jdtk0x5d.eve.jet.config.spring.aspect.RetryAnnotationAspect
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Retry {
 
+  /**
+   * Timeout to wait before each retry.
+   */
   int timeout() default 100;
 
+  /**
+   * Maximum number of retries.
+   */
   int retries() default 3;
 }

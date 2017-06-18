@@ -22,6 +22,8 @@ import javafx.beans.property.*;
 import javafx.util.converter.NumberStringConverter;
 
 /**
+ * {@code OrderSearchRow} represents a row in a table with order search results.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class OrderSearchRow {

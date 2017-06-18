@@ -21,18 +21,20 @@ import com.github.jdtk0x5d.eve.jet.consts.OrderType;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketHistory;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketOrder;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.market.MarketPrice;
-import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 
 /**
+ * {@code MarketClient} represents a REST client which deals with in-game market through
+ * EVE Swagger Interface (an OpenAPI for EVE Online) providing API for Location
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface MarketClient {
 
-  RestResponse<List<MarketOrder>> getOrders(OrderType orderType, long regionId, int page) throws RestClientException;
+  RestResponse<List<MarketOrder>> getOrders(OrderType orderType, long regionId, int page);
 
-  RestResponse<List<MarketPrice>> getAllItemPrices() throws RestClientException;
+  RestResponse<List<MarketPrice>> getAllItemPrices();
 
-  RestResponse<List<MarketHistory>> getItemHistory(int type_id, int region_id) throws RestClientException;
+  RestResponse<List<MarketHistory>> getItemHistory(int type_id, int region_id);
 }

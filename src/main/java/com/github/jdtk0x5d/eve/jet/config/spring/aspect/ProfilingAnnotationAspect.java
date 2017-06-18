@@ -25,7 +25,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 /**
+ * {@code ProfilingAnnotationAspect} is an Aspect definition implementing profiling logic for methods marked with
+ * {@link Profiling} annotation.
+ * Simply calculates time between before and after method's execution and prints out log with results.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
+ * @see Profiling
  */
 @Aspect
 @Component

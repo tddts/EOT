@@ -17,6 +17,8 @@
 package com.github.jdtk0x5d.eve.jet.context.events;
 
 /**
+ * {@code UserDataEvent} represents a enumeration of user data manipulation events.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public enum UserDataEvent {

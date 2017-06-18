@@ -29,6 +29,8 @@ import java.io.OutputStream;
 import java.net.URI;
 
 /**
+ * {@code AuthHttpHandler} is a {@link HttpHandler} that processes redirected OAUTH 2,0 request.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class AuthHttpHandler implements HttpHandler {
