@@ -16,61 +16,48 @@
 
 package com.github.jdtk0x5d.eve.jet.view.fx.dialog;
 
-import com.github.jdtk0x5d.eve.jet.context.Context;
+import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
+import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXDialog;
+import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.Init;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import org.springframework.context.MessageSource;
 
+import javax.annotation.PostConstruct;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Locale;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@FXDialog(value = "fxml/dialog-exception.fxml", expandable = true)
 public class ExceptionDialog extends Alert {
 
-  private MessageSource messageSource;
+  @FXML
+  private TextArea textArea;
 
-  public ExceptionDialog(Throwable ex, MessageSource messageSource) {
+  @Message("dialog.exception.title")
+  private String title;
+  @Message("dialog.exception.header")
+  private String headerText;
+
+  public ExceptionDialog() {
     super(AlertType.ERROR);
-    this.messageSource = messageSource;
-    init(ex);
   }
 
+  @Init
   private void init(Throwable ex) {
-    setTitle(getLocalizedMessage("dialog.exception.title"));
-    setHeaderText(getLocalizedMessage("dialog.exception.header"));
+    setTitle(title);
+    setHeaderText(headerText);
     setContentText(ex.getLocalizedMessage());
 
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     ex.printStackTrace(pw);
-    String exceptionText = sw.toString();
+    pw.flush();
+    pw.close();
 
-    Label label = new Label(getLocalizedMessage("dialog.exception.stacktrace"));
-
-    TextArea textArea = new TextArea(exceptionText);
-    textArea.setEditable(false);
-    textArea.setWrapText(true);
-
-    textArea.setMaxWidth(Double.MAX_VALUE);
-    textArea.setMaxHeight(Double.MAX_VALUE);
-    GridPane.setVgrow(textArea, Priority.ALWAYS);
-    GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-    GridPane expContent = new GridPane();
-    expContent.setMaxWidth(Double.MAX_VALUE);
-    expContent.add(label, 0, 0);
-    expContent.add(textArea, 0, 1);
-
-    getDialogPane().setExpandableContent(expContent);
-  }
-
-  private String getLocalizedMessage(String param) {
-    return messageSource.getMessage(param, new Object[0], Locale.getDefault());
+    textArea.setText(sw.toString());
   }
 }

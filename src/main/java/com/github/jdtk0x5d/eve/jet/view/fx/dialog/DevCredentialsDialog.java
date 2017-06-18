@@ -18,10 +18,11 @@ package com.github.jdtk0x5d.eve.jet.view.fx.dialog;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.FXDialog;
-import com.github.jdtk0x5d.eve.jet.view.fx.config.annotations.Init;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -40,12 +41,10 @@ public class DevCredentialsDialog extends Dialog<Pair<String, String>> {
   public DevCredentialsDialog() {
   }
 
-  @Init
-  public void init() {
-    // Set buttons
+  @PostConstruct
+  public void init(){
     ButtonType cancelButtonType = new ButtonType(cancelMessage, ButtonBar.ButtonData.CANCEL_CLOSE);
     getDialogPane().getButtonTypes().addAll(ButtonType.OK, cancelButtonType);
-    // Set return value
     setResultConverter(this::getResult);
   }
 

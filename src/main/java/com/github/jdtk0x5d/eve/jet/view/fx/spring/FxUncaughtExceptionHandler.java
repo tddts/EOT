@@ -18,24 +18,28 @@ package com.github.jdtk0x5d.eve.jet.view.fx.spring;
 
 import com.github.jdtk0x5d.eve.jet.view.fx.dialog.ExceptionDialog;
 import javafx.application.Platform;
-import org.springframework.context.MessageSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class FxUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-  private MessageSource messageSource;
+  private final Logger logger = LogManager.getLogger(Thread.UncaughtExceptionHandler.class);
 
-  public FxUncaughtExceptionHandler(MessageSource messageSource) {
-    this.messageSource = messageSource;
+  private DialogProvider dialogProvider;
+
+  public FxUncaughtExceptionHandler(DialogProvider dialogProvider) {
+    this.dialogProvider = dialogProvider;
   }
 
   @Override
   public void uncaughtException(Thread t, Throwable e) {
-    Platform.runLater(() ->{
-      ExceptionDialog dialog = new ExceptionDialog(e, messageSource);
-      dialog.showAndWait();
+    logger.error(e.getMessage(), e);
+    Platform.runLater(() -> {
+      ExceptionDialog exceptionDialog = dialogProvider.getDialog(ExceptionDialog.class, e);
+      exceptionDialog.showAndWait();
     });
   }
 }

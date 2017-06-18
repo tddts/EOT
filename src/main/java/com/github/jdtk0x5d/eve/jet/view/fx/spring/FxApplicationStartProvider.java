@@ -28,23 +28,23 @@ import org.springframework.context.MessageSource;
 public class FxApplicationStartProvider extends Application implements ApplicationStartProvider {
 
   private static FxViewProvider staticFxViewProvider;
-  private static MessageSource staticMessageSource;
+  private static DialogProvider staticDialogProvider;
 
   @Autowired
   private FxViewProvider fxViewProvider;
   @Autowired
-  private MessageSource messageSource;
+  private DialogProvider dialogProvider;
 
   @Override
   public void startApplication() {
     staticFxViewProvider = fxViewProvider;
-    staticMessageSource = messageSource;
+    staticDialogProvider = dialogProvider;
     launch();
   }
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    Thread.setDefaultUncaughtExceptionHandler(new FxUncaughtExceptionHandler(staticMessageSource));
+    Thread.setDefaultUncaughtExceptionHandler(new FxUncaughtExceptionHandler(staticDialogProvider));
     staticFxViewProvider.showView(primaryStage, event -> System.exit(0));
   }
 }

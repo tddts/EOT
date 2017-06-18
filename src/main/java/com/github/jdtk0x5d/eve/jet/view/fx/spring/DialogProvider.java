@@ -39,6 +39,7 @@ import java.util.Map;
 public class DialogProvider {
 
   private static final String FXML_FIELD_LOOKUP_PREFIX = "#";
+  private static final Object[] EMPTY_ARGS = new Object[]{};
 
   private Map<Class<?>, Dialog<?>> dialogCache = new HashMap<>();
 
@@ -49,14 +50,31 @@ public class DialogProvider {
 
   @SuppressWarnings("unchecked")
   public <T extends Dialog<?>> T getDialog(Class<T> type) {
-    // Try to use cached dialog
-    Dialog<?> cachedDialog = dialogCache.get(type);
-    // Create new dialog
-    return cachedDialog == null ? createDialog(type) : (T) cachedDialog;
+    return getDialog(type, EMPTY_ARGS);
   }
 
   @SuppressWarnings("unchecked")
-  private <T extends Dialog<?>> T createDialog(Class<T> type) {
+  public <T extends Dialog<?>> T getDialog(Class<T> type, Object... args) {
+    // Try to use cached dialog
+    Dialog<?> cachedDialog = getCachedDialog(type, args);
+    // Create new dialog
+    return cachedDialog == null ? createDialog(type, args) : (T) cachedDialog;
+  }
+
+  private Dialog<?> getCachedDialog(Class<?> type, Object... args) {
+    Dialog<?> cachedDialog = dialogCache.get(type);
+    if (cachedDialog == null) return null;
+
+    try {
+      processInitMethod(type, cachedDialog, args);
+      return cachedDialog;
+    } catch (InvocationTargetException | IllegalAccessException e) {
+      throw new DialogException("Could not initialize dialog!", e);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T extends Dialog<?>> T createDialog(Class<T> type, Object[] args) {
     Constructor<?>[] constructors = type.getConstructors();
     if (constructors.length == 0) {
       throw new DialogException("Dialog should have a public constructor!");
@@ -71,6 +89,7 @@ public class DialogProvider {
 
       T dialog = (T) constructors[0].newInstance();
       wireDialog(type, dialog);
+      processInitMethod(type, dialog, args);
       dialogCache.put(type, dialog);
       return dialog;
 
@@ -82,22 +101,27 @@ public class DialogProvider {
   private void wireDialog(Class<?> type, Dialog<?> dialog) throws IllegalAccessException, InvocationTargetException {
     wireFXML(type, dialog);
     fxWirer.initBean(dialog);
-    processInitMethod(type, dialog);
   }
 
-  private void processInitMethod(Class<?> type, Dialog<?> dialog) throws InvocationTargetException, IllegalAccessException {
+  private void processInitMethod(Class<?> type, Dialog<?> dialog, Object[] args) throws InvocationTargetException, IllegalAccessException {
     for (Method method : type.getDeclaredMethods()) {
       if (method.isAnnotationPresent(Init.class)) {
         method.setAccessible(true);
-        method.invoke(dialog);
+        method.invoke(dialog, args);
       }
     }
   }
 
   private void wireFXML(Class<?> type, Dialog<?> dialog) throws IllegalAccessException {
-    View<?> view = loadDialogView(type);
+
+    if (!type.isAnnotationPresent(FXDialog.class)) {
+      throw new DialogException("Dialog class should have a @FXDialog annotation!");
+    }
+    FXDialog dialogAnnotation = type.getDeclaredAnnotation(FXDialog.class);
+
+    View<?> view = loadDialogView(dialogAnnotation);
     Node root = view.getRoot();
-    dialog.getDialogPane().setContent(root);
+    setDialogContent(dialog, root, dialogAnnotation);
 
     for (Field field : type.getDeclaredFields()) {
       if (field.isAnnotationPresent(FXML.class)) {
@@ -107,13 +131,18 @@ public class DialogProvider {
     }
   }
 
-
-  private View<?> loadDialogView(Class<?> type) {
-    if (!type.isAnnotationPresent(FXDialog.class)) {
-      throw new DialogException("Dialog class should have a @FXDialog annotation!");
+  private void setDialogContent(Dialog<?> dialog, Node root, FXDialog dialogAnnotation) {
+    boolean expandable = dialogAnnotation.expandable();
+    if(expandable){
+      dialog.getDialogPane().setExpandableContent(root);
+    }else {
+      dialog.getDialogPane().setContent(root);
     }
+  }
 
-    FXDialog dialogAnnotation = type.getDeclaredAnnotation(FXDialog.class);
+
+  private View<?> loadDialogView(FXDialog dialogAnnotation) {
+
     String filePath = dialogAnnotation.value();
 
     if (filePath.isEmpty()) {

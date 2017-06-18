@@ -29,4 +29,6 @@ import java.lang.annotation.Target;
 public @interface FXDialog {
 
   String value();
+
+  boolean expandable() default false;
 }
