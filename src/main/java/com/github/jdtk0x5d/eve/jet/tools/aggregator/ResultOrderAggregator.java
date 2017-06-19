@@ -14,16 +14,30 @@
  * limitations under the License.
  */
 
-package com.github.jdtk0x5d.eve.jet.mapper;
+package com.github.jdtk0x5d.eve.jet.tools.aggregator;
 
-import io.ebean.SqlRow;
+import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
+
+import java.util.Comparator;
+import java.util.List;
 
 /**
- * {@code Mapper} is an interface for converting {@link SqlRow} to a certain object.
- *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface Mapper<T> {
+public class ResultOrderAggregator {
 
-  T convert(SqlRow sqlRow);
+
+  public List<ResultOrder> aggregate(List<ResultOrder> collection, long isk, double cargo) {
+
+    return null;
+  }
+
+  private class ResultOrderComparator implements Comparator<ResultOrder> {
+
+    @Override
+    public int compare(ResultOrder o1, ResultOrder o2) {
+      return o1.getProfit().compareTo(o2.getProfit());
+    }
+  }
+
 }

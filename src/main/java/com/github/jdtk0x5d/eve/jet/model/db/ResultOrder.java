@@ -17,17 +17,23 @@
 package com.github.jdtk0x5d.eve.jet.model.db;
 
 
+import io.ebean.annotation.Sql;
+
+import javax.persistence.Entity;
+
 /**
  * {@code ResultOrder} represents a single result of order search.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Entity
+@Sql
 public class ResultOrder {
 
   private Integer typeId;
 
-  private Integer sellOrderId;
-  private Integer buyOrderId;
+  private Long sellOrderId;
+  private Long buyOrderId;
 
   private Double sellPrice;
   private Double buyPrice;
@@ -44,6 +50,7 @@ public class ResultOrder {
   private Double itemCargoFreeVolume;
 
   private Double profit;
+  private Double profitPerUnit;
 
   public ResultOrder() {
   }
@@ -56,19 +63,19 @@ public class ResultOrder {
     this.typeId = typeId;
   }
 
-  public Integer getSellOrderId() {
+  public Long getSellOrderId() {
     return sellOrderId;
   }
 
-  public void setSellOrderId(Integer sellOrderId) {
+  public void setSellOrderId(Long sellOrderId) {
     this.sellOrderId = sellOrderId;
   }
 
-  public Integer getBuyOrderId() {
+  public Long getBuyOrderId() {
     return buyOrderId;
   }
 
-  public void setBuyOrderId(Integer buyOrderId) {
+  public void setBuyOrderId(Long buyOrderId) {
     this.buyOrderId = buyOrderId;
   }
 
@@ -158,6 +165,14 @@ public class ResultOrder {
 
   public void setProfit(Double profit) {
     this.profit = profit;
+  }
+
+  public Double getProfitPerUnit() {
+    return profitPerUnit;
+  }
+
+  public void setProfitPerUnit(Double profitPerUnit) {
+    this.profitPerUnit = profitPerUnit;
   }
 
   @Override

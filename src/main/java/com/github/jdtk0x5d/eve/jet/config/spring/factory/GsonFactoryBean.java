@@ -34,9 +34,9 @@ public class GsonFactoryBean implements FactoryBean<Gson>, InitializingBean {
 
   private Gson gson;
 
-  private Map<Class<?>, Class<?>> deserializers;
+  private Map<Class<?>, Class<JsonDeserializer<?>>> deserializers;
 
-  public void setDeserializers(Map<Class<?>, Class<?>> deserializers) {
+  public void setDeserializers(Map<Class<?>, Class<JsonDeserializer<?>>> deserializers) {
     this.deserializers = deserializers;
   }
 
@@ -61,8 +61,7 @@ public class GsonFactoryBean implements FactoryBean<Gson>, InitializingBean {
 
     if (deserializers != null) {
       for (Class<?> typeClass : deserializers.keySet()) {
-        JsonDeserializer<?> deserializer = (JsonDeserializer<?>) deserializers.get(typeClass).newInstance();
-        gsonBuilder.registerTypeAdapter(typeClass, deserializer);
+        gsonBuilder.registerTypeAdapter(typeClass, deserializers.get(typeClass).newInstance());
       }
     }
 
