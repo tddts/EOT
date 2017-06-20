@@ -46,6 +46,7 @@ public class ResultOrder {
   private Integer buyLocation;
   private Integer sellLocation;
 
+  private Double itemVolume;
   private Double itemCargoVolume;
   private Double itemCargoFreeVolume;
 
@@ -141,6 +142,14 @@ public class ResultOrder {
 
   public void setSellLocation(Integer sellLocation) {
     this.sellLocation = sellLocation;
+  }
+
+  public Double getItemVolume() {
+    return itemVolume;
+  }
+
+  public void setItemVolume(Double itemVolume) {
+    this.itemVolume = itemVolume;
   }
 
   public Double getItemCargoVolume() {

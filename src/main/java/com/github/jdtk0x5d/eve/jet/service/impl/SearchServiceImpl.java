@@ -34,6 +34,7 @@ import com.github.jdtk0x5d.eve.jet.rest.client.esi.MarketClient;
 import com.github.jdtk0x5d.eve.jet.rest.client.esi.UniverseClient;
 import com.github.jdtk0x5d.eve.jet.service.DotlanService;
 import com.github.jdtk0x5d.eve.jet.service.SearchService;
+import com.github.jdtk0x5d.eve.jet.tools.filter.ResultOrderFilter;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.Pagination;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationBuilder;
 import com.github.jdtk0x5d.eve.jet.tools.pagination.PaginationErrorHandler;
@@ -83,6 +84,7 @@ public class SearchServiceImpl implements SearchService {
 
 
   private PaginationExecutor paginationExecutor = new PaginationExecutor();
+  private ResultOrderFilter resultFilter = new ResultOrderFilter();
 
   private TaskQueue<?> taskQueue;
   private SearchParams searchParams;
@@ -208,6 +210,9 @@ public class SearchServiceImpl implements SearchService {
       eventBus.post(NO_ORDERS_FOUND);
       return Collections.emptyList();
     }
+
+    // Filter results
+    searchResults = resultFilter.filter(searchResults);
 
     // Loaded names for given types
     Map<Integer, String> typeNames = universeClient.getNames(
