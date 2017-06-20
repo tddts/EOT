@@ -36,8 +36,8 @@ import java.util.Properties;
  */
 public class LoadContentAnnotationBeanPostProcessor implements BeanPostProcessor {
 
-  @Resource(name = "applicationProperties")
-  private Properties properties;
+  @Resource
+  private Properties applicationProperties;
 
   @Override
   public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -54,7 +54,7 @@ public class LoadContentAnnotationBeanPostProcessor implements BeanPostProcessor
           LoadContent annotation = field.getAnnotation(LoadContent.class);
 
           String fileName = annotation.value().isEmpty() ? (String) field.get(target) :
-                  annotation.property() ? properties.getProperty(annotation.value()) : annotation.value();
+                  annotation.property() ? applicationProperties.getProperty(annotation.value()) : annotation.value();
 
           if (fileName != null && !fileName.isEmpty()) {
             field.set(target, Util.loadContent(fileName));
