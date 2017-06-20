@@ -31,7 +31,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,6 +57,7 @@ public class DialogProvider {
   private static final Object[] EMPTY_ARGS = new Object[]{};
 
   private Map<Class<?>, Dialog<?>> dialogCache = new HashMap<>();
+  private Map<Class<?>, List<Method>> dialogInitCache = new HashMap<>();
 
   @Autowired
   private FxWirer fxWirer;
@@ -132,9 +135,25 @@ public class DialogProvider {
   }
 
   private void processInitMethod(Class<?> type, Dialog<?> dialog, Object[] args) throws InvocationTargetException, IllegalAccessException {
-    for (Method method : type.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Init.class)) {
-        method.setAccessible(true);
+
+    List<Method> initMethods = dialogInitCache.get(type);
+
+    // Add dialog init methods to cache
+    if (initMethods == null) {
+      initMethods = new ArrayList<>();
+      for (Method method : type.getDeclaredMethods()) {
+        if (method.isAnnotationPresent(Init.class)) initMethods.add(method);
+      }
+      dialogInitCache.put(type, initMethods);
+    }
+
+    // Invoke init methods
+    for (Method method : initMethods) {
+      method.setAccessible(true);
+      if (method.getParameterCount() == 0) {
+        method.invoke(dialog, EMPTY_ARGS);
+      }
+      else {
         method.invoke(dialog, args);
       }
     }
