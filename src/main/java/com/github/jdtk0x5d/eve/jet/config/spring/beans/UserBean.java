@@ -31,8 +31,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserBean {
 
-  private final Logger logger = LogManager.getLogger(UserBean.class);
-
   private long character_id;
   private String clientId;
   private String sercretKey;
@@ -77,7 +75,6 @@ public class UserBean {
   }
 
   public void setAccessToken(AccessToken accessToken) {
-    logger.debug("New access token: " + accessToken);
     this.accessToken = accessToken;
   }
 
@@ -87,10 +84,6 @@ public class UserBean {
 
   public void setAuthorizationType(AuthorizationType authorizationType) {
     this.authorizationType = authorizationType;
-  }
-
-  public Logger getLogger() {
-    return logger;
   }
 
   public RestDataSource getRestDataSource() {

@@ -16,11 +16,11 @@
 
 package com.github.jdtk0x5d.eve.jet.service.impl;
 
-import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.config.spring.beans.UserBean;
 import com.github.jdtk0x5d.eve.jet.context.events.AuthorizationEvent;
 import com.github.jdtk0x5d.eve.jet.model.client.esi.sso.AccessToken;
 import com.github.jdtk0x5d.eve.jet.oauth.QueryParser;
+import com.github.jdtk0x5d.eve.jet.rest.RestResponse;
 import com.github.jdtk0x5d.eve.jet.rest.client.esi.AuthClient;
 import com.github.jdtk0x5d.eve.jet.service.AuthService;
 import com.google.common.eventbus.EventBus;
@@ -111,6 +111,7 @@ public class AuthServiceImpl implements AuthService {
   public void processAccessToken(String query) {
     AccessToken token = queryParser.parseAccessToken(query);
     userBean.setAccessToken(token);
+    logger.debug("New access token set " + token);
     eventBus.post(AuthorizationEvent.AUTHORIZED);
   }
 
