@@ -22,17 +22,50 @@ import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
 import java.util.List;
 
 /**
+ * DAO for {@link CachedOrder}
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface OrderDao extends GenericDao<CachedOrder> {
 
+  /**
+   * Remove orders that will expire in given time
+   *
+   * @param time time in minutes
+   * @return number of deleted orders
+   */
   int removeSoonExpiredOrders(int time);
 
+  /**
+   * Removes duplicate orders.
+   *
+   * @return number of deleted orders
+   */
   int removeDuplicateOrders();
 
+  /**
+   * Remove orders with item which exceed given volume.
+   *
+   * @param volume maximum volume
+   * @return number of deleted orders
+   */
   int removeLargeItemOrders(double volume);
 
+  /**
+   * Remove orders which price exceeds given amount
+   *
+   * @param funds maximum price
+   * @return number of deleted orders
+   */
   int removeTooExpensiveOrders(long funds);
 
+  /**
+   * Find most profitable orders.
+   *
+   * @param security    minimum security status for order solar system
+   * @param cargoVolume available cargo volume
+   * @param taxRate     tax rate
+   * @return a list of most profitable orders
+   */
   List<ResultOrder> findProfitableOrders(double security, double cargoVolume, double taxRate);
 }

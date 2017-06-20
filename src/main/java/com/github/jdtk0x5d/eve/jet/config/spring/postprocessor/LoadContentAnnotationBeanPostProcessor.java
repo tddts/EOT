@@ -53,8 +53,7 @@ public class LoadContentAnnotationBeanPostProcessor implements BeanPostProcessor
           field.setAccessible(true);
           LoadContent annotation = field.getAnnotation(LoadContent.class);
 
-          String fileName =
-              annotation.value().isEmpty() ? (String) field.get(target) :
+          String fileName = annotation.value().isEmpty() ? (String) field.get(target) :
                   annotation.property() ? properties.getProperty(annotation.value()) : annotation.value();
 
           if (fileName != null && !fileName.isEmpty()) {

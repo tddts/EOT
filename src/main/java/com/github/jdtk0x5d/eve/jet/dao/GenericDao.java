@@ -23,14 +23,42 @@ import java.util.Collection;
  */
 public interface GenericDao<T> {
 
+  /**
+   * Save object to database
+   *
+   * @param object object
+   */
   void save(T object);
 
+  /**
+   * Save collection of objects to database
+   *
+   * @param collection collection of objects
+   * @return number of saved objects
+   */
   int saveAll(Collection<T> collection);
 
+  /**
+   * Delete object from database
+   *
+   * @param object object
+   * @return <>true</> if object was successfuully deleted, <b>false</b> otherwise
+   */
   boolean delete(T object);
 
+  /**
+   * Delete a collection of objects from database
+   *
+   * @param collection collection of objects
+   * @return number of deleted objects
+   */
   int deleteAll(Collection<T> collection);
 
+  /**
+   * Delete all objects of generic type {@link T} from database
+   *
+   * @return number of deleted objects
+   */
   int deleteAll();
 
 }

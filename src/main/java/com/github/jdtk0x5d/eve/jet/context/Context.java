@@ -29,7 +29,7 @@ public class Context {
   private static ClassPathXmlApplicationContext SPRING_CONTEXT;
 
   /**
-   * Initializes application contentx by loading Spring context from given file.
+   * Initializes application context by loading Spring context from given file.
    *
    * @param configLocation spring configuration file location
    */

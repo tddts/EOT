@@ -16,15 +16,14 @@
 
 package com.github.jdtk0x5d.eve.jet;
 
-import com.github.jdtk0x5d.eve.jet.config.spring.beans.ApplicationStarterBean;
 import com.github.jdtk0x5d.eve.jet.context.Context;
 
 /**
  * Main application class.
  * Launches whole application by initializing Spring context.
  *
- * @see ApplicationStarterBean for actual launch implementation
  * @author Tigran_Dadaiants dtkcommon@gmail.com
+ * @see com.github.jdtk0x5d.eve.jet.config.spring.beans.ApplicationStarterBean
  */
 public class App {
 

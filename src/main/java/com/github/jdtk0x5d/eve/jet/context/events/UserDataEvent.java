@@ -23,6 +23,9 @@ package com.github.jdtk0x5d.eve.jet.context.events;
  */
 public enum UserDataEvent {
 
+  /**
+   * Character id was set.
+   */
   CHARACTER_ID_SET;
 
   public boolean isCharacterIdSet() {

@@ -17,9 +17,17 @@
 package com.github.jdtk0x5d.eve.jet.dao;
 
 /**
+ * DAO for accessing to information about space stations and solar systems.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public interface StationDao {
 
+  /**
+   * Find name of solar system in which given station is located.
+   *
+   * @param station station id
+   * @return solar system name
+   */
   String findStationSystemName(long station);
 }

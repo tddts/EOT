@@ -72,7 +72,9 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
 
   @Override
   public int removeTooExpensiveOrders(long funds) {
-    return ebeans().find(CachedOrder.class).where().eq("buyOrder", false).gt("price", funds).delete();
+    return ebeans().find(CachedOrder.class).where()
+        .eq("buyOrder", false)
+        .gt("price", funds).delete();
   }
 
   @Override
@@ -84,7 +86,7 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
     ebeans().createSqlUpdate(sql_update_searchInsertOrders).execute();
 
     RawSql rawSql = RawSqlBuilder.parse(sql_select_search)
-        .columnMapping("PROFIT","profit")
+        .columnMapping("PROFIT", "profit")
         .create();
 
     Query<ResultOrder> query = ebeans().find(ResultOrder.class)
