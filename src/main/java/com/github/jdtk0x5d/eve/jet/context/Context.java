@@ -26,7 +26,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Context {
 
-  private static ClassPathXmlApplicationContext SPRING_CONTEXT;
+  private static Context CONTEXT;
+
+  private ClassPathXmlApplicationContext springContext;
+
+  private Context(String configLocation) {
+    springContext = new ClassPathXmlApplicationContext(configLocation);
+  }
 
   /**
    * Initializes application context by loading Spring context from given file.
@@ -34,12 +40,21 @@ public class Context {
    * @param configLocation spring configuration file location
    */
   public static synchronized void initialize(String configLocation) {
-    if (SPRING_CONTEXT == null) {
-      new ClassPathXmlApplicationContext(configLocation);
+    if (CONTEXT == null) {
+      CONTEXT = new Context(configLocation);
     }
   }
 
-  public static ClassPathXmlApplicationContext getSpringContext() {
-    return SPRING_CONTEXT;
+  /**
+   * Get application context singleton
+   *
+   * @return application context
+   */
+  public static Context getContext() {
+    return CONTEXT;
+  }
+
+  public ClassPathXmlApplicationContext getSpringContext() {
+    return springContext;
   }
 }
