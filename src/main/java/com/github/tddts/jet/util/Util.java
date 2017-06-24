@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -119,4 +120,16 @@ public class Util {
       throw new ApplicationException(e);
     }
   }
+
+
+  /**
+   * Get URL of a classpath resource
+   *
+   * @param resourceName name of a resource
+   * @return resource URL
+   */
+  public static URL getClasspathResourceURL(String resourceName) {
+    return Thread.currentThread().getContextClassLoader().getResource(resourceName);
+  }
+
 }

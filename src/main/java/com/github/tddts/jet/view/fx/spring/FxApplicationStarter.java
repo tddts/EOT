@@ -16,17 +16,17 @@
 
 package com.github.tddts.jet.view.fx.spring;
 
-import com.github.tddts.jet.view.fx.tools.ApplicationStartProvider;
+import com.github.tddts.jet.view.fx.tools.ApplicationStarter;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * {@code FxApplicationStartProvider} is a {@link ApplicationStartProvider} implementation for JavaFX application.
+ * {@code FxApplicationStarter} is a {@link ApplicationStarter} implementation for JavaFX application.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class FxApplicationStartProvider extends Application implements ApplicationStartProvider {
+public class FxApplicationStarter extends Application implements ApplicationStarter {
 
   private static FxViewProvider staticFxViewProvider;
   private static DialogProvider staticDialogProvider;

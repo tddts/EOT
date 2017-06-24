@@ -16,7 +16,7 @@
 
 package com.github.tddts.jet.config.spring.beans;
 
-import com.github.tddts.jet.view.fx.tools.ApplicationStartProvider;
+import com.github.tddts.jet.view.fx.tools.ApplicationStarter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -24,25 +24,25 @@ import org.springframework.stereotype.Component;
 
 /**
  * {@code ApplicationStarterBean} is a bean that starts application after Spring context have been initialized.
- * Actual application starting logic is implemented inside {@link ApplicationStartProvider} implementation which
+ * Actual application starting logic is implemented inside {@link ApplicationStarter} implementation which
  * allows to separate core logic from framework-specific code.
  * You must create such implementation in order to launch application.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
- * @see ApplicationStartProvider
+ * @see ApplicationStarter
  */
 @Component
 public class ApplicationStarterBean {
 
   @Autowired
-  private ApplicationStartProvider applicationStartProvider;
+  private ApplicationStarter applicationStarter;
 
   private volatile boolean started;
 
   @EventListener(ContextRefreshedEvent.class)
   public synchronized void start() {
     if (!started) {
-      applicationStartProvider.startApplication();
+      applicationStarter.startApplication();
       started = true;
     }
   }

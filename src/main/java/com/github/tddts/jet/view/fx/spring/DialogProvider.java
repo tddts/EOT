@@ -17,15 +17,17 @@
 package com.github.tddts.jet.view.fx.spring;
 
 import com.github.tddts.jet.config.spring.beans.ResourceBundleProvider;
+import com.github.tddts.jet.util.Util;
 import com.github.tddts.jet.view.fx.annotations.FXDialog;
 import com.github.tddts.jet.view.fx.annotations.InitDialog;
 import com.github.tddts.jet.view.fx.exception.DialogException;
-import com.github.tddts.jet.view.fx.view.View;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Dialog;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -57,7 +59,7 @@ public class DialogProvider {
   private Map<Class<?>, List<Method>> dialogInitCache = new HashMap<>();
 
   @Autowired
-  private FxWirer fxWirer;
+  private FxBeanWirer fxBeanWirer;
   @Autowired
   private ResourceBundleProvider resourceBundleProvider;
 
@@ -83,47 +85,29 @@ public class DialogProvider {
    */
   @SuppressWarnings("unchecked")
   public <T extends Dialog<?>> T getDialog(Class<T> type, Object... args) {
-    // Try to use cached dialog
-    Dialog<?> cachedDialog = getCachedDialog(type, args);
-    // Create new dialog
-    return cachedDialog == null ? createDialog(type, args) : (T) cachedDialog;
+    Dialog<?> dialog = dialogCache.get(type);
+    dialog = dialog == null ? createDialog(type) : dialog;
+    processInitMethods(type, dialog, args);
+    return (T) dialog;
   }
 
-  private Dialog<?> getCachedDialog(Class<?> type, Object... args) {
-    Dialog<?> cachedDialog = dialogCache.get(type);
-    if (cachedDialog == null) return null;
+  private <T extends Dialog<?>> T createDialog(Class<T> type) {
 
-    try {
-      processInitMethod(type, cachedDialog, args);
-      return cachedDialog;
-    } catch (InvocationTargetException | IllegalAccessException e) {
-      throw new DialogException("Could not initialize dialog!", e);
+    if (!type.isAnnotationPresent(FXDialog.class)) {
+      throw new DialogException("Dialog class should have a @FXDialog annotation!");
     }
+
+    FXDialog dialogAnnotation = type.getDeclaredAnnotation(FXDialog.class);
+    FXMLLoader loader = loadDialogView(dialogAnnotation);
+    T dialog = loader.getController();
+    setDialogContent(dialog, loader.getRoot(), dialogAnnotation);
+    fxBeanWirer.initBean(dialog);
+    dialogCache.put(type, dialog);
+    return dialog;
+
   }
 
-  @SuppressWarnings("unchecked")
-  private <T extends Dialog<?>> T createDialog(Class<T> type, Object[] args) {
-    try {
-
-      if (!type.isAnnotationPresent(FXDialog.class)) {
-        throw new DialogException("Dialog class should have a @FXDialog annotation!");
-      }
-      FXDialog dialogAnnotation = type.getDeclaredAnnotation(FXDialog.class);
-
-      View<T> view = loadDialogView(dialogAnnotation);
-      T dialog = view.getController();
-      setDialogContent(dialog, view.getRoot(), dialogAnnotation);
-      fxWirer.initBean(dialog);
-      processInitMethod(type, dialog, args);
-      dialogCache.put(type, dialog);
-      return dialog;
-
-    } catch (IllegalAccessException | InvocationTargetException e) {
-      throw new DialogException("Could not create dialog!", e);
-    }
-  }
-
-  private void processInitMethod(Class<?> type, Dialog<?> dialog, Object[] args) throws InvocationTargetException, IllegalAccessException {
+  private void processInitMethods(Class<?> type, Dialog<?> dialog, Object[] args) {
 
     List<Method> initMethods = dialogInitCache.get(type);
 
@@ -136,15 +120,21 @@ public class DialogProvider {
       dialogInitCache.put(type, initMethods);
     }
 
-    // Invoke init methods
-    for (Method method : initMethods) {
-      method.setAccessible(true);
-      if (method.getParameterCount() == 0) {
-        method.invoke(dialog, EMPTY_ARGS);
+    try {
+
+      // Invoke init methods
+      for (Method method : initMethods) {
+        method.setAccessible(true);
+        if (method.getParameterCount() == 0) {
+          method.invoke(dialog, EMPTY_ARGS);
+        }
+        else {
+          method.invoke(dialog, args);
+        }
       }
-      else {
-        method.invoke(dialog, args);
-      }
+
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      throw new DialogException("Could not initialize dialog!", e);
     }
   }
 
@@ -158,7 +148,7 @@ public class DialogProvider {
     }
   }
 
-  private <T> View<T> loadDialogView(FXDialog dialogAnnotation) {
+  private <T> FXMLLoader loadDialogView(FXDialog dialogAnnotation) {
 
     String filePath = dialogAnnotation.value();
 
@@ -166,6 +156,14 @@ public class DialogProvider {
       throw new DialogException("@FXDialog should contain path to FXML file!");
     }
 
-    return new View<>(filePath, resourceBundleProvider.getResourceBundle());
+    FXMLLoader loader = new FXMLLoader(Util.getClasspathResourceURL(filePath), resourceBundleProvider.getResourceBundle());
+
+    try {
+      loader.load();
+    } catch (IOException e) {
+      throw new DialogException(e.getMessage(), e);
+    }
+
+    return loader;
   }
 }

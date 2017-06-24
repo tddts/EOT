@@ -17,12 +17,16 @@
 package com.github.tddts.jet.view.fx.spring;
 
 import com.github.tddts.jet.config.spring.beans.ResourceBundleProvider;
-import com.github.tddts.jet.view.fx.view.View;
+import com.github.tddts.jet.util.Util;
+import com.github.tddts.jet.view.fx.exception.ViewException;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -32,21 +36,27 @@ public class FxViewProvider {
   private String file;
   private String title;
 
-  private int width;
-  private int height;
+  private int width = 1024;
+  private int height = 600;
 
   @Autowired
-  private FxWirer fxWirer;
+  private FxBeanWirer fxBeanWirer;
   @Autowired
   private ResourceBundleProvider resourceBundleProvider;
 
 
   public void showView(Stage stage, EventHandler<WindowEvent> onCloseEvent) {
 
-    View<?> view = new View<>(file, resourceBundleProvider.getResourceBundle());
-    fxWirer.wire(view);
+    FXMLLoader loader = new FXMLLoader(Util.getClasspathResourceURL(file), resourceBundleProvider.getResourceBundle());
 
-    Scene scene = new Scene(view.getRoot(), width, height);
+    try {
+      loader.load();
+    } catch (IOException e) {
+      throw new ViewException(e.getMessage(), e);
+    }
+
+    fxBeanWirer.wire(loader.getController());
+    Scene scene = new Scene(loader.getRoot(), width, height);
     stage.setOnCloseRequest(onCloseEvent);
     stage.setTitle(title);
     stage.setScene(scene);

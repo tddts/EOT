@@ -17,11 +17,11 @@
 package com.github.tddts.jet.view.fx.tools;
 
 /**
- * {@code ApplicationStartProvider} is an interface for an object that handles application start.
+ * {@code ApplicationStarter} is an interface for an object that handles application start.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface ApplicationStartProvider {
+public interface ApplicationStarter {
 
   /**
    * Start application.

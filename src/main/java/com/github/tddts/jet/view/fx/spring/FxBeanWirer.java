@@ -17,7 +17,6 @@
 package com.github.tddts.jet.view.fx.spring;
 
 import com.github.tddts.jet.exception.ApplicationException;
-import com.github.tddts.jet.view.fx.view.View;
 import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -27,11 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@code FxWirer} provides functionality for wiring JavaFX objects to Spring context.
+ * {@code FxBeanWirer} provides functionality for wiring JavaFX objects to Spring context.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class FxWirer {
+public class FxBeanWirer {
 
   private static final String CONTROLLER_SUFFIX = "Controller";
 
@@ -41,10 +40,9 @@ public class FxWirer {
   /**
    * View given view's controller to Spring context.
    *
-   * @param view view
+   * @param controller FXMl view controller
    */
-  public void wire(View<?> view) {
-    Object controller = view.getController();
+  public void wire(Object controller) {
     if (controller == null) return;
     wireController(controller);
     wireNestedControllers(controller);
