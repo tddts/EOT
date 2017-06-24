@@ -18,17 +18,15 @@ package com.github.jdtk0x5d.eve.jet.view.fx.spring;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.beans.ResourceBundleProvider;
 import com.github.jdtk0x5d.eve.jet.view.fx.annotations.FXDialog;
-import com.github.jdtk0x5d.eve.jet.view.fx.annotations.Init;
+import com.github.jdtk0x5d.eve.jet.view.fx.annotations.InitDialog;
 import com.github.jdtk0x5d.eve.jet.view.fx.exception.DialogException;
 import com.github.jdtk0x5d.eve.jet.view.fx.view.View;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Dialog;
 import org.springframework.beans.factory.annotation.Autowired;
+import sun.reflect.misc.MethodUtil;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -43,8 +41,9 @@ import java.util.Map;
  * <p>
  * To create a Dialog via {@code DialogProvider} you should mark corresponding Dialog implementation with
  * {@link FXDialog} annotation and describe path to FXML file with dialog content.
+ * FXMl file should have {@code fx:controller} property set to dialog class.
  * <p>
- * To initialize dialog crate a method with required parameters and mark by {@link Init} annotation.
+ * To initialize dialog crate a method with required parameters and mark by {@link InitDialog} annotation.
  * This initialization method will be invoked every time this dialog is called.
  * <p>
  * Such dialog would also support {@link PostConstruct} annotation as a Spring-processed bean.
@@ -53,7 +52,6 @@ import java.util.Map;
  */
 public class DialogProvider {
 
-  private static final String FXML_FIELD_LOOKUP_PREFIX = "#";
   private static final Object[] EMPTY_ARGS = new Object[]{};
 
   private Map<Class<?>, Dialog<?>> dialogCache = new HashMap<>();
@@ -106,32 +104,24 @@ public class DialogProvider {
 
   @SuppressWarnings("unchecked")
   private <T extends Dialog<?>> T createDialog(Class<T> type, Object[] args) {
-    Constructor<?>[] constructors = type.getConstructors();
-    if (constructors.length == 0) {
-      throw new DialogException("Dialog should have a public constructor!");
-    }
-    if (constructors.length > 1) {
-      throw new DialogException("Dialog should have only one constructor!");
-    }
-    if (constructors[0].getParameterCount() > 0) {
-      throw new DialogException("Dialog constructor should have no parameters!");
-    }
     try {
 
-      T dialog = (T) constructors[0].newInstance();
-      wireDialog(type, dialog);
+      if (!type.isAnnotationPresent(FXDialog.class)) {
+        throw new DialogException("Dialog class should have a @FXDialog annotation!");
+      }
+      FXDialog dialogAnnotation = type.getDeclaredAnnotation(FXDialog.class);
+
+      View<T> view = loadDialogView(dialogAnnotation);
+      T dialog = view.getController();
+      setDialogContent(dialog, view.getRoot(), dialogAnnotation);
+      fxWirer.initBean(dialog);
       processInitMethod(type, dialog, args);
       dialogCache.put(type, dialog);
       return dialog;
 
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+    } catch (IllegalAccessException | InvocationTargetException e) {
       throw new DialogException("Could not create dialog!", e);
     }
-  }
-
-  private void wireDialog(Class<?> type, Dialog<?> dialog) throws IllegalAccessException, InvocationTargetException {
-    wireFXML(type, dialog);
-    fxWirer.initBean(dialog);
   }
 
   private void processInitMethod(Class<?> type, Dialog<?> dialog, Object[] args) throws InvocationTargetException, IllegalAccessException {
@@ -142,7 +132,7 @@ public class DialogProvider {
     if (initMethods == null) {
       initMethods = new ArrayList<>();
       for (Method method : type.getDeclaredMethods()) {
-        if (method.isAnnotationPresent(Init.class)) initMethods.add(method);
+        if (method.isAnnotationPresent(InitDialog.class)) initMethods.add(method);
       }
       dialogInitCache.put(type, initMethods);
     }
@@ -151,29 +141,10 @@ public class DialogProvider {
     for (Method method : initMethods) {
       method.setAccessible(true);
       if (method.getParameterCount() == 0) {
-        method.invoke(dialog, EMPTY_ARGS);
+        MethodUtil.invoke(method, dialog, EMPTY_ARGS);
       }
       else {
-        method.invoke(dialog, args);
-      }
-    }
-  }
-
-  private void wireFXML(Class<?> type, Dialog<?> dialog) throws IllegalAccessException {
-
-    if (!type.isAnnotationPresent(FXDialog.class)) {
-      throw new DialogException("Dialog class should have a @FXDialog annotation!");
-    }
-    FXDialog dialogAnnotation = type.getDeclaredAnnotation(FXDialog.class);
-
-    View<?> view = loadDialogView(dialogAnnotation);
-    Node root = view.getRoot();
-    setDialogContent(dialog, root, dialogAnnotation);
-
-    for (Field field : type.getDeclaredFields()) {
-      if (field.isAnnotationPresent(FXML.class)) {
-        field.setAccessible(true);
-        field.set(dialog, root.lookup(FXML_FIELD_LOOKUP_PREFIX + field.getName()));
+        MethodUtil.invoke(method, dialog, args);
       }
     }
   }
@@ -188,8 +159,7 @@ public class DialogProvider {
     }
   }
 
-
-  private View<?> loadDialogView(FXDialog dialogAnnotation) {
+  private <T> View<T> loadDialogView(FXDialog dialogAnnotation) {
 
     String filePath = dialogAnnotation.value();
 

@@ -18,6 +18,8 @@ package com.github.jdtk0x5d.eve.jet.tools.filter;
 
 import com.github.jdtk0x5d.eve.jet.model.db.ResultOrder;
 import com.google.common.collect.ComparisonChain;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Comparator;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.List;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 public class ResultOrderFilter {
+
+  private final Logger logger = LogManager.getLogger(ResultOrderFilter.class);
 
   private Comparator<ResultOrder> comparator = new ResultOrderComparator();
 
@@ -73,6 +77,7 @@ public class ResultOrderFilter {
       }
     }
 
+    logger.debug("Orders after filtration: " + orders.size());
     return orders;
   }
 

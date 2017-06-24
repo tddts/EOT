@@ -18,7 +18,7 @@ package com.github.jdtk0x5d.eve.jet.view.fx.dialog;
 
 import com.github.jdtk0x5d.eve.jet.config.spring.annotations.Message;
 import com.github.jdtk0x5d.eve.jet.view.fx.annotations.FXDialog;
-import com.github.jdtk0x5d.eve.jet.view.fx.annotations.Init;
+import com.github.jdtk0x5d.eve.jet.view.fx.annotations.InitDialog;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
@@ -46,7 +46,7 @@ public class ExceptionDialog extends Alert {
     super(AlertType.ERROR);
   }
 
-  @Init
+  @InitDialog
   private void init(Throwable ex) {
     setTitle(title);
     setHeaderText(headerText);

@@ -22,12 +22,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotations marking any king of initialization method.
- * Can be used in Dialogs to mark initialization method receiving any required parameters.
+ * Annotations marking Dialog initialization method.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Init {
+public @interface InitDialog {
 }
