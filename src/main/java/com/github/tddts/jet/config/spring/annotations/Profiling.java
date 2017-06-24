@@ -16,7 +16,6 @@
 
 package com.github.tddts.jet.config.spring.annotations;
 
-import com.github.tddts.jet.config.spring.aspect.ProfilingAnnotationAspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -26,7 +25,7 @@ import java.lang.annotation.Target;
 /**
  * Marks a method to measure execution time.
  *
- * @see ProfilingAnnotationAspect
+ * @see com.github.tddts.jet.config.aspect.ProfilingAnnotationAspect
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Target(ElementType.METHOD)

@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
-import sun.reflect.misc.MethodUtil;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -44,8 +43,6 @@ import java.util.Locale;
 public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {
 
   private static final Object[] EMPTY_ARGS = new Object[]{};
-
-  private final Object[] SINGLE_ARG = new Object[1];
 
   private final Logger logger = LogManager.getLogger(MessageAnnotationBeanPostProcessor.class);
 
@@ -104,17 +101,12 @@ public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {
   private void processMethod(Object bean, Method method) {
     try {
       String message = preprocess(method);
-      MethodUtil.invoke(method, bean, getSingleArg(message));
+      method.invoke(bean, message);
     } catch (IllegalAccessException | InvocationTargetException e) {
       throw new BeanInitializationException("Injection of message failed for method [" + bean.getClass() + "." + method.getName() + "]", e);
     } catch (NoSuchMessageException e) {
       throw new BeanInitializationException("Failed to find message for method [" + bean.getClass() + "." + method.getName() + "]", e);
     }
-  }
-
-  private Object[] getSingleArg(Object arg) {
-    SINGLE_ARG[0] = arg;
-    return SINGLE_ARG;
   }
 
   private void processField(Object bean, Field field) {

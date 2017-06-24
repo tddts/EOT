@@ -24,7 +24,6 @@ import com.github.tddts.jet.view.fx.view.View;
 import javafx.scene.Node;
 import javafx.scene.control.Dialog;
 import org.springframework.beans.factory.annotation.Autowired;
-import sun.reflect.misc.MethodUtil;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
@@ -141,10 +140,10 @@ public class DialogProvider {
     for (Method method : initMethods) {
       method.setAccessible(true);
       if (method.getParameterCount() == 0) {
-        MethodUtil.invoke(method, dialog, EMPTY_ARGS);
+        method.invoke(dialog, EMPTY_ARGS);
       }
       else {
-        MethodUtil.invoke(method, dialog, args);
+        method.invoke(dialog, args);
       }
     }
   }

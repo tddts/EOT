@@ -16,7 +16,6 @@
 
 package com.github.tddts.jet.config.spring.annotations;
 
-import com.github.tddts.jet.config.spring.aspect.RestClientAnnotationAspect;
 import com.github.tddts.jet.rest.RestResponse;
 
 import java.lang.annotation.ElementType;
@@ -30,7 +29,7 @@ import java.lang.annotation.Target;
  * exception handling logic.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
- * @see RestClientAnnotationAspect
+ * @see com.github.tddts.jet.config.aspect.RestClientAnnotationAspect
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

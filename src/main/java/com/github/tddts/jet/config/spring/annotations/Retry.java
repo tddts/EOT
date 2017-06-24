@@ -16,7 +16,6 @@
 
 package com.github.tddts.jet.config.spring.annotations;
 
-import com.github.tddts.jet.config.spring.aspect.RetryAnnotationAspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -29,7 +28,7 @@ import java.lang.annotation.Target;
  * Class in which this method defined should have {@link RestClient} annotation.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
- * @see RetryAnnotationAspect
+ * @see com.github.tddts.jet.config.aspect.RetryAnnotationAspect
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
