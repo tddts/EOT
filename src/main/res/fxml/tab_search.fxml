@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.github.jdtk0x5d.eve.jet.view.fx.controls.DoubleTextField?>
-<?import com.github.jdtk0x5d.eve.jet.view.fx.controls.ItemListTextField?>
-<?import com.github.jdtk0x5d.eve.jet.view.fx.controls.LongTextField?>
-<?import com.github.jdtk0x5d.eve.jet.view.fx.controls.PercentageTextField?>
+<?import com.github.tddts.jet.view.fx.controls.DoubleTextField?>
+<?import com.github.tddts.jet.view.fx.controls.ItemListTextField?>
+<?import com.github.tddts.jet.view.fx.controls.LongTextField?>
+<?import com.github.tddts.jet.view.fx.controls.PercentageTextField?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.jdtk0x5d.eve.jet.view.fx.controller.SearchTabController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.tddts.jet.view.fx.controller.SearchTabController">
     <top>
         <VBox maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="5.0">

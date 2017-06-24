@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox BorderPane.alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.jdtk0x5d.eve.jet.view.fx.controller.LoginController">
+<VBox BorderPane.alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.tddts.jet.view.fx.controller.LoginController">
     <HBox fx:id="headerHbox" alignment="CENTER_LEFT" spacing="5.0" style="-fx-background-color: #ed4949;" xmlns="http://javafx.com/fxml" xmlns:fx="http://javafx.com/fxml/1">
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

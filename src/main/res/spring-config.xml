@@ -11,7 +11,7 @@
 
     <!-- Basic configurations -->
     <aop:aspectj-autoproxy/>
-    <context:component-scan base-package="com.github.jdtk0x5d.eve.jet.*"/>
+    <context:component-scan base-package="com.github.tddts.jet.*"/>
     <util:properties id="applicationProperties"
                      location="classpath:application.properties,
         classpath:rest.properties,
@@ -25,11 +25,11 @@
 
     <!-- Bean postprocessors -->
     <bean id="eventBusPostProcessor"
-          class="com.github.jdtk0x5d.eve.jet.config.spring.postprocessor.EventBusBeanPostProcessor"/>
+          class="com.github.tddts.jet.config.spring.postprocessor.EventBusBeanPostProcessor"/>
     <bean id="messageAnnotationPostProcessor"
-          class="com.github.jdtk0x5d.eve.jet.config.spring.postprocessor.MessageAnnotationBeanPostProcessor"/>
+          class="com.github.tddts.jet.config.spring.postprocessor.MessageAnnotationBeanPostProcessor"/>
     <bean id="loadContentAnnotationPostProcessor"
-          class="com.github.jdtk0x5d.eve.jet.config.spring.postprocessor.LoadContentAnnotationBeanPostProcessor"/>
+          class="com.github.tddts.jet.config.spring.postprocessor.LoadContentAnnotationBeanPostProcessor"/>
 
     <!-- Message source -->
     <bean id="messageSource"

@@ -23,7 +23,7 @@
   -->
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-          xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.jdtk0x5d.eve.jet.view.fx.dialog.ExceptionDialog">
+          xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.tddts.jet.view.fx.dialog.ExceptionDialog">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
