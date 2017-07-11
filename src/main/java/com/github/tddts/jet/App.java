@@ -16,8 +16,10 @@
 
 package com.github.tddts.jet;
 
-import com.github.tddts.jet.context.Context;
 import com.github.tddts.jet.config.spring.beans.ApplicationStarterBean;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.env.CommandLinePropertySource;
+import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 /**
  * Main application class.
@@ -29,6 +31,10 @@ import com.github.tddts.jet.config.spring.beans.ApplicationStarterBean;
 public class App {
 
   public static void main(String[] args) throws Exception {
-    Context.initialize("spring-config.xml");
+    CommandLinePropertySource commandLinePropertySource = new SimpleCommandLinePropertySource(args);
+    ClassPathXmlApplicationContext springContext = new ClassPathXmlApplicationContext();
+    springContext.getEnvironment().getPropertySources().addFirst(commandLinePropertySource);
+    springContext.setConfigLocation("spring-config.xml");
+    springContext.refresh();
   }
 }
