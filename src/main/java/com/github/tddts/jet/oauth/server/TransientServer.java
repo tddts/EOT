@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+// TODO: get rid of 'com.sun' classes.
 public class TransientServer {
 
   private final Logger logger = LogManager.getLogger(TransientServer.class);

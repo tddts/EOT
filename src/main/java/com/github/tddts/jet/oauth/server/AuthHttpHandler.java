@@ -33,6 +33,7 @@ import java.net.URI;
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+// TODO: get rid of 'com.sun' classes.
 public class AuthHttpHandler implements HttpHandler {
 
   private static final Logger logger = LogManager.getLogger(AuthHttpHandler.class);
