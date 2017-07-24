@@ -21,11 +21,11 @@ import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * {@code RestClientProvider} is an interface providing tools for REST client implementations.
+ * {@code RestClientTemplate} is an interface specifying a set of methods for building REST client.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface RestClientProvider {
+public interface RestClientTemplate {
 
   RestOperations restOperations();
 

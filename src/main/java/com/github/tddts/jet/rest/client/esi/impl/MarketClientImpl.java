@@ -23,7 +23,7 @@ import com.github.tddts.jet.model.client.esi.market.MarketOrder;
 import com.github.tddts.jet.model.client.esi.market.MarketPrice;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.MarketClient;
-import com.github.tddts.jet.rest.provider.RestClientProvider;
+import com.github.tddts.jet.rest.provider.RestClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -48,7 +48,7 @@ public class MarketClientImpl implements MarketClient {
   private String addressItemHistory;
 
   @Autowired
-  private RestClientProvider client;
+  private RestClientTemplate client;
 
   @Override
   public RestResponse<List<MarketOrder>> getOrders(OrderType orderType, long regionId, int page) {

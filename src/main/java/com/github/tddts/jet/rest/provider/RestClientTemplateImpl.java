@@ -32,7 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-public class RestClientProviderImpl implements RestClientProvider {
+public class RestClientTemplateImpl implements RestClientTemplate {
 
   private static final String EMPTY_TOKEN = "";
 

@@ -20,7 +20,7 @@ import com.github.tddts.jet.model.client.esi.location.Location;
 import com.github.tddts.jet.model.client.esi.location.Ship;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.LocationClient;
-import com.github.tddts.jet.rest.provider.RestClientProvider;
+import com.github.tddts.jet.rest.provider.RestClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -39,7 +39,7 @@ public class LocationClientImpl implements LocationClient {
   private String addressShip;
 
   @Autowired
-  private RestClientProvider client;
+  private RestClientTemplate client;
 
   @Override
   public RestResponse<Location> getLocation(long character_id) {

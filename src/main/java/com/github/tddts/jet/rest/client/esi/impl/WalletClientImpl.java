@@ -20,7 +20,7 @@ import com.github.tddts.jet.config.spring.annotations.RestClient;
 import com.github.tddts.jet.model.client.esi.wallet.Wallet;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.WalletClient;
-import com.github.tddts.jet.rest.provider.RestClientProvider;
+import com.github.tddts.jet.rest.provider.RestClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -39,7 +39,7 @@ public class WalletClientImpl implements WalletClient {
   private String addressCharacterWallets;
 
   @Autowired
-  private RestClientProvider client;
+  private RestClientTemplate client;
 
   @Override
   public RestResponse<List<Wallet>> getWallets(long character_id) {

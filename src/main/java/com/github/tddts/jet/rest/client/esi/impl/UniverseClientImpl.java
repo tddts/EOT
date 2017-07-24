@@ -24,7 +24,7 @@ import com.github.tddts.jet.model.client.esi.universe.UniverseStructure;
 import com.github.tddts.jet.model.client.esi.universe.UniverseType;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.UniverseClient;
-import com.github.tddts.jet.rest.provider.RestClientProvider;
+import com.github.tddts.jet.rest.provider.RestClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -58,7 +58,7 @@ public class UniverseClientImpl implements UniverseClient {
   private String addressType;
 
   @Autowired
-  private RestClientProvider client;
+  private RestClientTemplate client;
 
   @Retry
   @Override

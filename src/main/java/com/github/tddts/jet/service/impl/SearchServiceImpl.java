@@ -30,17 +30,17 @@ import com.github.tddts.jet.model.client.esi.universe.UniverseName;
 import com.github.tddts.jet.model.db.CachedMarketPrice;
 import com.github.tddts.jet.model.db.CachedOrder;
 import com.github.tddts.jet.model.db.ResultOrder;
+import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.MarketClient;
 import com.github.tddts.jet.rest.client.esi.UniverseClient;
 import com.github.tddts.jet.service.DotlanService;
 import com.github.tddts.jet.service.SearchService;
 import com.github.tddts.jet.tools.filter.ResultOrderFilter;
-import com.github.tddts.jet.tools.pagination.Pagination;
-import com.github.tddts.jet.tools.pagination.PaginationBuilder;
-import com.github.tddts.jet.tools.pagination.PaginationErrorHandler;
 import com.github.tddts.jet.tools.pagination.PaginationExecutor;
-import com.github.tddts.jet.tools.tasks.ReusableTaskQueue;
-import com.github.tddts.jet.tools.tasks.TaskQueue;
+import com.github.tddts.tools.core.pagination.Pagination;
+import com.github.tddts.tools.core.pagination.impl.PaginationBuilder;
+import com.github.tddts.tools.core.task.TaskChain;
+import com.github.tddts.tools.core.task.impl.ReusableTaskChain;
 import com.google.common.eventbus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,12 +86,12 @@ public class SearchServiceImpl implements SearchService {
   private PaginationExecutor paginationExecutor = new PaginationExecutor();
   private ResultOrderFilter resultFilter = new ResultOrderFilter();
 
-  private TaskQueue<?> taskQueue;
+  private TaskChain<?> taskQueue;
   private SearchParams searchParams;
 
   public SearchServiceImpl() {
     // Build TaskQueue
-    taskQueue = new ReusableTaskQueue<>()
+    taskQueue = new ReusableTaskChain<>()
         // Load market prices
         .perform(this::loadPrices)
         // Load market orders
@@ -166,15 +166,33 @@ public class SearchServiceImpl implements SearchService {
    * @return pagination object
    */
   private Pagination createPaginationForRegion(Integer regionId) {
-    return new PaginationBuilder<MarketOrder, List<MarketOrder>>()
+    return new PaginationBuilder<RestResponse<List<MarketOrder>>>()
+        // Begin with first page
+        .startWith(1)
         // Load market orders for given region and page
         .loadPage(page -> marketClient.getOrders(OrderType.ALL, regionId, page))
-        // Convert and save loaded orders to DB
-        .processPage(orders -> orderDao.saveAll(orders.stream().map(CachedOrder::new).collect(Collectors.toList())))
-        // Retry page loading on error
-        .onError(PaginationErrorHandler::retryPage)
+        //Process page
+        .processPage(this::processOrdersPage)
+        // Set condition for pagination
+        .whileTrue(this::checkPaginationCondition)
         // Build pagination
         .build();
+  }
+
+  private boolean checkPaginationCondition(Pagination<RestResponse<List<MarketOrder>>> pagination) {
+    RestResponse<List<MarketOrder>> lastResponse = pagination.getLastPage();
+    return lastResponse.isSuccessful() && lastResponse.getObject().size() > 0;
+  }
+
+  private void processOrdersPage(Pagination<?> pagination, RestResponse<List<MarketOrder>> response) {
+    if (response.hasError()) {
+      // Skip page on error
+      pagination.getErrorHandler().retryPage();
+    }
+    else {
+      // Convert and save loaded orders to DB
+      orderDao.saveAll(response.getObject().stream().map(CachedOrder::new).collect(Collectors.toList()));
+    }
   }
 
   /**

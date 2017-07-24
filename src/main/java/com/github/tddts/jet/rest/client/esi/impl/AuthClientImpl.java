@@ -21,7 +21,7 @@ import com.github.tddts.jet.config.spring.annotations.RestClient;
 import com.github.tddts.jet.config.spring.beans.UserBean;
 import com.github.tddts.jet.model.client.esi.sso.AccessToken;
 import com.github.tddts.jet.rest.client.esi.AuthClient;
-import com.github.tddts.jet.rest.provider.RestClientProvider;
+import com.github.tddts.jet.rest.provider.RestClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -51,7 +51,7 @@ public class AuthClientImpl implements AuthClient {
   private UserBean userBean;
 
   @Autowired
-  private RestClientProvider client;
+  private RestClientTemplate client;
 
   @Override
   public RestResponse<AccessToken> getToken(String authCode) {

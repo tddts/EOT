@@ -21,7 +21,7 @@ import com.github.tddts.jet.config.spring.annotations.Retry;
 import com.github.tddts.jet.consts.DotlanRouteOption;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.dotlan.DotlanClient;
-import com.github.tddts.jet.rest.provider.RestClientProvider;
+import com.github.tddts.jet.rest.provider.RestClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -43,7 +43,7 @@ public class DotlanClientImpl implements DotlanClient {
   private String addressDotlan;
 
   @Autowired
-  private RestClientProvider client;
+  private RestClientTemplate client;
 
   @Retry
   @Override

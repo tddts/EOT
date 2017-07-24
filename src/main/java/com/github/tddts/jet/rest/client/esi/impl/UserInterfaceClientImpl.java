@@ -19,7 +19,7 @@ package com.github.tddts.jet.rest.client.esi.impl;
 import com.github.tddts.jet.config.spring.annotations.RestClient;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.UserInterfaceClient;
-import com.github.tddts.jet.rest.provider.RestClientProvider;
+import com.github.tddts.jet.rest.provider.RestClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -39,7 +39,7 @@ public class UserInterfaceClientImpl implements UserInterfaceClient {
   private String addressMarketDetails;
 
   @Autowired
-  private RestClientProvider client;
+  private RestClientTemplate client;
 
   @Override
   public RestResponse<String> setWaypoint(int destinationId, boolean clearOtherWaypoints, boolean addToBeginning) {

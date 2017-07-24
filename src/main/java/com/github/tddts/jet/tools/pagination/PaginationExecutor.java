@@ -17,6 +17,7 @@
 package com.github.tddts.jet.tools.pagination;
 
 import com.github.tddts.jet.exception.ApplicationException;
+import com.github.tddts.tools.core.pagination.Pagination;
 
 import java.util.Collection;
 import java.util.HashSet;
