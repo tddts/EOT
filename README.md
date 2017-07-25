@@ -5,5 +5,5 @@ Desktop application that allows EVE Online player to search for profitable buy/s
 Not intended for mass use, as it's getting less useful with each user due to it's nature.
 
 ## Build requirements
-Requires Maven 3.2.5 or higher to build.
+Requires JDK 8 and Maven 3.2.5 or higher to build.
 Also requires [Tools libraries](https://github.com/tddts/Tools) provided.
