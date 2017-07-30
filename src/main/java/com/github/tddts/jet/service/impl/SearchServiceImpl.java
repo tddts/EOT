@@ -38,7 +38,8 @@ import com.github.tddts.jet.service.SearchService;
 import com.github.tddts.jet.tools.filter.ResultOrderFilter;
 import com.github.tddts.jet.tools.pagination.PaginationExecutor;
 import com.github.tddts.tools.core.pagination.Pagination;
-import com.github.tddts.tools.core.pagination.impl.PaginationBuilder;
+import com.github.tddts.tools.core.pagination.SerialPaginationBuilder;
+import com.github.tddts.tools.core.pagination.impl.PaginationBuilders;
 import com.github.tddts.tools.core.task.TaskChain;
 import com.github.tddts.tools.core.task.impl.ReusableTaskChain;
 import com.google.common.eventbus.EventBus;
@@ -52,7 +53,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.github.tddts.jet.context.events.SearchStatusEvent.*;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.CLEARING_CACHE;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.FILTERING_ORDERS;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.FINISHED;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.LOADING_ORDERS;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.LOADING_PRICES;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.NO_ORDERS_FOUND;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.SEARCHING_FOR_PROFIT;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.SEARCHING_FOR_ROUTES;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -156,6 +164,7 @@ public class SearchServiceImpl implements SearchService {
 
     // Run paginated loading of orders
     regionIds.forEach(region -> paginationExecutor.add(createPaginationForRegion(region)));
+    //TODO: replace with parallel pagination later
     paginationExecutor.execute();
   }
 
@@ -165,8 +174,9 @@ public class SearchServiceImpl implements SearchService {
    * @param regionId region id
    * @return pagination object
    */
-  private Pagination createPaginationForRegion(Integer regionId) {
-    return new PaginationBuilder<RestResponse<List<MarketOrder>>>()
+  private Pagination<RestResponse<List<MarketOrder>>> createPaginationForRegion(Integer regionId) {
+    SerialPaginationBuilder<RestResponse<List<MarketOrder>>> builder = PaginationBuilders.serial();
+    return builder
         // Begin with first page
         .startWith(1)
         // Load market orders for given region and page

@@ -93,7 +93,7 @@
 
         <dependency>
             <groupId>com.github.tddts</groupId>
-            <artifactId>tools.core</artifactId>
+            <artifactId>tools-core</artifactId>
             <version>1.0</version>
         </dependency>
 
