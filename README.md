@@ -6,4 +6,4 @@ Not intended for mass use, as it's getting less useful with each user due to it'
 
 ## Build requirements
 Requires JDK 8 and Maven 3.2.5 or higher to build.
-Also requires [Tools libraries](https://github.com/tddts/Tools) provided.
+Also requires [Tools Core](https://github.com/tddts/tools-core) dependency provided.
