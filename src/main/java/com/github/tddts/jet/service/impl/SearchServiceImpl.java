@@ -36,9 +36,12 @@ import com.github.tddts.jet.rest.client.esi.UniverseClient;
 import com.github.tddts.jet.service.DotlanService;
 import com.github.tddts.jet.service.SearchService;
 import com.github.tddts.jet.tools.filter.ResultOrderFilter;
-import com.github.tddts.jet.tools.pagination.PaginationExecutor;
 import com.github.tddts.tools.core.pagination.Pagination;
-import com.github.tddts.tools.core.pagination.SerialPaginationBuilder;
+import com.github.tddts.tools.core.pagination.builder.SerialPaginationBuilder;
+import com.github.tddts.tools.core.pagination.builder.SerialPaginationConditionData;
+import com.github.tddts.tools.core.pagination.builder.SinglePageErrorHandler;
+import com.github.tddts.tools.core.pagination.executor.PaginationExecutor;
+import com.github.tddts.tools.core.pagination.executor.SimplePaginationExecutor;
 import com.github.tddts.tools.core.pagination.impl.PaginationBuilders;
 import com.github.tddts.tools.core.task.TaskChain;
 import com.github.tddts.tools.core.task.impl.ReusableTaskChain;
@@ -91,7 +94,7 @@ public class SearchServiceImpl implements SearchService {
   private int expirationTimeout;
 
 
-  private PaginationExecutor paginationExecutor = new PaginationExecutor();
+  private PaginationExecutor paginationExecutor = new SimplePaginationExecutor();
   private ResultOrderFilter resultFilter = new ResultOrderFilter();
 
   private TaskChain<?> taskQueue;
@@ -164,7 +167,6 @@ public class SearchServiceImpl implements SearchService {
 
     // Run paginated loading of orders
     regionIds.forEach(region -> paginationExecutor.add(createPaginationForRegion(region)));
-    //TODO: replace with parallel pagination later
     paginationExecutor.execute();
   }
 
@@ -174,35 +176,32 @@ public class SearchServiceImpl implements SearchService {
    * @param regionId region id
    * @return pagination object
    */
-  private Pagination<RestResponse<List<MarketOrder>>> createPaginationForRegion(Integer regionId) {
+  private Pagination<RestResponse<List<MarketOrder>>> createPaginationForRegion(long regionId) {
     SerialPaginationBuilder<RestResponse<List<MarketOrder>>> builder = PaginationBuilders.serial();
     return builder
         // Begin with first page
         .startWith(1)
         // Load market orders for given region and page
-        .loadPage(page -> marketClient.getOrders(OrderType.ALL, regionId, page))
+        .loadPage((page, handler) -> loadPage(regionId, page, handler))
         //Process page
-        .processPage(this::processOrdersPage)
+        .processPage((response, page)-> orderDao.saveAll(response.getObject().stream().map(CachedOrder::new).collect(Collectors.toList())))
         // Set condition for pagination
-        .whileTrue(this::checkPaginationCondition)
+        .loadWhile(this::checkPaginationCondition)
         // Build pagination
         .build();
   }
 
-  private boolean checkPaginationCondition(Pagination<RestResponse<List<MarketOrder>>> pagination) {
-    RestResponse<List<MarketOrder>> lastResponse = pagination.getLastPage();
-    return lastResponse.isSuccessful() && lastResponse.getObject().size() > 0;
+  private RestResponse<List<MarketOrder>> loadPage(long regionId, int page, SinglePageErrorHandler errorHandler){
+    RestResponse<List<MarketOrder>> response = marketClient.getOrders(OrderType.ALL, regionId, page);
+    if(response.hasError()){
+      errorHandler.retryPage();
+    }
+    return response;
   }
 
-  private void processOrdersPage(Pagination<?> pagination, RestResponse<List<MarketOrder>> response) {
-    if (response.hasError()) {
-      // Skip page on error
-      pagination.getErrorHandler().retryPage();
-    }
-    else {
-      // Convert and save loaded orders to DB
-      orderDao.saveAll(response.getObject().stream().map(CachedOrder::new).collect(Collectors.toList()));
-    }
+  private boolean checkPaginationCondition(SerialPaginationConditionData<RestResponse<List<MarketOrder>>> conditionData) {
+    RestResponse<List<MarketOrder>> lastResponse = conditionData.lastPage();
+    return lastResponse.isSuccessful() && lastResponse.getObject().size() > 0;
   }
 
   /**
