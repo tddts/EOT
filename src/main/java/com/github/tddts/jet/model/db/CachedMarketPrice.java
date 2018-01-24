@@ -21,12 +21,14 @@ import com.github.tddts.jet.model.client.esi.market.MarketPrice;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * {@code CachedMarketPrice} represents a market price cached in database.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Table
 @Entity
 public class CachedMarketPrice {
 

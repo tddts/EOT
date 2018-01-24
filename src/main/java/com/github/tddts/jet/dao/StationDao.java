@@ -16,18 +16,13 @@
 
 package com.github.tddts.jet.dao;
 
+import com.github.tddts.jet.model.db.StaticStation;
+
 /**
  * DAO for accessing to information about space stations and solar systems.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface StationDao {
+public interface StationDao extends GenericDao<StaticStation> {
 
-  /**
-   * Find name of solar system in which given station is located.
-   *
-   * @param station station id
-   * @return solar system name
-   */
-  String findStationSystemName(long station);
 }

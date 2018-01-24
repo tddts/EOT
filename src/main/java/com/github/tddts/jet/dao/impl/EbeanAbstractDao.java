@@ -43,6 +43,11 @@ public abstract class EbeanAbstractDao<T> implements GenericDao<T> {
   }
 
   @Override
+  public T find(int id) {
+    return ebeanServer.find(type, id);
+  }
+
+  @Override
   public void save(Object object) {
     ebeanServer.save(object);
   }

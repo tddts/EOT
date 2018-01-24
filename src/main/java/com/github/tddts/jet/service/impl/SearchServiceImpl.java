@@ -17,23 +17,26 @@
 package com.github.tddts.jet.service.impl;
 
 import com.github.tddts.jet.config.spring.annotations.Profiling;
-import com.github.tddts.jet.consts.DotlanRouteOption;
+import com.github.tddts.jet.consts.RouteOption;
+import com.github.tddts.jet.model.app.OrderRoute;
+import com.github.tddts.jet.model.app.RouteParams;
 import com.github.tddts.jet.consts.OrderType;
 import com.github.tddts.jet.dao.MarketPriceDao;
 import com.github.tddts.jet.dao.OrderDao;
 import com.github.tddts.jet.dao.StationDao;
 import com.github.tddts.jet.model.app.OrderSearchRow;
 import com.github.tddts.jet.model.app.SearchParams;
-import com.github.tddts.jet.model.client.dotlan.DotlanRoute;
 import com.github.tddts.jet.model.client.esi.market.MarketOrder;
 import com.github.tddts.jet.model.client.esi.universe.UniverseName;
 import com.github.tddts.jet.model.db.CachedMarketPrice;
 import com.github.tddts.jet.model.db.CachedOrder;
 import com.github.tddts.jet.model.db.ResultOrder;
+import com.github.tddts.jet.model.db.StaticStation;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.MarketClient;
 import com.github.tddts.jet.rest.client.esi.UniverseClient;
 import com.github.tddts.jet.service.DotlanService;
+import com.github.tddts.jet.service.RouteService;
 import com.github.tddts.jet.service.SearchService;
 import com.github.tddts.jet.tools.filter.ResultOrderFilter;
 import com.github.tddts.tools.core.pagination.Pagination;
@@ -83,6 +86,8 @@ public class SearchServiceImpl implements SearchService {
   private DotlanService dotlanService;
   @Autowired
   private UniverseClient universeClient;
+  @Autowired
+  private RouteService routeService;
 
   @Autowired
   private EventBus eventBus;
@@ -228,7 +233,7 @@ public class SearchServiceImpl implements SearchService {
    * @param taxRate     tax rate
    * @return list of profitable orders
    */
-  private List<OrderSearchRow> find(DotlanRouteOption routeOption, double volume, double taxRate) {
+  private List<OrderSearchRow> find(RouteOption routeOption, double volume, double taxRate) {
     eventBus.post(SEARCHING_FOR_PROFIT);
 
     List<ResultOrder> searchResults = orderDao.findProfitableOrders(routeOption.getSecurity(), volume, taxRate);
@@ -266,11 +271,15 @@ public class SearchServiceImpl implements SearchService {
    * @param typeName     item type name
    * @return new OrderSearchRow
    */
-  private OrderSearchRow findRoute(ResultOrder searchResult, DotlanRouteOption routeOption, String typeName) {
-    String sellSystemName = stationDao.findStationSystemName(searchResult.getSellLocation());
-    String buySystemName = stationDao.findStationSystemName(searchResult.getBuyLocation());
-    DotlanRoute dotlanRoute = dotlanService.getRoute(routeOption, sellSystemName, buySystemName);
-    return new OrderSearchRow(typeName, sellSystemName, buySystemName, searchResult, dotlanRoute);
+  private OrderSearchRow findRoute(ResultOrder searchResult, RouteOption routeOption, String typeName) {
+    StaticStation sellStation = stationDao.find(searchResult.getSellLocation());
+    StaticStation buyStation = stationDao.find(searchResult.getBuyLocation());
+
+    OrderRoute orderRoute = routeService.getRoute(RouteParams
+        .of(sellStation.getSolarSystemID(), buyStation.getSolarSystemID())
+        .with(routeOption));
+
+    return new OrderSearchRow(typeName, sellStation.getStationName(), buyStation.getStationName(), searchResult, orderRoute);
   }
 
 }

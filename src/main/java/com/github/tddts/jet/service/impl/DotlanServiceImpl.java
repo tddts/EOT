@@ -16,7 +16,7 @@
 
 package com.github.tddts.jet.service.impl;
 
-import com.github.tddts.jet.consts.DotlanRouteOption;
+import com.github.tddts.jet.model.client.dotlan.DotlanRouteOption;
 import com.github.tddts.jet.exception.DotlanResponseParsingException;
 import com.github.tddts.jet.model.client.dotlan.DotlanRoute;
 import com.github.tddts.jet.rest.RestResponse;

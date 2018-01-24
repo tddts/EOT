@@ -4,7 +4,7 @@
 
     <groupId>com.github.tddts</groupId>
     <artifactId>JET</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <build>
 
         <plugins>
@@ -21,7 +21,7 @@
             <plugin>
                 <groupId>io.ebean</groupId>
                 <artifactId>ebean-maven-plugin</artifactId>
-                <version>10.1.4</version>
+                <version>11.9.1</version>
                 <executions>
                     <execution>
                         <id>main</id>
@@ -197,7 +197,7 @@
         <dependency>
             <groupId>io.ebean</groupId>
             <artifactId>ebean</artifactId>
-            <version>10.3.1</version>
+            <version>11.9.1</version>
         </dependency>
 
         <dependency>

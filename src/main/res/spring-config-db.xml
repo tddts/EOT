@@ -15,7 +15,7 @@
         </property>
         <property name="ddlGenerate" value="true"/>
         <property name="ddlRun" value="true"/>
-        <property name="ddlInitSql" value="sql/startup.sql"/>
+        <property name="ddlSeedSql" value="sql/startup.sql"/>
     </bean>
 
     <bean class="com.github.tddts.jet.config.ebean.EbeanServerFactoryBean">

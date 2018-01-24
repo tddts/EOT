@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.tddts.jet.consts;
+package com.github.tddts.jet.model.client.dotlan;
 
 /**
- * {@code DotlanRouteOption} represents a enumeration of route options available on
+ * {@code DotlanRouteOption} represents a enumeration of route options available with
  * <a href="http://evemaps.dotlan.net/">evemaps.dotlan.net</a>
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com

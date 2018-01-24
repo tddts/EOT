@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Tigran Dadaiants
+ * Copyright 2018 Tigran Dadaiants
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,18 @@
 
 package com.github.tddts.jet.rest.client.esi;
 
+import com.github.tddts.jet.consts.RouteOption;
 import com.github.tddts.jet.rest.RestResponse;
 
+import java.util.List;
+
 /**
- * {@code UserInterfaceClient} represents a REST client which deals with in-game user interface through
+ * {@code RouteClient} represents a REST client which deals with flight routes through
  * EVE Swagger Interface (an OpenAPI for EVE Online)
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface UserInterfaceClient {
+public interface RouteClient {
 
-  RestResponse<String> setWaypoint(int destinationId, boolean clearOtherWaypoints, boolean addToBeginning);
-
-  RestResponse<String> openMarketDetails(int typeId);
+  RestResponse<List<Integer>> getRoute(int origin, int destination, int[] avoid, int[] connections, RouteOption routeOption);
 }

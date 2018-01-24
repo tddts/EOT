@@ -16,8 +16,6 @@
 
 package com.github.tddts.jet.view.fx.exception;
 
-import org.jetbrains.annotations.NonNls;
-
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
@@ -26,7 +24,7 @@ public class DialogException extends RuntimeException {
   public DialogException() {
   }
 
-  public DialogException(@NonNls String message) {
+  public DialogException(String message) {
     super(message);
   }
 

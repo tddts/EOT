@@ -17,7 +17,7 @@
 package com.github.tddts.jet.view.fx.controller;
 
 
-import com.github.tddts.jet.consts.DotlanRouteOption;
+import com.github.tddts.jet.consts.RouteOption;
 import com.github.tddts.jet.context.events.AuthorizationEvent;
 import com.github.tddts.jet.context.events.UserDataEvent;
 import com.github.tddts.jet.view.fx.annotations.FXController;
@@ -90,7 +90,7 @@ public class SearchTabController {
   private ItemListTextField regionsField;
 
   @FXML
-  private ChoiceBox<DotlanRouteOption> routeOptionBox;
+  private ChoiceBox<RouteOption> routeOptionBox;
   @FXML
   private ChoiceBox<String> regionChoiceBox;
 
@@ -163,8 +163,8 @@ public class SearchTabController {
   }
 
   private void initChoiceBoxes() {
-    routeOptionBox.setConverter(messageHelper.getConverter(DotlanRouteOption.values()));
-    routeOptionBox.setItems(FXCollections.observableArrayList(DotlanRouteOption.values()));
+    routeOptionBox.setConverter(messageHelper.getConverter(RouteOption.values()));
+    routeOptionBox.setItems(FXCollections.observableArrayList(RouteOption.values()));
     routeOptionBox.getSelectionModel().selectFirst();
 
     regionChoiceBox.setItems(FXCollections.observableArrayList(regionNames));

@@ -18,7 +18,7 @@ package com.github.tddts.jet.rest.client.dotlan.impl;
 
 import com.github.tddts.jet.config.spring.annotations.RestClient;
 import com.github.tddts.jet.config.spring.annotations.Retry;
-import com.github.tddts.jet.consts.DotlanRouteOption;
+import com.github.tddts.jet.model.client.dotlan.DotlanRouteOption;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.dotlan.DotlanClient;
 import com.github.tddts.jet.rest.provider.RestClientTemplate;
@@ -53,7 +53,7 @@ public class DotlanClientImpl implements DotlanClient {
 
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList(new MediaType("image", "svg+xml")));
-    HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+    HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
     return new RestResponse<>(client.restOperations().exchange(url, HttpMethod.GET, entity, String.class));
   }

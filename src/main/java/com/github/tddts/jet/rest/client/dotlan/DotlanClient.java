@@ -17,7 +17,7 @@
 package com.github.tddts.jet.rest.client.dotlan;
 
 import com.github.tddts.jet.rest.RestResponse;
-import com.github.tddts.jet.consts.DotlanRouteOption;
+import com.github.tddts.jet.model.client.dotlan.DotlanRouteOption;
 
 /**
  * {@code DotlanClient} represents REST client for <a href="http://evemaps.dotlan.net/">evemaps.dotlan.net</a>

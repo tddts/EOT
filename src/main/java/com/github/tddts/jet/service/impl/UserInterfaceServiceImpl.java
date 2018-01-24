@@ -35,7 +35,7 @@ public class UserInterfaceServiceImpl implements UserInterfaceService {
 
   @Override
   public void setFullRoute(OrderSearchRow searchRow) {
-    List<Integer> waypoints = searchRow.getDotlanRoute().getWaypoints();
+    List<Integer> waypoints = searchRow.getOrderRoute().getWaypoints();
     if (!waypoints.isEmpty()) {
       //Clear old waypoints
       userInterfaceClient.setWaypoint(waypoints.get(0), true, true);
@@ -48,7 +48,7 @@ public class UserInterfaceServiceImpl implements UserInterfaceService {
 
   @Override
   public void setBuyWaypoint(OrderSearchRow searchRow) {
-    List<Integer> waypoints = searchRow.getDotlanRoute().getWaypoints();
+    List<Integer> waypoints = searchRow.getOrderRoute().getWaypoints();
     if (!waypoints.isEmpty()) {
       userInterfaceClient.setWaypoint(waypoints.get(waypoints.size() - 1), false, false);
     }
@@ -56,7 +56,7 @@ public class UserInterfaceServiceImpl implements UserInterfaceService {
 
   @Override
   public void setSellWaypoint(OrderSearchRow searchRow) {
-    List<Integer> waypoints = searchRow.getDotlanRoute().getWaypoints();
+    List<Integer> waypoints = searchRow.getOrderRoute().getWaypoints();
     if (!waypoints.isEmpty()) {
       userInterfaceClient.setWaypoint(waypoints.get(0), false, false);
     }

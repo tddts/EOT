@@ -24,6 +24,13 @@ import java.util.Collection;
 public interface GenericDao<T> {
 
   /**
+   * Find object by it's ID
+   *
+   * @param id object id
+   */
+  T find(int id);
+
+  /**
    * Save object to database
    *
    * @param object object

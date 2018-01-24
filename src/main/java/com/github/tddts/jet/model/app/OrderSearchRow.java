@@ -48,7 +48,7 @@ public class OrderSearchRow {
   private StringProperty profitText = new SimpleStringProperty();
   private StringProperty perJumpProfitText = new SimpleStringProperty();
 
-  private DotlanRoute dotlanRoute;
+  private OrderRoute orderRoute;
   private ResultOrder searchResultData;
 
   public OrderSearchRow() {
@@ -57,7 +57,7 @@ public class OrderSearchRow {
     perJumpProfitText.bindBidirectional(perJumpProfit, numberStringConverter);
   }
 
-  public OrderSearchRow(String typeName, String sellSystem, String buySystem, ResultOrder searchResult, DotlanRoute dotlanRoute) {
+  public OrderSearchRow(String typeName, String sellSystem, String buySystem, ResultOrder searchResult, OrderRoute orderRoute) {
     this();
     setItem(typeName);
     setSellingLocation(sellSystem);
@@ -66,17 +66,17 @@ public class OrderSearchRow {
     setQuantity(searchResult.getTradeQuantity());
     setVolume(searchResult.getItemCargoVolume());
     setVolumeRemain(searchResult.getItemCargoFreeVolume());
-    setJumps(dotlanRoute.getJumpsCount());
+    setJumps(orderRoute.getJumpsCount());
     setSellPrice(searchResult.getSellPrice());
     setBuyPrice(searchResult.getBuyPrice());
     setProfit(searchResult.getProfit());
 
-    int jumpsCount = dotlanRoute.getJumpsCount();
+    int jumpsCount = orderRoute.getJumpsCount();
     int jumps = jumpsCount > 0 ? jumpsCount : 1;
     setPerJumpProfit(searchResult.getProfit() / jumps);
 
-    setDotlanRoute(dotlanRoute);
-    setSearchResultData(searchResult);
+    this.orderRoute = orderRoute;
+    this.searchResultData = searchResult;
   }
 
   public String getItem() {
@@ -236,12 +236,12 @@ public class OrderSearchRow {
     return perJumpProfitText;
   }
 
-  public DotlanRoute getDotlanRoute() {
-    return dotlanRoute;
+  public OrderRoute getOrderRoute() {
+    return orderRoute;
   }
 
-  public void setDotlanRoute(DotlanRoute dotlanRoute) {
-    this.dotlanRoute = dotlanRoute;
+  public void setOrderRoute(OrderRoute orderRoute) {
+    this.orderRoute = orderRoute;
   }
 
   public ResultOrder getSearchResultData() {

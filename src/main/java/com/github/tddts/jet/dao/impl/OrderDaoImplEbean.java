@@ -85,9 +85,7 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
     ebeans().createSqlUpdate(sql_update_searchInsertStations).setParameter("security_status", security).execute();
     ebeans().createSqlUpdate(sql_update_searchInsertOrders).execute();
 
-    RawSql rawSql = RawSqlBuilder.parse(sql_select_search)
-        .columnMapping("PROFIT", "profit")
-        .create();
+    RawSql rawSql = RawSqlBuilder.parse(sql_select_search).create();
 
     Query<ResultOrder> query = ebeans().find(ResultOrder.class)
         .setParameter("cargo_volume", cargoVolume)

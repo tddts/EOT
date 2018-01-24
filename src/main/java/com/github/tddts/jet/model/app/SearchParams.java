@@ -16,7 +16,7 @@
 
 package com.github.tddts.jet.model.app;
 
-import com.github.tddts.jet.consts.DotlanRouteOption;
+import com.github.tddts.jet.consts.RouteOption;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -33,7 +33,7 @@ public class SearchParams {
   private double tax;
 
   private List<String> regions;
-  private DotlanRouteOption routeOption;
+  private RouteOption routeOption;
   private Consumer<List<OrderSearchRow>> resultConsumer;
 
   public long getIsk() {
@@ -63,11 +63,11 @@ public class SearchParams {
     return this;
   }
 
-  public DotlanRouteOption getRouteOption() {
+  public RouteOption getRouteOption() {
     return routeOption;
   }
 
-  public SearchParams setRouteOption(DotlanRouteOption routeOption) {
+  public SearchParams setRouteOption(RouteOption routeOption) {
     this.routeOption = routeOption;
     return this;
   }
