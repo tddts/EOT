@@ -19,9 +19,15 @@ package com.github.tddts.jet.oauth.impl;
 import com.github.tddts.jet.config.spring.annotations.LoadContent;
 import com.github.tddts.jet.config.spring.annotations.Message;
 import com.github.tddts.jet.oauth.EmbeddedServer;
-import com.github.tddts.jet.oauth.server.AuthHttpHandler;
-import com.github.tddts.jet.oauth.server.TransientServer;
+import com.github.tddts.jet.oauth.server.DefaultAuthHandler;
 import com.github.tddts.jet.service.AuthService;
+import com.github.tddts.tools.web.oauth.handler.AuthHandler;
+import com.github.tddts.tools.web.oauth.handler.impl.CallbackRequestHandler;
+import com.github.tddts.tools.web.oauth.handler.impl.SimpleAuthHandlerCallback;
+import com.github.tddts.tools.web.oauth.server.TemporaryHttpServer;
+import com.github.tddts.tools.web.oauth.server.TemporaryServer;
+import org.apache.http.impl.bootstrap.HttpServer;
+import org.apache.http.impl.bootstrap.ServerBootstrap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +44,8 @@ public class EmbeddedServerImpl implements EmbeddedServer {
 
   private final Logger logger = LogManager.getLogger(EmbeddedServerImpl.class);
 
-  @Value("${server.resource.location}")
-  private String resourceLocation;
+  @Value("${server.path}")
+  private String serverPath;
 
   @Value("${server.port}")
   private int port;
@@ -56,23 +62,30 @@ public class EmbeddedServerImpl implements EmbeddedServer {
   @Autowired
   private AuthService authService;
 
-  private TransientServer server;
+  private TemporaryServer temporaryServer;
 
   @PostConstruct
   public void init() {
-    AuthHttpHandler httpHandler = new AuthHttpHandler(authService, implicitSuccessResponse, successMessage);
-    server = new TransientServer(resourceLocation, port, timeout, httpHandler);
+    AuthHandler authHandler = new DefaultAuthHandler(authService, implicitSuccessResponse, successMessage);
+    CallbackRequestHandler requestHandler = new CallbackRequestHandler(authHandler, new SimpleAuthHandlerCallback());
+
+    HttpServer httpServer = ServerBootstrap.bootstrap()
+        .setListenerPort(port)
+        .registerHandler(serverPath, requestHandler)
+        .create();
+
+    temporaryServer = new TemporaryHttpServer(httpServer);
   }
 
 
   @Override
   public void start() {
-    server.start();
+    temporaryServer.start();
   }
 
   @Override
   public void stop() {
-    server.stop();
+    temporaryServer.stop();
   }
 
 }

@@ -23,7 +23,6 @@ import com.github.tddts.jet.context.events.UserDataEvent;
 import com.github.tddts.jet.view.fx.annotations.FXController;
 import com.github.tddts.jet.view.fx.controls.DoubleTextField;
 import com.github.tddts.jet.view.fx.controls.ItemListTextField;
-import com.github.tddts.jet.view.fx.controls.LongTextField;
 import com.github.tddts.jet.view.fx.controls.PercentageTextField;
 import com.github.tddts.jet.view.fx.tools.message.provider.MessageHelper;
 import com.github.tddts.jet.model.app.OrderSearchRow;
@@ -33,6 +32,7 @@ import com.github.tddts.jet.service.TaskService;
 import com.github.tddts.jet.service.UserDataService;
 import com.github.tddts.jet.service.UserInterfaceService;
 import com.google.common.eventbus.Subscribe;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -81,7 +82,7 @@ public class SearchTabController {
   private TableView<OrderSearchRow> searchTable;
 
   @FXML
-  private LongTextField iskField;
+  private DoubleTextField iskField;
   @FXML
   private DoubleTextField cargoField;
   @FXML
@@ -96,8 +97,6 @@ public class SearchTabController {
 
   @FXML
   private Button searchButton;
-  @FXML
-  private Button setWaypointsButton;
   @FXML
   private Button setFirstWaypointButton;
   @FXML
@@ -156,9 +155,8 @@ public class SearchTabController {
     regionSelectionButton.setOnAction(event -> addRegion());
     clearRegionsButton.setOnAction(event -> clearRegions());
 
-    setWaypointsButton.setOnAction(event -> onSelectedRow(row -> userInterfaceService.setFullRoute(row)));
-    setFirstWaypointButton.setOnAction(event -> onSelectedRow(row -> userInterfaceService.setBuyWaypoint(row)));
-    setLastWaypointButton.setOnAction(event -> onSelectedRow(row -> userInterfaceService.setSellWaypoint(row)));
+    setLastWaypointButton.setOnAction(event -> onSelectedRow(row -> userInterfaceService.setBuyWaypoint(row)));
+    setFirstWaypointButton.setOnAction(event -> onSelectedRow(row -> userInterfaceService.setSellWaypoint(row)));
     openMarketButton.setOnAction(event -> onSelectedRow(row -> userInterfaceService.openMarketDetails(row)));
   }
 
@@ -176,8 +174,8 @@ public class SearchTabController {
   private void search() {
     SearchParams searchParams = new SearchParams();
     searchParams
-        .setIsk(iskField.getNumber())
-        .setCargo(cargoField.getNumber())
+        .setIsk(iskField.getNumber().longValue())
+        .setCargo(cargoField.getNumber()) //FIXME
         .setTax(taxField.getFraction())
         .setRouteOption(routeOptionBox.getValue())
         .setRegions(getRegions())

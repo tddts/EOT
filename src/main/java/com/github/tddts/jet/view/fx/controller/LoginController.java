@@ -52,6 +52,7 @@ import java.util.Optional;
 @FXController("fxml/header.fxml")
 public class LoginController {
 
+  // TODO: remove it, use something else instead
   private static final Background BACKGROUND_RED = new Background(new BackgroundFill(Color.web("#ed4949"), CornerRadii.EMPTY, Insets.EMPTY));
 
   @Message("login.authorized")
@@ -67,8 +68,6 @@ public class LoginController {
   private ChoiceBox<RestDataSource> dataSourceBox;
   @FXML
   private ChoiceBox<AuthorizationType> loginChoiceBox;
-  @FXML
-  private TextField characterIdField;
   @FXML
   private Button loginButton;
   @FXML
@@ -98,10 +97,6 @@ public class LoginController {
 
     loginChoiceBox.managedProperty().bind(loginChoiceBox.visibleProperty());
     loginButton.managedProperty().bind(loginButton.visibleProperty());
-
-    characterIdField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-    characterIdField.setText(getCharacterId());
-    characterIdField.setOnAction(event -> setCharacterId());
   }
 
   private void processLoginTypeChange(AuthorizationType value) {
@@ -118,14 +113,6 @@ public class LoginController {
 
   private Optional<Pair<String, String>> getCredentials() {
     return dialogProvider.getDialog(DevCredentialsDialog.class).showAndWait();
-  }
-
-  private String getCharacterId() {
-    return userDataService.getCharacterId();
-  }
-
-  private void setCharacterId() {
-    userDataService.saveCharacterId(characterIdField.getText());
   }
 
   @Subscribe

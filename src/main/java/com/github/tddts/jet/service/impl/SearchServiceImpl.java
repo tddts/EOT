@@ -187,18 +187,18 @@ public class SearchServiceImpl implements SearchService {
         // Begin with first page
         .startWith(1)
         // Load market orders for given region and page
-        .loadPage((page, handler) -> loadPage(regionId, page, handler))
+        .loadPage((handler, page) -> loadPage(regionId, page, handler))
         //Process page
-        .processPage((response, page)-> orderDao.saveAll(response.getObject().stream().map(CachedOrder::new).collect(Collectors.toList())))
+        .processPage((response, page) -> orderDao.saveAll(response.getObject().stream().map(CachedOrder::new).collect(Collectors.toList())))
         // Set condition for pagination
         .loadWhile(this::checkPaginationCondition)
         // Build pagination
         .build();
   }
 
-  private RestResponse<List<MarketOrder>> loadPage(long regionId, int page, SinglePageErrorHandler errorHandler){
+  private RestResponse<List<MarketOrder>> loadPage(long regionId, int page, SinglePageErrorHandler errorHandler) {
     RestResponse<List<MarketOrder>> response = marketClient.getOrders(OrderType.ALL, regionId, page);
-    if(response.hasError()){
+    if (response.hasError()) {
       errorHandler.retryPage();
     }
     return response;

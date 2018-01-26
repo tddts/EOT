@@ -52,7 +52,7 @@ public class OrderSearchRow {
   private ResultOrder searchResultData;
 
   public OrderSearchRow() {
-    NumberStringConverter numberStringConverter = new NumberStringConverter("###.##");
+    NumberStringConverter numberStringConverter = new NumberStringConverter("0.00");
     profitText.bindBidirectional(profit, numberStringConverter);
     perJumpProfitText.bindBidirectional(perJumpProfit, numberStringConverter);
   }
@@ -66,14 +66,16 @@ public class OrderSearchRow {
     setQuantity(searchResult.getTradeQuantity());
     setVolume(searchResult.getItemCargoVolume());
     setVolumeRemain(searchResult.getItemCargoFreeVolume());
-    setJumps(orderRoute.getJumpsCount());
+
     setSellPrice(searchResult.getSellPrice());
     setBuyPrice(searchResult.getBuyPrice());
     setProfit(searchResult.getProfit());
 
     int jumpsCount = orderRoute.getJumpsCount();
     int jumps = jumpsCount > 0 ? jumpsCount : 1;
+
     setPerJumpProfit(searchResult.getProfit() / jumps);
+    setJumps(jumps);
 
     this.orderRoute = orderRoute;
     this.searchResultData = searchResult;

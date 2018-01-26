@@ -16,6 +16,7 @@
 
 package com.github.tddts.jet.rest.client.esi.impl;
 
+import com.github.tddts.jet.model.client.esi.sso.CharacterInfo;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.config.spring.annotations.RestClient;
 import com.github.tddts.jet.config.spring.beans.UserBean;
@@ -42,10 +43,13 @@ import java.util.Base64;
 public class AuthClientImpl implements AuthClient {
 
   @Value("${path.auth.authorize}")
-  private String addressAuthorize;
+  private String pathAuthorize;
 
   @Value("${path.auth.token}")
-  private String addressToken;
+  private String pathToken;
+
+  @Value("${path.auth.verify}")
+  private String pathVerify;
 
   @Autowired
   private UserBean userBean;
@@ -55,7 +59,7 @@ public class AuthClientImpl implements AuthClient {
 
   @Override
   public RestResponse<AccessToken> getToken(String authCode) {
-    URI uri = client.authUriBuilder(addressAuthorize)
+    URI uri = client.authUriBuilder(pathAuthorize)
         .queryParam("grant_type", "authorization_code")
         .queryParam("code", authCode)
         .build().toUri();
@@ -65,7 +69,7 @@ public class AuthClientImpl implements AuthClient {
 
   @Override
   public RestResponse<AccessToken> refreshToken() {
-    URI uri = client.authUriBuilder(addressToken)
+    URI uri = client.authUriBuilder(pathToken)
         .queryParam("grant_type", "refresh_token")
         .queryParam("refresh_token", userBean.getAccessToken().getRefresh_token())
         .build().toUri();
@@ -73,16 +77,15 @@ public class AuthClientImpl implements AuthClient {
     return getToken(uri);
   }
 
-  private RestResponse<AccessToken> getToken(URI uri) {
-    return new RestResponse<>(client.restOperations().exchange(uri, HttpMethod.POST, basicAuthEntity(), AccessToken.class));
+  @Override
+  public RestResponse<CharacterInfo> getCharacterInfo(AccessToken accessToken) {
+    URI uri = client.authUriBuilder(pathVerify).build().toUri();
+    return new RestResponse<>(client.restOperations().exchange(
+        uri, HttpMethod.GET, client.bearerAuthorizedEntity(), CharacterInfo.class));
   }
 
-  private HttpEntity<?> basicAuthEntity() {
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-    String authHeader = userBean.getClientId() + ":" + userBean.getSercretKey();
-    String base64EncodedHeader = new String(Base64.getEncoder().encode(authHeader.getBytes()), Charset.forName("UTF-8"));
-    headers.set("Authorization", "Basic " + base64EncodedHeader);
-    return new HttpEntity<>(null, headers);
+  private RestResponse<AccessToken> getToken(URI uri) {
+    return new RestResponse<>(client.restOperations().exchange(
+        uri, HttpMethod.POST, client.basicAuthorizedEntity(), AccessToken.class));
   }
 }

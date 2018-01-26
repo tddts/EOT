@@ -9,11 +9,11 @@
         </File>
     </Appenders>
     <Loggers>
-        <Root level="ERROR">
+        <Root level="DEBUG">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="LogFile"/>
         </Root>
-        <Logger name="org.springframework" level="OFF" additivity="false">
+        <Logger name="org.springframework" level="DEBUG" additivity="false">
             <Appender-ref ref="Console"/>
             <Appender-ref ref="LogFile"/>
         </Logger>

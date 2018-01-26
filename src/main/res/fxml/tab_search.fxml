@@ -15,7 +15,7 @@
                     <Insets bottom="5.0" left="5.0" right="5.0" top="10.0"/>
                 </padding>
                 <Label text="ISK:"/>
-                <LongTextField fx:id="iskField"/>
+                <DoubleTextField fx:id="iskField"/>
                 <Label text="%tabs.search.label.cargo"/>
                 <DoubleTextField fx:id="cargoField"/>
                 <Label text="%tabs.search.label.tax"/>
@@ -79,8 +79,6 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
             <Button fx:id="openMarketButton" mnemonicParsing="false" text="%tabs.search.right.pane.open.market"/>
-            <Button fx:id="setWaypointsButton" alignment="CENTER" mnemonicParsing="false"
-                    text="%tabs.search.right.pane.set.waypoints"/>
             <Button fx:id="setFirstWaypointButton" mnemonicParsing="false"
                     text="%tabs.search.right.pane.set.first.waypoint"/>
             <Button fx:id="setLastWaypointButton" mnemonicParsing="false"

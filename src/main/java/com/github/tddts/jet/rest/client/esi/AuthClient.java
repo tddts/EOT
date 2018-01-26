@@ -16,6 +16,7 @@
 
 package com.github.tddts.jet.rest.client.esi;
 
+import com.github.tddts.jet.model.client.esi.sso.CharacterInfo;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.model.client.esi.sso.AccessToken;
 
@@ -29,4 +30,6 @@ public interface AuthClient {
   RestResponse<AccessToken> getToken(String authCode);
 
   RestResponse<AccessToken> refreshToken();
+
+  RestResponse<CharacterInfo> getCharacterInfo(AccessToken accessToken);
 }

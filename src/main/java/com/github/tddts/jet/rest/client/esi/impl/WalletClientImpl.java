@@ -35,16 +35,15 @@ import java.util.List;
 @RestClient
 public class WalletClientImpl implements WalletClient {
 
-  @Value("${path.wallets}")
-  private String addressCharacterWallets;
+  @Value("${path.wallet}")
+  private String addressCharacterWallet;
 
   @Autowired
   private RestClientTemplate client;
 
   @Override
-  public RestResponse<List<Wallet>> getWallets(long character_id) {
-    return RestResponse.fromArrayResponse(
-        client.restOperations().exchange(
-            client.apiUrl(addressCharacterWallets), HttpMethod.GET, client.authorizedEntity(), Wallet[].class, character_id));
+  public RestResponse<Double> getWalletAmount(long character_id) {
+    return new RestResponse<>(client.restOperations().exchange(
+        client.apiUrl(addressCharacterWallet), HttpMethod.GET, client.authorizedEntity(), Double.class, character_id));
   }
 }

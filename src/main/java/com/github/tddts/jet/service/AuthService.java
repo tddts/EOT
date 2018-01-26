@@ -16,9 +16,13 @@
 
 package com.github.tddts.jet.service;
 
+import com.github.tddts.jet.model.client.esi.sso.AccessToken;
+import org.apache.http.NameValuePair;
 import org.springframework.http.HttpStatus;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@code AuthService} represents a service providing access to EVE Swagger Interface
@@ -73,6 +77,20 @@ public interface AuthService {
   HttpStatus processAuthorizationCode(String query);
 
   /**
+   * Process access token in given URI parameters
+   *
+   * @param params URI parameters
+   */
+  void processAccessToken(Map<String, String> params);
+
+  /**
+   * Process authorization code in given URI parameters
+   *
+   * @param params URI query
+   */
+  HttpStatus processAuthorizationCode(Map<String, String> params);
+
+  /**
    * Refresh existing access token.
    */
   void refreshAccessToken();
@@ -83,4 +101,26 @@ public interface AuthService {
    * @param query URI query
    */
   HttpStatus processAuthorization(String query);
+
+  /**
+   * Process either access code or authorization code from given parameters.
+   *
+   * @param params URI parameters
+   */
+  HttpStatus processAuthorization(List<NameValuePair> params);
+
+  /**
+   * Process either access code or authorization code from given parameters.
+   *
+   * @param params URI parameters
+   */
+  HttpStatus processAuthorization(Map<String, String> params);
+
+  /**
+   * Build access token object from given parameters.
+   *
+   * @param params URI parameters
+   * @return access token
+   */
+  AccessToken buildAccessToken(Map<String, String> params);
 }

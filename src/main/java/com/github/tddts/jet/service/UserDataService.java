@@ -28,7 +28,7 @@ public interface UserDataService {
    *
    * @return amount of ISK.
    */
-  long getWalletsAmount();
+  double getWalletsAmount();
 
   /**
    * Get amount of ISK in all user's wallets as String.
@@ -37,17 +37,4 @@ public interface UserDataService {
    */
   String getWalletsAmountAsString();
 
-  /**
-   * Save given character ID
-   *
-   * @param idString character ID
-   */
-  void saveCharacterId(String idString);
-
-  /**
-   * Get current character ID.
-   *
-   * @return character ID.
-   */
-  String getCharacterId();
 }

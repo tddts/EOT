@@ -50,7 +50,7 @@ public class UserInterfaceServiceImpl implements UserInterfaceService {
   public void setBuyWaypoint(OrderSearchRow searchRow) {
     List<Integer> waypoints = searchRow.getOrderRoute().getWaypoints();
     if (!waypoints.isEmpty()) {
-      userInterfaceClient.setWaypoint(waypoints.get(waypoints.size() - 1), false, false);
+      userInterfaceClient.setWaypoint(waypoints.get(waypoints.size() - 1), true, false);
     }
   }
 
@@ -58,7 +58,7 @@ public class UserInterfaceServiceImpl implements UserInterfaceService {
   public void setSellWaypoint(OrderSearchRow searchRow) {
     List<Integer> waypoints = searchRow.getOrderRoute().getWaypoints();
     if (!waypoints.isEmpty()) {
-      userInterfaceClient.setWaypoint(waypoints.get(0), false, false);
+      userInterfaceClient.setWaypoint(waypoints.get(0), true, false);
     }
   }
 

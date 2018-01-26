@@ -40,4 +40,8 @@ public interface RestClientTemplate {
   HttpEntity<?> authorizedEntity();
 
   HttpEntity<?> authorizedEntity(Object body);
+
+  HttpEntity<?> basicAuthorizedEntity();
+
+  HttpEntity<?> bearerAuthorizedEntity();
 }

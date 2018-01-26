@@ -4,12 +4,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox BorderPane.alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.tddts.jet.view.fx.controller.LoginController">
+<VBox BorderPane.alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9" fx:controller="com.github.tddts.jet.view.fx.controller.LoginController">
     <HBox fx:id="headerHbox" alignment="CENTER_LEFT" spacing="5.0" style="-fx-background-color: #ed4949;" xmlns="http://javafx.com/fxml" xmlns:fx="http://javafx.com/fxml/1">
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -18,7 +17,6 @@
             <Insets />
         </VBox.margin>
       <ChoiceBox fx:id="dataSourceBox" prefWidth="150.0" />
-      <TextField fx:id="characterIdField" focusTraversable="false" prefWidth="120.0" promptText="%login.character.id" />
         <ChoiceBox fx:id="loginChoiceBox" minWidth="120.0" />
         <Button fx:id="loginButton" mnemonicParsing="false" text="%msg.login" />
         <Label fx:id="loginStatusLabel" text="%login.unauthorized" />

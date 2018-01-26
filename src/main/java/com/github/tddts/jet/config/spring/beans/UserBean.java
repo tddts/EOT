@@ -19,6 +19,7 @@ package com.github.tddts.jet.config.spring.beans;
 import com.github.tddts.jet.consts.AuthorizationType;
 import com.github.tddts.jet.consts.RestDataSource;
 import com.github.tddts.jet.model.client.esi.sso.AccessToken;
+import com.github.tddts.jet.model.client.esi.sso.CharacterInfo;
 import org.springframework.stereotype.Component;
 
 /**
@@ -29,10 +30,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserBean {
 
-  private long character_id;
   private String clientId;
   private String sercretKey;
   private AccessToken accessToken;
+  private CharacterInfo characterInfo;
 
   private AuthorizationType authorizationType = AuthorizationType.IMPLICIT;
   private RestDataSource restDataSource = RestDataSource.TRANQULITY;
@@ -42,14 +43,6 @@ public class UserBean {
 
   public boolean isTokenRefreshable() {
     return accessToken.getRefresh_token() != null;
-  }
-
-  public long getCharacter_id() {
-    return character_id;
-  }
-
-  public void setCharacter_id(long character_id) {
-    this.character_id = character_id;
   }
 
   public String getClientId() {
@@ -74,6 +67,14 @@ public class UserBean {
 
   public void setAccessToken(AccessToken accessToken) {
     this.accessToken = accessToken;
+  }
+
+  public CharacterInfo getCharacterInfo() {
+    return characterInfo;
+  }
+
+  public void setCharacterInfo(CharacterInfo characterInfo) {
+    this.characterInfo = characterInfo;
   }
 
   public AuthorizationType getAuthorizationType() {

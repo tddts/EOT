@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
@@ -47,7 +48,7 @@ public class Util {
       if (inputStream == null) {
         throw new FileLoadingException("Not found: " + resourceName);
       }
-      return new String(IOUtils.toByteArray(inputStream), "UTF-8");
+      return new String(IOUtils.toByteArray(inputStream), StandardCharsets.UTF_8);
     } catch (Exception e) {
       throw new FileLoadingException(e);
     }

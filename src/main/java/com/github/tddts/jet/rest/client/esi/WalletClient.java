@@ -29,5 +29,5 @@ import java.util.List;
  */
 public interface WalletClient {
 
-  RestResponse<List<Wallet>> getWallets(long character_id);
+  RestResponse<Double> getWalletAmount(long character_id);
 }
