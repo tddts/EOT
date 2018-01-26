@@ -31,13 +31,12 @@ import com.github.tddts.jet.service.UserInterfaceService;
 import com.github.tddts.tools.fx.controls.DoubleTextField;
 import com.github.tddts.tools.fx.controls.ItemListTextField;
 import com.github.tddts.tools.fx.controls.PercentageTextField;
+import com.github.tddts.tools.fx.table.cell.NumberFormatCellFactory;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -108,6 +107,8 @@ public class SearchTabController {
 
   @Value("#{${static.regions}.keySet()}")
   private Set<String> regionNames;
+  @Value("${view.profit.pattern}")
+  private String profitPattern;
 
   @Autowired
   private MessageHelper messageHelper;
@@ -143,7 +144,10 @@ public class SearchTabController {
     jumpsColumn.setCellValueFactory(cellData -> cellData.getValue().jumpsProperty().asObject());
 
     profitColumn.setCellValueFactory(cellData -> cellData.getValue().profitProperty().asObject());
+    profitColumn.setCellFactory(new NumberFormatCellFactory<>(profitPattern));
+
     perJumpColumn.setCellValueFactory(cellData -> cellData.getValue().perJumpProfitProperty().asObject());
+    perJumpColumn.setCellFactory(new NumberFormatCellFactory<>(profitPattern));
 
     searchTable.setItems(FXCollections.observableArrayList());
   }
