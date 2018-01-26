@@ -32,7 +32,6 @@ import com.github.tddts.jet.service.TaskService;
 import com.github.tddts.jet.service.UserDataService;
 import com.github.tddts.jet.service.UserInterfaceService;
 import com.google.common.eventbus.Subscribe;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,7 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -174,9 +172,9 @@ public class SearchTabController {
   private void search() {
     SearchParams searchParams = new SearchParams();
     searchParams
-        .setIsk(iskField.getNumber().longValue())
-        .setCargo(cargoField.getNumber()) //FIXME
-        .setTax(taxField.getFraction())
+        .setIsk(iskField.getValue().longValue())
+        .setCargo(cargoField.getValue())
+        .setTax(taxField.getValue())
         .setRouteOption(routeOptionBox.getValue())
         .setRegions(getRegions())
         .setResultConsumer(this::fillSearchTable);

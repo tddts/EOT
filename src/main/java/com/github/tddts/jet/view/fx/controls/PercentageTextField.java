@@ -16,12 +16,14 @@
 
 package com.github.tddts.jet.view.fx.controls;
 
+import com.github.tddts.jet.view.fx.converter.PercentageFormatStringConverter;
+
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class PercentageTextField extends IntegerTextField {
+public class PercentageTextField extends NumericTextField<Float> {
 
-  public double getFraction(){
-    return getNumber().doubleValue() / 100;
+  public PercentageTextField() {
+    super(new PercentageFormatStringConverter());
   }
 }

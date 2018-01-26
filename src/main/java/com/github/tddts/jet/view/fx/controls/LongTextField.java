@@ -16,7 +16,7 @@
 
 package com.github.tddts.jet.view.fx.controls;
 
-import javafx.util.converter.LongStringConverter;
+import com.github.tddts.jet.view.fx.converter.LongFormatStringConverter;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -24,6 +24,6 @@ import javafx.util.converter.LongStringConverter;
 public class LongTextField extends NumericTextField<Long> {
 
   public LongTextField() {
-    super(new LongStringConverter(), 0L);
+    super(new LongFormatStringConverter());
   }
 }

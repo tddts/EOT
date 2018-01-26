@@ -25,19 +25,19 @@ import javafx.util.StringConverter;
  */
 public abstract class NumericTextField<T extends Number> extends TextField {
 
-  private StringConverter<T> converter;
-  private T defaultValue;
+  private TextFormatter<T> formatter;
 
-  public NumericTextField(StringConverter<T> converter, T defaultValue) {
-    this.converter = converter;
-    this.defaultValue = defaultValue;
-    setTextFormatter(new TextFormatter<>(converter));
+  public NumericTextField(StringConverter<T> converter) {
+    formatter = new TextFormatter<>(converter);
+    setTextFormatter(formatter);
   }
 
-  public T getNumber() {
-    String text = getText();
-    if (text == null || text.isEmpty()) return defaultValue;
-    return converter.fromString(text);
+  public T getValue(){
+   return formatter.getValue();
+  }
+
+  public void setValue(T value){
+    formatter.setValue(value);
   }
 
 }

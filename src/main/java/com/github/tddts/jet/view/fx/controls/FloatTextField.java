@@ -16,7 +16,7 @@
 
 package com.github.tddts.jet.view.fx.controls;
 
-import javafx.util.converter.FloatStringConverter;
+import com.github.tddts.jet.view.fx.converter.FloatFormatStringConverter;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -24,6 +24,6 @@ import javafx.util.converter.FloatStringConverter;
 public class FloatTextField extends NumericTextField<Float> {
 
   public FloatTextField() {
-    super(new FloatStringConverter(), 0f);
+    super(new FloatFormatStringConverter());
   }
 }

@@ -16,7 +16,7 @@
 
 package com.github.tddts.jet.view.fx.controls;
 
-import javafx.util.converter.DoubleStringConverter;
+import com.github.tddts.jet.view.fx.converter.DoubleFormatStringConverter;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -24,6 +24,6 @@ import javafx.util.converter.DoubleStringConverter;
 public class DoubleTextField extends NumericTextField<Double> {
 
   public DoubleTextField() {
-    super(new DoubleStringConverter(), 0d);
+    super(new DoubleFormatStringConverter());
   }
 }

@@ -16,7 +16,7 @@
 
 package com.github.tddts.jet.view.fx.controls;
 
-import javafx.util.converter.IntegerStringConverter;
+import com.github.tddts.jet.view.fx.converter.IntegerFormatStringConverter;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -24,6 +24,6 @@ import javafx.util.converter.IntegerStringConverter;
 public class IntegerTextField extends NumericTextField<Integer> {
 
   public IntegerTextField() {
-    super(new IntegerStringConverter(), 0);
+    super(new IntegerFormatStringConverter());
   }
 }
