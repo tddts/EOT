@@ -21,8 +21,11 @@ import com.google.common.collect.ComparisonChain;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -31,66 +34,20 @@ public class ResultOrderFilter {
 
   private final Logger logger = LogManager.getLogger(ResultOrderFilter.class);
 
-  private Comparator<ResultOrder> comparator = new ResultOrderComparator();
-
 
   public List<ResultOrder> filter(List<ResultOrder> orders) {
     if (orders.isEmpty()) return orders;
 
-    orders.sort(comparator);
+    List<ResultOrder> filtered = new ArrayList<>(orders.size());
 
-    ResultOrder previous;
-    ResultOrder current;
-
-    for (int i = 1; i < orders.size(); i++) {
-      previous = orders.get(i - 1);
-      current = orders.get(i);
-
-      if (previous.getSellLocation().equals(current.getSellLocation())
-          && previous.getSellPrice().equals(current.getSellPrice())
-          && previous.getBuyPrice().equals(current.getBuyPrice())
-          && previous.getProfitPerUnit().equals(current.getProfitPerUnit())
-          && previous.getItemCargoFreeVolume() > 0) {
-
-        double freeCargo = previous.getItemCargoFreeVolume();
-        int capability = (int) (freeCargo / current.getItemVolume());
-
-        if (capability > 1) {
-
-          double addedVolume = capability * current.getItemVolume();
-          double profitChange = capability * previous.getProfitPerUnit();
-
-          previous.setItemCargoVolume(previous.getItemCargoVolume() + addedVolume);
-          previous.setItemCargoFreeVolume(previous.getItemCargoFreeVolume() - addedVolume);
-          previous.setProfit(previous.getProfit() + profitChange);
-
-          current.setItemCargoVolume(current.getItemCargoVolume() - addedVolume);
-          current.setItemCargoFreeVolume(current.getItemCargoFreeVolume() + addedVolume);
-          current.setProfit(current.getProfit() - profitChange);
-
-          if (current.getItemCargoVolume() <= 0) {
-            orders.remove(i);
-            i--;
-          }
-
-        }
-      }
+    while (!orders.isEmpty()) {
+      ResultOrder merging = orders.remove(0);
+      orders = orders.stream().filter(item -> !merging.merge(item)).collect(Collectors.toList());
+      filtered.add(merging);
     }
 
     logger.debug("Orders after filtration: " + orders.size());
-    return orders;
-  }
-
-  private class ResultOrderComparator implements Comparator<ResultOrder> {
-
-    @Override
-    public int compare(ResultOrder o1, ResultOrder o2) {
-      return ComparisonChain.start()
-          .compare(o1.getSellLocation(), o2.getSellLocation())
-          .compare(o1.getBuyLocation(), o2.getBuyLocation())
-          .compare(o1.getTypeId(), o2.getTypeId())
-          .result();
-    }
+    return filtered;
   }
 
 }

@@ -184,6 +184,27 @@ public class ResultOrder {
     this.profitPerUnit = profitPerUnit;
   }
 
+  public boolean merge(ResultOrder order){
+    if(this.isSimilar(order) && this.itemCargoFreeVolume >= order.itemCargoFreeVolume){
+      this.itemCargoVolume += order.itemCargoVolume;
+      this.itemCargoFreeVolume -= order.itemCargoFreeVolume;
+      this.profit += order.profit;
+      return true;
+    }
+
+    return false;
+  }
+
+  public boolean isSimilar(ResultOrder order){
+    if (this == order) return true;
+
+    if (!typeId.equals(order.typeId)) return false;
+    if (!sellPrice.equals(order.sellPrice)) return false;
+    if (!buyPrice.equals(order.buyPrice)) return false;
+    if (!buyLocation.equals(order.buyLocation)) return false;
+    return sellLocation.equals(order.sellLocation);
+  }
+
   @Override
   public String toString() {
     return "ResultOrder{" + "typeId=[" + typeId + "], sellOrderId=[" + sellOrderId + "], buyOrderId=[" + buyOrderId + "], sellPrice=[" + sellPrice + "], buyPrice=[" + buyPrice + "], sellQuantity=[" + sellQuantity + "], buyQuantity=[" + buyQuantity + "], buyMinQuantity=[" + buyMinQuantity + "], buyLocation=[" + buyLocation + "], sellLocation=[" + sellLocation + "], itemCargoVolume=[" + itemCargoVolume + "], itemCargoFreeVolume=[" + itemCargoFreeVolume + "], profit=[" + profit + "]}";
