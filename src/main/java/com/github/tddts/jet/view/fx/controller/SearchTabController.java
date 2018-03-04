@@ -85,7 +85,7 @@ public class SearchTabController {
   @FXML
   private PercentageTextField taxField;
   @FXML
-  private ItemListTextField regionsField;
+  private ItemListTextField<String> regionsField;
 
   @FXML
   private ChoiceBox<RouteOption> routeOptionBox;
@@ -192,7 +192,7 @@ public class SearchTabController {
   }
 
   private void addRegion() {
-    regionsField.addItem(regionChoiceBox.getSelectionModel().getSelectedItem());
+    regionsField.add(regionChoiceBox.getSelectionModel().getSelectedItem());
   }
 
   private void clearRegions() {
@@ -200,7 +200,7 @@ public class SearchTabController {
   }
 
   private List<String> getRegions() {
-    return regionsField.getItems();
+    return regionsField.getList();
   }
 
   private void onSelectedRow(Consumer<OrderSearchRow> rowConsumer) {
