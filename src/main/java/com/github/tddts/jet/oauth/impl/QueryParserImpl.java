@@ -16,13 +16,11 @@
 
 package com.github.tddts.jet.oauth.impl;
 
-import com.github.tddts.jet.model.client.esi.sso.AccessToken;
 import com.github.tddts.jet.oauth.QueryParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +34,11 @@ public class QueryParserImpl implements QueryParser {
 
   @Override
   public Map<String, String> parseQuery(String query) {
-    List<NameValuePair> paramList = URLEncodedUtils.parse((query), StandardCharsets.UTF_8);
-    return paramList.stream().collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
+    return toMap(URLEncodedUtils.parse((query), StandardCharsets.UTF_8));
+  }
+
+  @Override
+  public Map<String, String> toMap(List<NameValuePair> pairs) {
+    return pairs.stream().collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
   }
 }

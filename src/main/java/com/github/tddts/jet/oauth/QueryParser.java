@@ -16,8 +16,9 @@
 
 package com.github.tddts.jet.oauth;
 
-import com.github.tddts.jet.model.client.esi.sso.AccessToken;
+import org.apache.http.NameValuePair;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,4 +29,6 @@ import java.util.Map;
 public interface QueryParser {
 
   Map<String, String> parseQuery(String query);
+
+  Map<String, String> toMap(List<NameValuePair> list);
 }

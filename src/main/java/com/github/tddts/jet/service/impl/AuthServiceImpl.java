@@ -167,8 +167,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public HttpStatus processAuthorization(List<NameValuePair> params) {
-    Map<String, String> paramsMap = params.stream().collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
-    return processAuthorization(paramsMap);
+    return processAuthorization(queryParser.toMap(params));
   }
 
   @Override
