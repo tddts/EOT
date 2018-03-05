@@ -33,10 +33,10 @@ import com.github.tddts.tools.fx.controls.ItemListTextField;
 import com.github.tddts.tools.fx.controls.PercentageTextField;
 import com.github.tddts.tools.fx.table.cell.NumberFormatCellFactory;
 import com.google.common.eventbus.Subscribe;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -181,12 +181,12 @@ public class SearchTabController {
         .setTax(taxField.getValue())
         .setRouteOption(routeOptionBox.getValue())
         .setRegions(getRegions())
-        .setResultConsumer(this::fillSearchTable);
+        .setResultConsumer((results) -> Platform.runLater(() -> fillSearchTable(results)));
 
     taskService.execute(() -> searchService.searchForOrders(searchParams));
   }
 
-  private void fillSearchTable(List<OrderSearchRow> resultList){
+  private void fillSearchTable(List<OrderSearchRow> resultList) {
     searchTable.getItems().clear();
     searchTable.getItems().addAll(resultList);
   }
@@ -196,7 +196,7 @@ public class SearchTabController {
   }
 
   private void clearRegions() {
-    regionsField.clear();
+    regionsField.removeAll();
   }
 
   private List<String> getRegions() {

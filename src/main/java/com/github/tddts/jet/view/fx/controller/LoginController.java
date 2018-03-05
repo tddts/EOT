@@ -46,10 +46,10 @@ import java.util.Optional;
 @FXController("fxml/header.fxml")
 public class LoginController {
 
-  private static final String HEADER_AUTHORIZED = "header-authorized";
-  private static final String STATUS_AUTHORIZED = "status-authorized";
-  private static final String HEADER_UNAUTHORIZED = "header-unauthorized";
-  private static final String STATUS_UNAUTHORIZED = "status-unauthorized";
+  private static final String CSS_HEADER_AUTHORIZED = "header-authorized";
+  private static final String CSS_STATUS_AUTHORIZED = "status-authorized";
+  private static final String CSS_HEADER_UNAUTHORIZED = "header-unauthorized";
+  private static final String CSS_STATUS_UNAUTHORIZED = "status-unauthorized";
 
   @Message("login.authorized")
   private String messageAuthorized;
@@ -116,11 +116,11 @@ public class LoginController {
     Platform.runLater(() -> {
 
       if (authorizationEvent.isAuthorized()) {
-        setHeader(messageAuthorized, HEADER_AUTHORIZED, STATUS_AUTHORIZED, false);
+        setHeader(messageAuthorized, CSS_HEADER_AUTHORIZED, CSS_STATUS_AUTHORIZED, false);
       }
 
       if (authorizationEvent.isExpired()) {
-        setHeader(messageUnauthorized, HEADER_UNAUTHORIZED, STATUS_UNAUTHORIZED, true);
+        setHeader(messageUnauthorized, CSS_HEADER_UNAUTHORIZED, CSS_STATUS_UNAUTHORIZED, true);
       }
     });
   }
