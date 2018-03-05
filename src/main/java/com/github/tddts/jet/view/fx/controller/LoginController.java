@@ -31,14 +31,8 @@ import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.util.converter.IntegerStringConverter;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -52,8 +46,10 @@ import java.util.Optional;
 @FXController("fxml/header.fxml")
 public class LoginController {
 
-  // TODO: remove it, use something else instead
-  private static final Background BACKGROUND_RED = new Background(new BackgroundFill(Color.web("#ed4949"), CornerRadii.EMPTY, Insets.EMPTY));
+  private static final String HEADER_AUTHORIZED = "header-authorized";
+  private static final String STATUS_AUTHORIZED = "status-authorized";
+  private static final String HEADER_UNAUTHORIZED = "header-unauthorized";
+  private static final String STATUS_UNAUTHORIZED = "status-unauthorized";
 
   @Message("login.authorized")
   private String messageAuthorized;
@@ -118,36 +114,28 @@ public class LoginController {
   @Subscribe
   private void processAuthorizationEvent(AuthorizationEvent authorizationEvent) {
     Platform.runLater(() -> {
+
       if (authorizationEvent.isAuthorized()) {
-        setAuthorizedStatus();
+        setHeader(messageAuthorized, HEADER_AUTHORIZED, STATUS_AUTHORIZED, false);
       }
+
       if (authorizationEvent.isExpired()) {
-        setExpiredStatus();
+        setHeader(messageUnauthorized, HEADER_UNAUTHORIZED, STATUS_UNAUTHORIZED, true);
       }
     });
   }
 
-  private void setAuthorizedStatus() {
-    // Set message
-    loginStatusLabel.setText(messageAuthorized);
-    // Set color to background and text
-    headerHbox.getStyleClass().clear();
-    headerHbox.setStyle(null);
-    loginStatusLabel.setTextFill(Color.GREEN);
-    // Hide elements
-    loginChoiceBox.setVisible(false);
-    loginButton.setVisible(false);
-  }
+  private void setHeader(String message, String headerClass, String statusTextClass, boolean showLoginOptions) {
+    loginStatusLabel.setText(message);
 
-  private void setExpiredStatus() {
-    // Set message
-    loginStatusLabel.setText(messageUnauthorized);
-    // Set color to background and text
-    loginStatusLabel.setTextFill(Color.BLACK);
-    headerHbox.setBackground(BACKGROUND_RED);
-    // Show elements
-    loginChoiceBox.setVisible(true);
-    loginButton.setVisible(true);
+    headerHbox.getStyleClass().clear();
+    headerHbox.getStyleClass().add(headerClass);
+
+    loginStatusLabel.getStyleClass().clear();
+    loginStatusLabel.getStyleClass().add(statusTextClass);
+
+    loginChoiceBox.setVisible(showLoginOptions);
+    loginButton.setVisible(showLoginOptions);
   }
 
 }

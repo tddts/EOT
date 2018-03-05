@@ -1,0 +1,15 @@
+.header-unauthorized {
+ -fx-background-color: #ed4949;
+}
+
+.header-authorized {
+-fx-background-color: white;
+}
+
+.status-unauthorized {
+ -fx-text-fill: black;
+}
+
+.status-authorized {
+ -fx-text-fill: green;
+}
