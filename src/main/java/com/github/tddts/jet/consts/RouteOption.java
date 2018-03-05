@@ -11,8 +11,8 @@ public enum RouteOption {
 
   INSECURE(-1, "insecure");
 
-  private double security;
-  private String value;
+  private final double security;
+  private final String value;
 
   RouteOption(double security, String value) {
     this.security = security;

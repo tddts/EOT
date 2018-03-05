@@ -21,6 +21,8 @@ import com.github.tddts.jet.consts.RouteOption;
 import com.github.tddts.jet.context.events.AuthorizationEvent;
 import com.github.tddts.jet.context.events.UserDataEvent;
 import com.github.tddts.jet.view.fx.annotations.FXController;
+import com.github.tddts.jet.view.fx.table.ColorStatusCellFactory;
+import com.github.tddts.jet.view.fx.table.NumberFormatCellFactory;
 import com.github.tddts.jet.view.fx.tools.message.provider.MessageHelper;
 import com.github.tddts.jet.model.app.OrderSearchRow;
 import com.github.tddts.jet.model.app.SearchParams;
@@ -31,7 +33,6 @@ import com.github.tddts.jet.service.UserInterfaceService;
 import com.github.tddts.tools.fx.controls.DoubleTextField;
 import com.github.tddts.tools.fx.controls.ItemListTextField;
 import com.github.tddts.tools.fx.controls.PercentageTextField;
-import com.github.tddts.tools.fx.table.cell.NumberFormatCellFactory;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -107,8 +108,8 @@ public class SearchTabController {
 
   @Value("#{${static.regions}.keySet()}")
   private Set<String> regionNames;
-  @Value("${view.profit.pattern}")
-  private String profitPattern;
+  @Value("${view.pattern.isk}")
+  private String iskPattern;
 
   @Autowired
   private MessageHelper messageHelper;
@@ -133,21 +134,27 @@ public class SearchTabController {
     quantityColumn.setCellValueFactory(cellData -> cellData.getValue().quantityProperty().asObject());
 
     sellingColumn.setCellValueFactory(cellData -> cellData.getValue().sellingLocationProperty());
+    sellingColumn.setCellFactory(new ColorStatusCellFactory(false));
+
     buyingColumn.setCellValueFactory(cellData -> cellData.getValue().buyingLocationProperty());
+    buyingColumn.setCellFactory(new ColorStatusCellFactory(true));
 
     volumeColumn.setCellValueFactory(cellData -> cellData.getValue().volumeProperty().asObject());
     volumeRemainColumn.setCellValueFactory(cellData -> cellData.getValue().volumeRemainProperty().asObject());
 
     sellingPriceColumn.setCellValueFactory(cellData -> cellData.getValue().sellPriceProperty().asObject());
+    sellingPriceColumn.setCellFactory(new NumberFormatCellFactory(iskPattern));
+
     buyingPriceColumn.setCellValueFactory(cellData -> cellData.getValue().buyPriceProperty().asObject());
+    buyingPriceColumn.setCellFactory(new NumberFormatCellFactory(iskPattern));
 
     jumpsColumn.setCellValueFactory(cellData -> cellData.getValue().jumpsProperty().asObject());
 
     profitColumn.setCellValueFactory(cellData -> cellData.getValue().profitProperty().asObject());
-    profitColumn.setCellFactory(new NumberFormatCellFactory<>(profitPattern));
+    profitColumn.setCellFactory(new NumberFormatCellFactory(iskPattern));
 
     perJumpColumn.setCellValueFactory(cellData -> cellData.getValue().perJumpProfitProperty().asObject());
-    perJumpColumn.setCellFactory(new NumberFormatCellFactory<>(profitPattern));
+    perJumpColumn.setCellFactory(new NumberFormatCellFactory(iskPattern));
 
     searchTable.setItems(FXCollections.observableArrayList());
   }

@@ -133,4 +133,16 @@ public class Util {
     return Thread.currentThread().getContextClassLoader().getResource(resourceName);
   }
 
+  /**
+   * Round number to given precision.
+   *
+   * @param value     number
+   * @param precision precision
+   * @return rounded value
+   */
+  public static double round(double value, int precision) {
+    int scale = (int) Math.pow(10, precision);
+    return (double) Math.round(value * scale) / scale;
+  }
+
 }

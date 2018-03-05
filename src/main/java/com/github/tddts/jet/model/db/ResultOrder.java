@@ -46,6 +46,9 @@ public class ResultOrder {
   private Integer buyLocation;
   private Integer sellLocation;
 
+  private Float sellSecurity;
+  private Float buySecurity;
+
   private Double itemVolume;
   private Double itemCargoVolume;
   private Double itemCargoFreeVolume;
@@ -142,6 +145,22 @@ public class ResultOrder {
 
   public void setSellLocation(Integer sellLocation) {
     this.sellLocation = sellLocation;
+  }
+
+  public Float getSellSecurity() {
+    return sellSecurity;
+  }
+
+  public void setSellSecurity(Float sellSecurity) {
+    this.sellSecurity = sellSecurity;
+  }
+
+  public Float getBuySecurity() {
+    return buySecurity;
+  }
+
+  public void setBuySecurity(Float buySecurity) {
+    this.buySecurity = buySecurity;
   }
 
   public Double getItemVolume() {

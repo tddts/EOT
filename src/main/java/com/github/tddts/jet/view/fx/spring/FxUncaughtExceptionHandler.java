@@ -42,7 +42,7 @@ public class FxUncaughtExceptionHandler implements Thread.UncaughtExceptionHandl
     logger.error(e.getMessage(), e);
     Platform.runLater(() -> {
       ExceptionDialog exceptionDialog = dialogProvider.getDialog(ExceptionDialog.class, e);
-      exceptionDialog.showAndWait();
+      if (!exceptionDialog.isShowing()) exceptionDialog.showAndWait();
     });
   }
 }
