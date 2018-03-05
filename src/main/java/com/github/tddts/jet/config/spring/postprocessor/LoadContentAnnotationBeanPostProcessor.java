@@ -21,7 +21,7 @@ import com.github.tddts.jet.util.SpringUtil;
 import com.github.tddts.jet.util.Util;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 import javax.annotation.Resource;
@@ -63,7 +63,7 @@ public class LoadContentAnnotationBeanPostProcessor implements BeanPostProcessor
       }
 
     } catch (Exception e) {
-      throw new BeanCreationException(e.getMessage(), e);
+      throw new BeanInitializationException(e.getMessage(), e);
     }
 
     return bean;

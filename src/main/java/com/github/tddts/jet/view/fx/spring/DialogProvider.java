@@ -120,9 +120,8 @@ public class DialogProvider {
       dialogInitCache.put(type, initMethods);
     }
 
+    // Invoke init methods
     try {
-
-      // Invoke init methods
       for (Method method : initMethods) {
         method.setAccessible(true);
         if (method.getParameterCount() == 0) {
@@ -148,7 +147,7 @@ public class DialogProvider {
     }
   }
 
-  private <T> FXMLLoader loadDialogView(FXDialog dialogAnnotation) {
+  private FXMLLoader loadDialogView(FXDialog dialogAnnotation) {
 
     String filePath = dialogAnnotation.value();
 

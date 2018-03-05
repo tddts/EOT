@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation for marking JavaFX dialog classes.
  * Contains path to corresponding FXML file.
- * Used load JavaFX nodes from FXML and create dialog object.
+ * Used to load JavaFX nodes from FXML and create dialog object.
  *
  * @author Tigran_Dadaiants@epam.com
  */

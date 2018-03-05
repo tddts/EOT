@@ -16,10 +16,8 @@
 
 package com.github.tddts.jet.model.app;
 
-import com.github.tddts.jet.model.client.dotlan.DotlanRoute;
 import com.github.tddts.jet.model.db.ResultOrder;
 import javafx.beans.property.*;
-import javafx.util.converter.NumberStringConverter;
 
 /**
  * {@code OrderSearchRow} represents a row in a table with order search results.
@@ -45,20 +43,11 @@ public class OrderSearchRow {
   private DoubleProperty profit = new SimpleDoubleProperty();
   private DoubleProperty perJumpProfit = new SimpleDoubleProperty();
 
-  private StringProperty profitText = new SimpleStringProperty();
-  private StringProperty perJumpProfitText = new SimpleStringProperty();
-
   private OrderRoute orderRoute;
   private ResultOrder searchResultData;
 
-  public OrderSearchRow() {
-    NumberStringConverter numberStringConverter = new NumberStringConverter("0.00");
-    profitText.bindBidirectional(profit, numberStringConverter);
-    perJumpProfitText.bindBidirectional(perJumpProfit, numberStringConverter);
-  }
 
   public OrderSearchRow(String typeName, String sellSystem, String buySystem, ResultOrder searchResult, OrderRoute orderRoute) {
-    this();
     setItem(typeName);
     setSellingLocation(sellSystem);
     setBuyingLocation(buySystem);
@@ -71,11 +60,8 @@ public class OrderSearchRow {
     setBuyPrice(searchResult.getBuyPrice());
     setProfit(searchResult.getProfit());
 
-    int jumpsCount = orderRoute.getJumpsCount();
-    int jumps = jumpsCount > 0 ? jumpsCount : 1;
-
-    setPerJumpProfit(searchResult.getProfit() / jumps);
-    setJumps(jumps);
+    setPerJumpProfit(searchResult.getProfitPerJump(orderRoute.getJumpsCount()));
+    setJumps(orderRoute.getJumpsCount());
 
     this.orderRoute = orderRoute;
     this.searchResultData = searchResult;
@@ -211,31 +197,6 @@ public class OrderSearchRow {
 
   public DoubleProperty perJumpProfitProperty() {
     return perJumpProfit;
-  }
-
-
-  public String getProfitText() {
-    return profitText.get();
-  }
-
-  public void setProfitText(String profitText) {
-    this.profitText.set(profitText);
-  }
-
-  public StringProperty profitTextProperty() {
-    return profitText;
-  }
-
-  public String getPerJumpProfitText() {
-    return perJumpProfitText.get();
-  }
-
-  public void setPerJumpProfitText(String perJumpProfitText) {
-    this.perJumpProfitText.set(perJumpProfitText);
-  }
-
-  public StringProperty perJumpProfitTextProperty() {
-    return perJumpProfitText;
   }
 
   public OrderRoute getOrderRoute() {

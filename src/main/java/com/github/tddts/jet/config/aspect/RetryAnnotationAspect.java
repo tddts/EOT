@@ -40,8 +40,6 @@ import java.lang.reflect.Method;
 @Component
 public class RetryAnnotationAspect {
 
-  private static final Logger logger = LogManager.getLogger(Retry.class);
-
   @Pointcut("@within(com.github.tddts.jet.config.spring.annotations.RestClient)" +
       " && execution(public com.github.tddts.jet.rest.RestResponse *(..))" +
       " && @annotation(com.github.tddts.jet.config.spring.annotations.Retry)")

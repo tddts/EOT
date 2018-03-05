@@ -27,10 +27,10 @@ import java.lang.annotation.Target;
 /**
  * Marks a field or a method to be provided with text message with given key.
  * <p>
- * Note that actual processing of the {@code @Value} annotation is performed
+ * Note that actual processing of the {@code @Message} annotation is performed
  * by a {@link org.springframework.beans.factory.config.BeanPostProcessor
  * BeanPostProcessor} which in turn means that you <em>cannot</em> use
- * {@code @Value} within
+ * {@code @Message} within
  * {@link org.springframework.beans.factory.config.BeanPostProcessor
  * BeanPostProcessor} or
  * {@link org.springframework.beans.factory.config.BeanFactoryPostProcessor BeanFactoryPostProcessor}

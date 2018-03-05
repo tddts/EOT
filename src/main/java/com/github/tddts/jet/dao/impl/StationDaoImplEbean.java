@@ -26,7 +26,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StationDaoImplEbean extends EbeanAbstractDao<StaticStation> implements StationDao {
 
-
   public StationDaoImplEbean() {
     super(StaticStation.class);
   }

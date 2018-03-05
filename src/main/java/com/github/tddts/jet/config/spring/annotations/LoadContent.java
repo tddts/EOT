@@ -27,10 +27,10 @@ import java.lang.annotation.Target;
  * Annotation at the field that indicates a file which content will be inserted into this field.
  * It is possible to use either direct path to file or a property that contains a path.
  * <p>
- * Note that actual processing of the {@code @Value} annotation is performed
+ * Note that actual processing of the {@code @LoadContent} annotation is performed
  * by a {@link org.springframework.beans.factory.config.BeanPostProcessor
  * BeanPostProcessor} which in turn means that you <em>cannot</em> use
- * {@code @Value} within
+ * {@code @LoadContent} within
  * {@link org.springframework.beans.factory.config.BeanPostProcessor
  * BeanPostProcessor} or
  * {@link org.springframework.beans.factory.config.BeanFactoryPostProcessor BeanFactoryPostProcessor}

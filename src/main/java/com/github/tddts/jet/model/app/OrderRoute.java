@@ -25,6 +25,6 @@ public class OrderRoute {
   }
 
   public int getJumpsCount() {
-    return waypoints != null && !waypoints.isEmpty() ? waypoints.size() - 1 : 0;
+    return waypoints != null && !waypoints.isEmpty() ? waypoints.size() - 1 : 1;
   }
 }

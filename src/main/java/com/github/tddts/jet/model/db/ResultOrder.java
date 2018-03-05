@@ -184,8 +184,13 @@ public class ResultOrder {
     this.profitPerUnit = profitPerUnit;
   }
 
-  public boolean merge(ResultOrder order){
-    if(this.isSimilar(order) && this.itemCargoFreeVolume >= order.itemCargoFreeVolume){
+  public Double getProfitPerJump(int jumps) {
+    if (jumps < 1) jumps = 1;
+    return profit / jumps;
+  }
+
+  public boolean merge(ResultOrder order) {
+    if (this.isSimilar(order) && this.itemCargoFreeVolume >= order.itemCargoFreeVolume) {
       this.itemCargoVolume += order.itemCargoVolume;
       this.itemCargoFreeVolume -= order.itemCargoFreeVolume;
       this.profit += order.profit;
@@ -195,7 +200,7 @@ public class ResultOrder {
     return false;
   }
 
-  public boolean isSimilar(ResultOrder order){
+  public boolean isSimilar(ResultOrder order) {
     if (this == order) return true;
 
     if (!typeId.equals(order.typeId)) return false;
