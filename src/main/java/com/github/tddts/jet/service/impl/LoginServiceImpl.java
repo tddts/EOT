@@ -58,13 +58,12 @@ public class LoginServiceImpl implements LoginService {
     if (authType.isDev()) {
       Optional<Pair<String, String>> credentialsPair = credentialsSupplier.get();
 
-      if (credentialsPair.isPresent()) {
-        Pair<String, String> credentials = credentialsPair.get();
-        userBean.setClientId(credentials.getKey());
-        userBean.setSercretKey(credentials.getValue());
-
+      credentialsPair.ifPresent(creds -> {
+        userBean.setClientId(creds.getKey());
+        userBean.setSercretKey(creds.getValue());
         loginUriConsumer.accept(authService.getLoginPageURI(userBean.getClientId()));
-      }
+      });
+
     }
   }
 

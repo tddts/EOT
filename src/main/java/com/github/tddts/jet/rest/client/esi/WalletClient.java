@@ -17,8 +17,6 @@
 package com.github.tddts.jet.rest.client.esi;
 
 import com.github.tddts.jet.rest.RestResponse;
-import com.github.tddts.jet.model.client.esi.wallet.Wallet;
-
 import java.util.List;
 
 /**

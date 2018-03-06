@@ -17,7 +17,6 @@
 package com.github.tddts.jet.rest.client.esi.impl;
 
 import com.github.tddts.jet.config.spring.annotations.RestClient;
-import com.github.tddts.jet.model.client.esi.wallet.Wallet;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.WalletClient;
 import com.github.tddts.jet.rest.provider.RestClientTemplate;
@@ -25,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com

@@ -17,13 +17,10 @@
 package com.github.tddts.jet.tools.filter;
 
 import com.github.tddts.jet.model.db.ResultOrder;
-import com.google.common.collect.ComparisonChain;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 

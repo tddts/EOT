@@ -40,5 +40,5 @@ public interface MessageHelper {
    * @param <T> type of Enum
    * @return string converter for given array
    */
-  <T extends Enum<T>> StringConverter<T> getConverter(T[] values);
+  <T extends Enum> StringConverter<T> getConverter(T[] values);
 }

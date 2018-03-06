@@ -44,7 +44,8 @@ public class MessageHelperImpl implements MessageHelper {
   }
 
   @Override
-  public <T extends Enum<T>> StringConverter<T> getConverter(T[] values) {
+  @SuppressWarnings("unchecked")
+  public <T extends Enum> StringConverter<T> getConverter(T[] values) {
     return new EnumMessageStringConverter(this,values);
   }
 }

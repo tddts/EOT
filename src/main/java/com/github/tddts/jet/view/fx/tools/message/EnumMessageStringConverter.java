@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class EnumMessageStringConverter<T extends Enum<T>> extends StringConverter<T> {
+public class EnumMessageStringConverter<T extends Enum> extends StringConverter<T> {
 
   private final Map<T, String> values = new HashMap<>();
 

@@ -18,7 +18,6 @@ package com.github.tddts.jet.service.impl;
 
 import com.github.tddts.jet.config.spring.beans.UserBean;
 import com.github.tddts.jet.model.client.esi.sso.CharacterInfo;
-import com.github.tddts.jet.model.client.esi.wallet.Wallet;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.WalletClient;
 import com.github.tddts.jet.service.UserDataService;

@@ -25,15 +25,10 @@ import com.github.tddts.jet.rest.client.esi.AuthClient;
 import com.github.tddts.jet.rest.provider.RestClientTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
-import java.nio.charset.Charset;
-import java.util.Base64;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
