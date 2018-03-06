@@ -19,7 +19,7 @@ public class ColorStatusCellFactory extends CustomizableCellFactory<OrderSearchR
       return row.getSearchResultData().getBuySecurity();
     }
     else {
-      return row.getSearchResultData().getBuySecurity();
+      return row.getSearchResultData().getSellSecurity();
     }
   }
 
