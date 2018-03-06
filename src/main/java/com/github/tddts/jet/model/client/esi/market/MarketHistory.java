@@ -19,7 +19,7 @@ package com.github.tddts.jet.model.client.esi.market;
 import java.time.LocalDateTime;
 
 /**
- * {@code MarketHistory} represents a market history object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code MarketHistory} represents a market history object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

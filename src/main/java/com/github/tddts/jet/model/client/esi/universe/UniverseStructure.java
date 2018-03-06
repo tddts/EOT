@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.universe;
 
 /**
- * {@code UniverseStructure} represents a universal structure object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code UniverseStructure} represents a universal structure object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

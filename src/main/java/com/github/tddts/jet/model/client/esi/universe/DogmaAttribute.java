@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.universe;
 
 /**
- * {@code DogmaAttribute} represents a dogma attribute object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code DogmaAttribute} represents a dogma attribute object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

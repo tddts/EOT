@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.universe;
 
 /**
- * {@code UniverseType} represents a universal type object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code UniverseType} represents a universal type object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

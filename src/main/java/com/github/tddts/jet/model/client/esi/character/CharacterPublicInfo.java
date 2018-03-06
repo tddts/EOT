@@ -19,7 +19,7 @@ package com.github.tddts.jet.model.client.esi.character;
 import java.time.LocalDateTime;
 
 /**
- * {@code CharacterPublicInfo} represents a character public information object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code CharacterPublicInfo} represents a character public information object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

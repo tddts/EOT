@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.character;
 
 /**
- * {@code CharacterName} represents a character name object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code CharacterName} represents a character name object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

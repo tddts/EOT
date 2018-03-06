@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.character;
 
 /**
- * {@code CharacterPortrait} represents a portrait object for character from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code CharacterPortrait} represents a portrait object for character from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

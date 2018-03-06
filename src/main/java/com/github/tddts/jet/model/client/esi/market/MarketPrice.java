@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.market;
 
 /**
- * {@code MarketPrice} represents a market price object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code MarketPrice} represents a market price object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

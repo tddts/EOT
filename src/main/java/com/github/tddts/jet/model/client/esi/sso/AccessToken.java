@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.sso;
 
 /**
- * {@code AccessToken} represents a access token object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code AccessToken} represents a access token object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

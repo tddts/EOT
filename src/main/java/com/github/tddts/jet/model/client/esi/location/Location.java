@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.location;
 
 /**
- * {@code Location} represents a location object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code Location} represents a location object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

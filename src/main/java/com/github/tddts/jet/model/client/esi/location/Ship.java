@@ -17,7 +17,7 @@
 package com.github.tddts.jet.model.client.esi.location;
 
 /**
- * {@code Ship} represents a ship object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code Ship} represents a ship object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

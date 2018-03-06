@@ -19,7 +19,7 @@ package com.github.tddts.jet.model.client.esi.wallet;
 import java.math.BigDecimal;
 
 /**
- * {@code Wallet} represents a user wallet object from EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code Wallet} represents a user wallet object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
