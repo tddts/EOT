@@ -9,15 +9,18 @@ import com.github.tddts.tools.fx.table.cell.CustomizableCellFactory;
 public class ColorStatusCellFactory extends CustomizableCellFactory<OrderSearchRow, String> {
 
   public ColorStatusCellFactory(boolean buy) {
-    addUpdater(new ColorStatusCellUpdater(buy ? this::getBuySecurity : this::getSellSecurity));
-
+    addUpdater(new ColorStatusCellUpdater((row) -> getSecurity(row, buy)));
   }
 
-  private float getSellSecurity(OrderSearchRow row) {
-    return row == null ? -1f : row.getSearchResultData().getSellSecurity();
+  private float getSecurity(OrderSearchRow row, boolean buy) {
+    if (row == null) return -1f;
+
+    if (buy) {
+      return row.getSearchResultData().getBuySecurity();
+    }
+    else {
+      return row.getSearchResultData().getBuySecurity();
+    }
   }
 
-  private float getBuySecurity(OrderSearchRow row) {
-    return row == null ? -1f : row.getSearchResultData().getBuySecurity();
-  }
 }
