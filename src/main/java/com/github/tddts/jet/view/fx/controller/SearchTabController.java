@@ -190,7 +190,7 @@ public class SearchTabController {
         .setRegions(getRegions())
         .setResultConsumer((results) -> Platform.runLater(() -> fillSearchTable(results)));
 
-    taskService.execute(() -> searchService.searchForOrders(searchParams));
+    taskService.executor().execute(() -> searchService.searchForOrders(searchParams));
   }
 
   private void fillSearchTable(List<OrderSearchRow> resultList) {

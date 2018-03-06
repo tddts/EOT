@@ -16,18 +16,19 @@
 
 package com.github.tddts.jet.service;
 
+import java.util.concurrent.ExecutorService;
+
 /**
  * {@code TaskService} represents a simple service for task execution.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-//TODO: remove dis
 public interface TaskService {
 
   /**
-   *  Run given Runnable in a new thread.
+   * Get {@link ExecutorService} instance.
    *
-   * @param runnable runnable.
+   * @return {@link ExecutorService} instance.
    */
-  void execute(Runnable runnable);
+  ExecutorService executor();
 }

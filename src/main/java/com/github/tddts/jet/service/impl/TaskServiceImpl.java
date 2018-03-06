@@ -19,6 +19,7 @@ package com.github.tddts.jet.service.impl;
 import com.github.tddts.jet.service.TaskService;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,7 +32,12 @@ public class TaskServiceImpl implements TaskService {
   private final ExecutorService executorService = Executors.newCachedThreadPool();
 
   @Override
-  public void execute(Runnable runnable) {
-    executorService.execute(runnable);
+  public ExecutorService executor() {
+    return executorService;
+  }
+
+  @PreDestroy
+  private void onDestroy() {
+    executorService.shutdown();
   }
 }
