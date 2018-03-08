@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  */
 public class SearchParams {
 
-  private long isk;
+  private double isk;
   private double cargo;
   private double tax;
 
@@ -36,11 +36,11 @@ public class SearchParams {
   private RouteOption routeOption;
   private Consumer<List<OrderSearchRow>> resultConsumer;
 
-  public long getIsk() {
+  public double getIsk() {
     return isk;
   }
 
-  public SearchParams setIsk(long isk) {
+  public SearchParams setIsk(double isk) {
     this.isk = isk;
     return this;
   }

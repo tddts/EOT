@@ -181,9 +181,11 @@ public class SearchTabController {
   //--------------------------------------------------------------------------------------------------------------------
 
   private void search() {
+    if (validateInput()) return;
+
     SearchParams searchParams = new SearchParams();
     searchParams
-        .setIsk(iskField.getValue().longValue())
+        .setIsk(iskField.getValue())
         .setCargo(cargoField.getValue())
         .setTax(taxField.getValue())
         .setRouteOption(routeOptionBox.getValue())
@@ -196,6 +198,16 @@ public class SearchTabController {
   private void fillSearchTable(List<OrderSearchRow> resultList) {
     searchTable.getItems().clear();
     searchTable.getItems().addAll(resultList);
+  }
+
+  private boolean validateInput() {
+    //TODO: light up the input fields
+
+    String isk = iskField.getText();
+    if (isk == null || isk.isEmpty()) return true;
+
+    String cargo = cargoField.getText();
+    return cargo == null || cargo.isEmpty();
   }
 
   private void addRegion() {

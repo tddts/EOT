@@ -57,7 +57,7 @@ public interface OrderDao extends GenericDao<CachedOrder> {
    * @param funds maximum price
    * @return number of deleted orders
    */
-  int removeTooExpensiveOrders(long funds);
+  int removeTooExpensiveOrders(double funds);
 
   /**
    * Find most profitable orders.

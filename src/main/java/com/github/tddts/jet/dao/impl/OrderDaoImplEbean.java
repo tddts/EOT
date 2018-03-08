@@ -71,7 +71,7 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
   }
 
   @Override
-  public int removeTooExpensiveOrders(long funds) {
+  public int removeTooExpensiveOrders(double funds) {
     return ebeans().find(CachedOrder.class).where()
         .eq("buyOrder", false)
         .gt("price", funds).delete();

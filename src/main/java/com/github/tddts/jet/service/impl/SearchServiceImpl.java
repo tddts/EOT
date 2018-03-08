@@ -216,7 +216,7 @@ public class SearchServiceImpl implements SearchService {
    * @param funds  amount of funds available
    * @param volume amount of cargo volume available
    */
-  private void filter(long funds, double volume) {
+  private void filter(double funds, double volume) {
     eventBus.post(FILTERING_ORDERS);
 
     orderDao.removeDuplicateOrders();
