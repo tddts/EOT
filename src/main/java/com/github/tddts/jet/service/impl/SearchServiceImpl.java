@@ -189,7 +189,7 @@ public class SearchServiceImpl implements SearchService {
         // Load market orders for given region and page
         .loadPage((handler, page) -> loadPage(regionId, page, handler))
         //Process page
-        .processPage((response, page) -> orderDao.saveAll(response.getObject().stream().map(CachedOrder::new).collect(Collectors.toList())))
+        .processPage((response, page) -> orderDao.merge(response.getObject().stream().map(CachedOrder::new).collect(Collectors.toList())))
         // Set condition for pagination
         .loadWhile(this::checkPaginationCondition)
         // Build pagination
@@ -219,7 +219,7 @@ public class SearchServiceImpl implements SearchService {
   private void filter(double funds, double volume) {
     eventBus.post(FILTERING_ORDERS);
 
-    orderDao.removeDuplicateOrders();
+//    orderDao.removeDuplicateOrders();
     orderDao.removeSoonExpiredOrders(expirationTimeout);
     orderDao.removeLargeItemOrders(volume);
     orderDao.removeTooExpensiveOrders(funds);

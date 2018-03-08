@@ -24,7 +24,7 @@
 
     <!-- Ebean ORM-->
     <bean id="ebeanServerConfig" class="io.ebean.config.ServerConfig">
-        <property name="name" value="ebeanServer"/>
+        <property name="name" value="${ebean.server.name}"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="packages">
             <list>

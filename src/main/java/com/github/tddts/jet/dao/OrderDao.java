@@ -19,6 +19,7 @@ package com.github.tddts.jet.dao;
 import com.github.tddts.jet.model.db.CachedOrder;
 import com.github.tddts.jet.model.db.ResultOrder;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,13 +36,6 @@ public interface OrderDao extends GenericDao<CachedOrder> {
    * @return number of deleted orders
    */
   int removeSoonExpiredOrders(int time);
-
-  /**
-   * Removes duplicate orders.
-   *
-   * @return number of deleted orders
-   */
-  int removeDuplicateOrders();
 
   /**
    * Remove orders with item which exceed given volume.
@@ -68,4 +62,11 @@ public interface OrderDao extends GenericDao<CachedOrder> {
    * @return a list of most profitable orders
    */
   List<ResultOrder> findProfitableOrders(double security, double cargoVolume, double taxRate);
+
+  /**
+   * Merge (save or update by ID) given collection of orders.
+   * @param orders orders
+   * @return number of updates
+   */
+  int merge(Collection<CachedOrder> orders);
 }

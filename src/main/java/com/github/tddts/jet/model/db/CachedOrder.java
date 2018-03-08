@@ -35,15 +35,12 @@ import java.time.LocalDateTime;
 public class CachedOrder {
 
   @Id
-  @Column
-  private Long orderPK;
+  @Column(unique = true)
+  private Long orderId;
 
   @Index
   @Column
   private Long locationID;
-
-  @Column
-  private Long orderId;
 
   @Index
   @Column
@@ -84,14 +81,6 @@ public class CachedOrder {
     this.minVolume = order.getMin_volume();
     this.volumeRemain = order.getVolume_remain();
     this.volumeTotal = order.getVolume_total();
-  }
-
-  public Long getOrderPK() {
-    return orderPK;
-  }
-
-  public void setOrderPK(Long orderPK) {
-    this.orderPK = orderPK;
   }
 
   public Boolean getBuyOrder() {

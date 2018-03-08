@@ -20,12 +20,12 @@ import com.github.tddts.jet.config.spring.annotations.LoadContent;
 import com.github.tddts.jet.dao.OrderDao;
 import com.github.tddts.jet.model.db.CachedOrder;
 import com.github.tddts.jet.model.db.ResultOrder;
-import io.ebean.Query;
-import io.ebean.RawSql;
-import io.ebean.RawSqlBuilder;
+import io.ebean.*;
+import io.ebean.annotation.PersistBatch;
 import io.ebean.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,8 +36,6 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
 
   @LoadContent("/sql/delete_expired.sql")
   private String sql_delete_expired;
-  @LoadContent("/sql/delete_duplicate.sql")
-  private String sql_delete_duplicate;
   @LoadContent("/sql/delete_large.sql")
   private String sql_delete_large;
 
@@ -51,6 +49,9 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
   @LoadContent("/sql/search_select.sql")
   private String sql_select_search;
 
+  @LoadContent("/sql/merge_orders.sql")
+  private String sql_merge_orders;
+
   public OrderDaoImplEbean() {
     super(CachedOrder.class);
   }
@@ -58,11 +59,6 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
   @Override
   public int removeSoonExpiredOrders(int time) {
     return ebeans().createSqlUpdate(sql_delete_expired).setParameter("diff", time).execute();
-  }
-
-  @Override
-  public int removeDuplicateOrders() {
-    return ebeans().createSqlUpdate(sql_delete_duplicate).execute();
   }
 
   @Override
@@ -94,4 +90,38 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
 
     return query.findList();
   }
+
+  @Override
+  @Transactional(batch = PersistBatch.ALL, batchOnCascade = PersistBatch.ALL, batchSize = 10000) // 10k - ESI page size
+  public int merge(Collection<CachedOrder> orders) {
+
+    int counter = 0;
+    SqlUpdate update = ebeans().createSqlUpdate(sql_merge_orders);
+
+    for (CachedOrder order : orders) {
+
+      int updated = update
+          .setParameter("order_id", order.getOrderId())
+          .setParameter("location_id", order.getLocationID())
+          .setParameter("type_id", order.getTypeID())
+          .setParameter("buy_order", order.getBuyOrder())
+          .setParameter("duration", order.getDuration())
+          .setParameter("price", order.getPrice())
+          .setParameter("range", order.getRange())
+          .setParameter("issued", order.getIssued())
+          .setParameter("min_volume", order.getMinVolume())
+          .setParameter("volume_remain", order.getVolumeRemain())
+          .setParameter("volume_total", order.getVolumeTotal())
+          .execute();
+
+      counter += updated;
+    }
+
+    Transaction transaction = ebeans().currentTransaction();
+    transaction.addModification("CACHED_ORDER", true, true, false);
+
+    return counter;
+  }
+
+
 }
