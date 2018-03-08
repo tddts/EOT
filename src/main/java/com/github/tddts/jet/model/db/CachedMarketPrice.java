@@ -37,7 +37,7 @@ public class CachedMarketPrice {
   @Column
   private double adjustedPrice;
   @Id
-  @Column
+  @Column(unique = true)
   private double typeId;
 
   public CachedMarketPrice() {

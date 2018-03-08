@@ -23,6 +23,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
+ * {@code StaticStation} represents static data about space station in the EVE Universe.
+ *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Table
@@ -30,7 +32,7 @@ import javax.persistence.Table;
 public class StaticStation {
 
   @Id
-  @Column
+  @Column(unique = true)
   private int stationId;
 
   @Column
