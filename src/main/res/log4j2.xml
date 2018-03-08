@@ -13,11 +13,11 @@
             <AppenderRef ref="Console"/>
             <AppenderRef ref="LogFile"/>
         </Root>
-        <Logger name="org.springframework" level="DEBUG" additivity="false">
+        <Logger name="org.springframework" level="OFF" additivity="false">
             <Appender-ref ref="Console"/>
             <Appender-ref ref="LogFile"/>
         </Logger>
-        <Logger name="com.github.tddts.jet" level="DEBUG" additivity="false">
+        <Logger name="com.github.tddts.jet" level="OFF" additivity="false">
             <Appender-ref ref="Console"/>
             <Appender-ref ref="LogFile"/>
         </Logger>
