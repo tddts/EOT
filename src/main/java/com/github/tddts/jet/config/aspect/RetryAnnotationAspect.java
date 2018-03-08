@@ -18,6 +18,7 @@ package com.github.tddts.jet.config.aspect;
 
 import com.github.tddts.jet.config.spring.annotations.Retry;
 import com.github.tddts.jet.rest.RestResponse;
+import com.github.tddts.jet.util.SpringUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -46,12 +47,7 @@ public class RetryAnnotationAspect {
 
   @Around("restClientMethodRetryPointcut()")
   public Object restClientRetryHandlingAspect(ProceedingJoinPoint joinPoint) throws Throwable {
-    MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-    Method method = signature.getMethod();
-
-    if (method.getDeclaringClass().isInterface()) {
-      method = joinPoint.getTarget().getClass().getDeclaredMethod(joinPoint.getSignature().getName(), method.getParameterTypes());
-    }
+    Method method = SpringUtil.getMethod(joinPoint);
 
     Retry retry = method.getAnnotation(Retry.class);
 

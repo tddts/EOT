@@ -17,9 +17,13 @@
 package com.github.tddts.jet.util;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanInitializationException;
+
+import java.lang.reflect.Method;
 
 /**
  * Utility class for operations with Spring objects.
@@ -47,6 +51,17 @@ public class SpringUtil {
     } catch (Exception e) {
       throw new BeanInitializationException(e.getMessage(), e);
     }
+  }
+
+  public static Method getMethod(JoinPoint joinPoint) throws NoSuchMethodException {
+    MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+    Method method = signature.getMethod();
+
+    if (method.getDeclaringClass().isInterface()) {
+      method = joinPoint.getTarget().getClass().getDeclaredMethod(joinPoint.getSignature().getName(), method.getParameterTypes());
+    }
+
+    return method;
   }
 
 
