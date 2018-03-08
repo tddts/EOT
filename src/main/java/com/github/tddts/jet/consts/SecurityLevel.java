@@ -55,7 +55,7 @@ public enum SecurityLevel {
    * @return security level for given numeric value or <b>null</b>.
    */
   public static SecurityLevel fromValue(float value) {
-    value = (float) Util.round(value, 1);
+    value = (float) Util.roundDown(value, 1);
     for (SecurityLevel level : values()) {
       if (Float.compare(value, level.value) == 0) return level;
     }

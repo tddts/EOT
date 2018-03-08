@@ -134,15 +134,27 @@ public class Util {
   }
 
   /**
-   * Round number to given precision.
+   * Round a value to given precision.
    *
-   * @param value     number
+   * @param value     value
    * @param precision precision
    * @return rounded value
    */
   public static double round(double value, int precision) {
     int scale = (int) Math.pow(10, precision);
     return (double) Math.round(value * scale) / scale;
+  }
+
+  /**
+   * Cut a value to given number of decimals.
+   *
+   * @param val      number
+   * @param decimals decimals
+   * @return rounded value
+   */
+  public static double roundDown(double val, int decimals) {
+    double pow = Math.pow(10, decimals);
+    return Math.floor(val * pow) / pow;
   }
 
 }
