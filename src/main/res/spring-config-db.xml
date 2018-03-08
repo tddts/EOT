@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+<!-- Annotation-driven JDBC transaction management-->
+<!-- In case if it is ever required -->
+<!--
+
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="ebeanTransactionManager" class="io.ebean.spring.txn.SpringJdbcTransactionManager"/>
+
+-->
 
     <!-- Ebean ORM-->
     <bean id="ebeanServerConfig" class="io.ebean.config.ServerConfig">
-        <property name="name" value="ebeanServerConfig"/>
+        <property name="name" value="ebeanServer"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="packages">
             <list>
@@ -18,11 +37,9 @@
         <property name="ddlSeedSql" value="sql/startup.sql"/>
     </bean>
 
-    <bean class="com.github.tddts.jet.config.ebean.EbeanServerFactoryBean">
+    <bean id="ebeanServerFactory" class="com.github.tddts.jet.config.ebean.EbeanServerFactoryBean">
         <property name="serverConfig" ref="ebeanServerConfig"/>
     </bean>
-
-    <bean id="transactionManager" class="io.ebean.spring.txn.SpringJdbcTransactionManager"/>
 
     <!-- H2 DB -->
     <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource">
