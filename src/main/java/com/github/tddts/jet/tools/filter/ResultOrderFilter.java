@@ -43,7 +43,7 @@ public class ResultOrderFilter {
       filtered.add(merging);
     }
 
-    logger.debug("Orders after filtration: " + orders.size());
+    logger.debug("Orders after filtration: " + filtered.size());
     return filtered;
   }
 
