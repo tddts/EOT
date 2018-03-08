@@ -4,12 +4,12 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%highlight{[%d{HH:mm:ss.SSS dd.MM.yyyy}] [%t] [%-5level] [%logger{1}]: %msg%n%throwable}{FATAL=red, ERROR=red, WARN=blue, INFO=black, DEBUG=black, TRACE=black}"/>
         </Console>
-        <File name="LogFile" fileName="logs/app.log">
+        <File name="LogFile" fileName="app.log">
             <PatternLayout pattern="%highlight{[%d{HH:mm:ss.SSS dd.MM.yyyy}] [%t] [%-5level] [%logger{1}]: %msg%n%throwable}{FATAL=red, ERROR=red, WARN=blue, INFO=black, DEBUG=black, TRACE=black}"/>
         </File>
     </Appenders>
     <Loggers>
-        <Root level="DEBUG">
+        <Root level="ERROR">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="LogFile"/>
         </Root>
@@ -17,7 +17,7 @@
             <Appender-ref ref="Console"/>
             <Appender-ref ref="LogFile"/>
         </Logger>
-        <Logger name="com.github.tddts.jet" level="OFF" additivity="false">
+        <Logger name="com.github.tddts.jet" level="ALL" additivity="false">
             <Appender-ref ref="Console"/>
             <Appender-ref ref="LogFile"/>
         </Logger>
