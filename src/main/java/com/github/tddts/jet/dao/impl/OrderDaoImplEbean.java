@@ -93,14 +93,13 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
 
   @Override
   @Transactional(batch = PersistBatch.ALL, batchOnCascade = PersistBatch.ALL, batchSize = 10000) // 10k - ESI page size
-  public int merge(Collection<CachedOrder> orders) {
+  public void merge(Collection<CachedOrder> orders) {
 
-    int counter = 0;
     SqlUpdate update = ebeans().createSqlUpdate(sql_merge_orders);
 
     for (CachedOrder order : orders) {
 
-      int updated = update
+      update
           .setParameter("order_id", order.getOrderId())
           .setParameter("location_id", order.getLocationID())
           .setParameter("type_id", order.getTypeID())
@@ -113,14 +112,10 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
           .setParameter("volume_remain", order.getVolumeRemain())
           .setParameter("volume_total", order.getVolumeTotal())
           .execute();
-
-      counter += updated;
     }
 
     Transaction transaction = ebeans().currentTransaction();
     transaction.addModification("CACHED_ORDER", true, true, false);
-
-    return counter;
   }
 
 

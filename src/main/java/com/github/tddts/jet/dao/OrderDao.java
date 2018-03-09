@@ -68,5 +68,5 @@ public interface OrderDao extends GenericDao<CachedOrder> {
    * @param orders orders
    * @return number of updates
    */
-  int merge(Collection<CachedOrder> orders);
+  void merge(Collection<CachedOrder> orders);
 }
