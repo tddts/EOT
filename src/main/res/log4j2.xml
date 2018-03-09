@@ -13,7 +13,7 @@
             <AppenderRef ref="Console"/>
             <AppenderRef ref="LogFile"/>
         </Root>
-        <Logger name="org.springframework" level="OFF" additivity="false">
+        <Logger name="org.springframework" level="ERROR" additivity="false">
             <Appender-ref ref="Console"/>
             <Appender-ref ref="LogFile"/>
         </Logger>

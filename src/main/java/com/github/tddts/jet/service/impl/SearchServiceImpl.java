@@ -219,7 +219,6 @@ public class SearchServiceImpl implements SearchService {
   private void filter(double funds, double volume) {
     eventBus.post(FILTERING_ORDERS);
 
-//    orderDao.removeDuplicateOrders();
     orderDao.removeSoonExpiredOrders(expirationTimeout);
     orderDao.removeLargeItemOrders(volume);
     orderDao.removeTooExpensiveOrders(funds);

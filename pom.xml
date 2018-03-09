@@ -4,7 +4,7 @@
 
     <groupId>com.github.tddts</groupId>
     <artifactId>JET</artifactId>
-    <version>1.6</version>
+    <version>1.6.1</version>
     <build>
 
         <plugins>
@@ -136,25 +136,37 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>4.3.4.RELEASE</version>
+            <version>5.0.4.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.0.4.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>4.3.4.RELEASE</version>
+            <version>5.0.4.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>4.3.4.RELEASE</version>
+            <version>5.0.4.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <version>4.3.4.RELEASE</version>
+            <version>5.0.4.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.0.4.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -205,11 +217,6 @@
             <version>11.10.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>5.0.4.RELEASE</version>
-        </dependency>
 
     </dependencies>
 </project>
