@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 
-package com.github.tddts.jet.view.fx.tools.message.provider;
+package com.github.tddts.jet.view.fx.tools.message;
 
 import javafx.util.StringConverter;
 
 /**
- * {@code MessageHelper} is a helper class that provides api to receive messages for various situations.
+ * {@code MessageProvider} is a class that provides messages for various types of objects.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface MessageHelper {
+public interface MessageProvider {
 
   /**
-   * Returns message for given Enum object.
+   * Get message for given key.
+   *
+   * @param key message key
+   * @return message associated with given key
+   */
+  String getMessage(String key);
+
+  /**
+   * Get message for given Enum object.
    *
    * @param object Enum object
    * @return message for given object
@@ -34,7 +42,7 @@ public interface MessageHelper {
   String getMessage(Enum object);
 
   /**
-   * Returns {@link StringConverter} for given array of Enums.
+   * Get {@link StringConverter} for given array of Enums.
    *
    * @param values array of Enums.
    * @param <T> type of Enum

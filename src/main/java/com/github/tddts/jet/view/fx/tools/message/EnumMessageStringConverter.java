@@ -16,7 +16,6 @@
 
 package com.github.tddts.jet.view.fx.tools.message;
 
-import com.github.tddts.jet.view.fx.tools.message.provider.MessageHelper;
 import javafx.util.StringConverter;
 
 import java.util.HashMap;
@@ -31,9 +30,9 @@ public class EnumMessageStringConverter<T extends Enum> extends StringConverter<
 
   private final Map<T, String> values = new HashMap<>();
 
-  public EnumMessageStringConverter(MessageHelper messageHelper, T[] values) {
+  public EnumMessageStringConverter(MessageProvider messageProvider, T[] values) {
     for (T type : values) {
-      this.values.put(type, messageHelper.getMessage(type));
+      this.values.put(type, messageProvider.getMessage(type));
     }
   }
 

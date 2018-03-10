@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.tddts.jet.view.fx.tools.message.provider;
+package com.github.tddts.jet.view.fx.tools.message;
 
-import com.github.tddts.jet.view.fx.tools.message.EnumMessageStringConverter;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -28,12 +27,17 @@ import java.util.Locale;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-public class MessageHelperImpl implements MessageHelper {
+public class MessageProviderImpl implements MessageProvider {
 
   private static final Object[] NO_ARGS = new Object[]{};
 
   @Autowired
   private MessageSource messageSource;
+
+  @Override
+  public String getMessage(String key) {
+    return messageSource.getMessage(key, NO_ARGS, Locale.getDefault());
+  }
 
   @Override
   public String getMessage(Enum object) {
@@ -46,6 +50,6 @@ public class MessageHelperImpl implements MessageHelper {
   @Override
   @SuppressWarnings("unchecked")
   public <T extends Enum> StringConverter<T> getConverter(T[] values) {
-    return new EnumMessageStringConverter(this,values);
+    return new EnumMessageStringConverter(this, values);
   }
 }

@@ -25,7 +25,7 @@ import com.github.tddts.jet.service.UserDataService;
 import com.github.tddts.jet.view.fx.annotations.FXController;
 import com.github.tddts.jet.view.fx.dialog.DevCredentialsDialog;
 import com.github.tddts.jet.view.fx.spring.DialogProvider;
-import com.github.tddts.jet.view.fx.tools.message.provider.MessageHelper;
+import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
 import com.github.tddts.jet.util.ViewUtil;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
@@ -70,7 +70,7 @@ public class LoginController {
   private Label loginStatusLabel;
 
   @Autowired
-  private MessageHelper messageHelper;
+  private MessageProvider messageProvider;
   @Autowired
   private LoginService loginService;
   @Autowired
@@ -80,13 +80,13 @@ public class LoginController {
 
   @PostConstruct
   private void init() {
-    loginChoiceBox.setConverter(messageHelper.getConverter(AuthorizationType.values()));
+    loginChoiceBox.setConverter(messageProvider.getConverter(AuthorizationType.values()));
     loginChoiceBox.setItems(FXCollections.observableArrayList(AuthorizationType.values()));
     loginChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldval, val) -> processLoginTypeChange(val));
     loginChoiceBox.getSelectionModel().selectFirst();
     loginButton.setOnAction(event -> processLogin());
 
-    dataSourceBox.setConverter(messageHelper.getConverter(RestDataSource.values()));
+    dataSourceBox.setConverter(messageProvider.getConverter(RestDataSource.values()));
     dataSourceBox.setItems(FXCollections.observableArrayList(RestDataSource.values()));
     dataSourceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldval, val) -> processDataSourceChange(val));
     dataSourceBox.getSelectionModel().selectFirst();

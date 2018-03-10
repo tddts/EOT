@@ -18,7 +18,7 @@ package com.github.tddts.jet.view.fx.controller;
 
 import com.github.tddts.jet.context.events.SearchStatusEvent;
 import com.github.tddts.jet.view.fx.annotations.FXController;
-import com.github.tddts.jet.view.fx.tools.message.provider.MessageHelper;
+import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -46,7 +46,7 @@ public class MainController {
   private SearchTabController searchTabController;
 
   @Autowired
-  private MessageHelper messageHelper;
+  private MessageProvider messageProvider;
 
   @PostConstruct
   public void init() {
@@ -67,6 +67,6 @@ public class MainController {
   }
 
   private void setStatusText(SearchStatusEvent event) {
-    searchStatusLabel.textProperty().setValue(messageHelper.getMessage(event));
+    searchStatusLabel.textProperty().setValue(messageProvider.getMessage(event));
   }
 }

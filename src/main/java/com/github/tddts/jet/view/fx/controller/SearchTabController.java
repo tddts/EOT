@@ -23,7 +23,7 @@ import com.github.tddts.jet.context.events.UserDataEvent;
 import com.github.tddts.jet.view.fx.annotations.FXController;
 import com.github.tddts.jet.view.fx.table.ColorStatusCellFactory;
 import com.github.tddts.jet.view.fx.table.NumberFormatCellFactory;
-import com.github.tddts.jet.view.fx.tools.message.provider.MessageHelper;
+import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
 import com.github.tddts.jet.model.app.OrderSearchRow;
 import com.github.tddts.jet.model.app.SearchParams;
 import com.github.tddts.jet.service.SearchService;
@@ -112,7 +112,7 @@ public class SearchTabController {
   private String iskPattern;
 
   @Autowired
-  private MessageHelper messageHelper;
+  private MessageProvider messageProvider;
   @Autowired
   private SearchService searchService;
   @Autowired
@@ -170,7 +170,7 @@ public class SearchTabController {
   }
 
   private void initChoiceBoxes() {
-    routeOptionBox.setConverter(messageHelper.getConverter(RouteOption.values()));
+    routeOptionBox.setConverter(messageProvider.getConverter(RouteOption.values()));
     routeOptionBox.setItems(FXCollections.observableArrayList(RouteOption.values()));
     routeOptionBox.getSelectionModel().selectFirst();
 
