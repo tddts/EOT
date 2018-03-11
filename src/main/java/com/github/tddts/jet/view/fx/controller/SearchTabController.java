@@ -211,12 +211,8 @@ public class SearchTabController {
 
   private boolean validateInput() {
     //TODO: light up the input fields
+    return iskField.getValue() == 0 || cargoField.getValue() == 0;
 
-    String isk = iskField.getText();
-    if (isk == null || isk.isEmpty()) return true;
-
-    String cargo = cargoField.getText();
-    return cargo == null || cargo.isEmpty();
   }
 
   private void addRegion() {
