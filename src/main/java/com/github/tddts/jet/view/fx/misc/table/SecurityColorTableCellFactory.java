@@ -12,7 +12,7 @@ public class SecurityColorTableCellFactory extends CustomizableTableCellFactory<
     addUpdater(new SecurityColorTableCellUpdater((row) -> getSecurity(row, buy)));
   }
 
-  private float getSecurity(OrderSearchRow row, boolean buy) {
+  private double getSecurity(OrderSearchRow row, boolean buy) {
     if (row == null) return -1f;
 
     if (buy) {

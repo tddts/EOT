@@ -23,6 +23,8 @@ import com.github.tddts.jet.model.db.ResultOrder;
 import io.ebean.*;
 import io.ebean.annotation.PersistBatch;
 import io.ebean.annotation.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -34,18 +36,17 @@ import java.util.List;
 @Repository
 public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements OrderDao {
 
+  private final Logger logger = LogManager.getLogger(OrderDaoImplEbean.class);
+
   @LoadContent("/sql/delete_expired.sql")
   private String sql_delete_expired;
   @LoadContent("/sql/delete_large.sql")
   private String sql_delete_large;
 
-  @LoadContent("/sql/search_update_create_tables.sql")
+  @LoadContent("/sql/search_create_tables.sql")
   private String sql_update_searchCreateTables;
-  @LoadContent("/sql/search_update_insert_stations.sql")
-  private String sql_update_searchInsertStations;
-  @LoadContent("/sql/search_update_insert_orders.sql")
-  private String sql_update_searchInsertOrders;
-
+  @LoadContent("/sql/search_prepare.sql")
+  private String sql_update_prepare_search;
   @LoadContent("/sql/search_select.sql")
   private String sql_select_search;
 
@@ -78,8 +79,16 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
   public List<ResultOrder> findProfitableOrders(double security, double cargoVolume, double taxRate) {
     // Create and fill temporary tables
     ebeans().createSqlUpdate(sql_update_searchCreateTables).execute();
-    ebeans().createSqlUpdate(sql_update_searchInsertStations).setParameter("security_status", security).execute();
-    ebeans().createSqlUpdate(sql_update_searchInsertOrders).execute();
+    ebeans().createSqlUpdate(sql_update_prepare_search).setParameter("security_status", security).execute();
+
+    List<SqlRow> tmp_stations = ebeans().createSqlQuery("SELECT * FROM TMP_STATIONS").findList();
+    tmp_stations.forEach(sqlRow -> logger.warn(sqlRow.toString()));
+
+    List<SqlRow> tmp_sell_orders = ebeans().createSqlQuery("SELECT * FROM TMP_SELL_ORDERS").findList();
+    tmp_sell_orders.forEach(sqlRow -> logger.warn(sqlRow.toString()));
+
+    List<SqlRow> tmp_buy_orders = ebeans().createSqlQuery("SELECT * FROM TMP_BUY_ORDERS").findList();
+    tmp_buy_orders.forEach(sqlRow -> logger.warn(sqlRow.toString()));
 
     RawSql rawSql = RawSqlBuilder.parse(sql_select_search).create();
 

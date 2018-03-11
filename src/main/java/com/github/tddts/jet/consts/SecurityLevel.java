@@ -9,30 +9,30 @@ import com.github.tddts.jet.util.Util;
  */
 public enum SecurityLevel {
 
-  LEVEL_00(0.0f, "#F00000"),
-  LEVEL_01(0.1f, "#D73000"),
-  LEVEL_02(0.2f, "#F04800"),
-  LEVEL_03(0.3f, "#F06000"),
-  LEVEL_04(0.4f, "#D77700"),
-  LEVEL_05(0.5f, "#EFEF00"),
-  LEVEL_06(0.6f, "#8FEF2F"),
-  LEVEL_07(0.7f, "#00F000"),
-  LEVEL_08(0.8f, "#00EF47"),
-  LEVEL_09(0.9f, "#48F0C0"),
-  LEVEL_10(1.0f, "#2FEFEF"),;
+  LEVEL_00(0.0, "#F00000"),
+  LEVEL_01(0.1, "#D73000"),
+  LEVEL_02(0.2, "#F04800"),
+  LEVEL_03(0.3, "#F06000"),
+  LEVEL_04(0.4, "#D77700"),
+  LEVEL_05(0.5, "#EFEF00"),
+  LEVEL_06(0.6, "#8FEF2F"),
+  LEVEL_07(0.7, "#00F000"),
+  LEVEL_08(0.8, "#00EF47"),
+  LEVEL_09(0.9, "#48F0C0"),
+  LEVEL_10(1.0, "#2FEFEF"),;
 
 
-  private final float value; // Numeric value.
+  private final double value; // Numeric value.
   private final String color; // HTML color code.
 
-  SecurityLevel(float value, String color) {
+  SecurityLevel(double value, String color) {
     this.value = value;
     this.color = color;
   }
 
   @Override
   public String toString() {
-    return Float.toString(value);
+    return Double.toString(value);
   }
 
   /**
@@ -40,7 +40,7 @@ public enum SecurityLevel {
    *
    * @return security level numeric value;
    */
-  public float getValue() {
+  public double getValue() {
     return value;
   }
 
@@ -59,10 +59,12 @@ public enum SecurityLevel {
    * @param value security level numeric value.
    * @return security level for given numeric value or <b>null</b>.
    */
-  public static SecurityLevel fromValue(float value) {
-    value = (float) Util.roundDown(value, 1);
+  public static SecurityLevel fromValue(double value) {
+    value = Util.roundDown(value, 1);
     for (SecurityLevel level : values()) {
-      if (Float.compare(value, level.value) == 0) return level;
+      if (Double.compare(value, level.value) == 0){
+        return level;
+      }
     }
     return null;
   }

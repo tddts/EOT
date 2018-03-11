@@ -18,7 +18,6 @@ package com.github.tddts.jet.service.impl;
 
 import com.github.tddts.jet.config.spring.annotations.Profiling;
 import com.github.tddts.jet.consts.RouteOption;
-import com.github.tddts.jet.consts.SecurityLevel;
 import com.github.tddts.jet.model.app.OrderRoute;
 import com.github.tddts.jet.model.app.RouteParams;
 import com.github.tddts.jet.consts.OrderType;
@@ -50,6 +49,8 @@ import com.github.tddts.tools.core.pagination.impl.PaginationBuilders;
 import com.github.tddts.tools.core.task.TaskChain;
 import com.github.tddts.tools.core.task.impl.ReusableTaskChain;
 import com.google.common.eventbus.EventBus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -74,6 +75,8 @@ import static com.github.tddts.jet.context.events.SearchStatusEvent.SEARCHING_FO
  */
 @Component
 public class SearchServiceImpl implements SearchService {
+
+  private final Logger logger = LogManager.getLogger(SearchServiceImpl.class);
 
   @Autowired
   private OrderDao orderDao;
@@ -275,6 +278,7 @@ public class SearchServiceImpl implements SearchService {
   private OrderSearchRow findRoute(ResultOrder searchResult, RouteOption routeOption, String typeName) {
     StaticStation sellStation = stationDao.find(searchResult.getSellLocation());
     StaticStation buyStation = stationDao.find(searchResult.getBuyLocation());
+
 
     OrderRoute orderRoute = routeService.getRoute(RouteParams
         .of(sellStation.getSolarSystemID(), buyStation.getSolarSystemID())

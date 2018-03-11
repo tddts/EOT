@@ -35,6 +35,8 @@ public class ResultOrderFilter {
   public List<ResultOrder> filter(List<ResultOrder> orders) {
     if (orders.isEmpty()) return orders;
 
+    logger.debug("Orders before filtration: " + orders.size());
+
     List<ResultOrder> filtered = new ArrayList<>(orders.size());
 
     while (!orders.isEmpty()) {
@@ -42,6 +44,7 @@ public class ResultOrderFilter {
       orders = orders.stream().filter(item -> !merging.merge(item)).collect(Collectors.toList());
       filtered.add(merging);
     }
+
 
     logger.debug("Orders after filtration: " + filtered.size());
     return filtered;

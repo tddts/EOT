@@ -51,7 +51,7 @@ public class StaticStation {
   private int regionId;
 
   @Column
-  private float securityStatus;
+  private double securityStatus;
 
   public StaticStation() {
   }
@@ -104,11 +104,11 @@ public class StaticStation {
     this.regionId = regionId;
   }
 
-  public float getSecurityStatus() {
+  public double getSecurityStatus() {
     return securityStatus;
   }
 
-  public void setSecurityStatus(float securityStatus) {
+  public void setSecurityStatus(double securityStatus) {
     this.securityStatus = securityStatus;
   }
 }
