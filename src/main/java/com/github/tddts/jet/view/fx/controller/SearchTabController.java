@@ -180,7 +180,7 @@ public class SearchTabController {
 
     minSecurityBox.setItems(FXCollections.observableArrayList(SecurityLevel.values()));
     minSecurityBox.getSelectionModel().selectedItemProperty().addListener(new SecurityColorChangeListener(minSecurityBox));
-    minSecurityBox.getSelectionModel().selectFirst();
+    minSecurityBox.getSelectionModel().select(SecurityLevel.LEVEL_05);
 
     regionChoiceBox.setItems(FXCollections.observableArrayList(regionNames));
     regionChoiceBox.getSelectionModel().selectFirst();
