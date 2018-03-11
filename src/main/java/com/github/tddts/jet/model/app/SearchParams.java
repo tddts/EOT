@@ -17,6 +17,7 @@
 package com.github.tddts.jet.model.app;
 
 import com.github.tddts.jet.consts.RouteOption;
+import com.github.tddts.jet.consts.SecurityLevel;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -34,6 +35,7 @@ public class SearchParams {
 
   private List<String> regions;
   private RouteOption routeOption;
+  private SecurityLevel securityLevel;
   private Consumer<List<OrderSearchRow>> resultConsumer;
 
   public double getIsk() {
@@ -69,6 +71,15 @@ public class SearchParams {
 
   public SearchParams setRouteOption(RouteOption routeOption) {
     this.routeOption = routeOption;
+    return this;
+  }
+
+  public SecurityLevel getSecurityLevel() {
+    return securityLevel;
+  }
+
+  public SearchParams setSecurityLevel(SecurityLevel securityLevel) {
+    this.securityLevel = securityLevel;
     return this;
   }
 

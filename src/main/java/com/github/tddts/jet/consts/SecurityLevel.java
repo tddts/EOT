@@ -30,6 +30,11 @@ public enum SecurityLevel {
     this.color = color;
   }
 
+  @Override
+  public String toString() {
+    return Float.toString(value);
+  }
+
   /**
    * Get numeric value of security level.
    *

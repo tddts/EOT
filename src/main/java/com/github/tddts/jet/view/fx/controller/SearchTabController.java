@@ -18,11 +18,13 @@ package com.github.tddts.jet.view.fx.controller;
 
 
 import com.github.tddts.jet.consts.RouteOption;
+import com.github.tddts.jet.consts.SecurityLevel;
 import com.github.tddts.jet.context.events.AuthorizationEvent;
 import com.github.tddts.jet.context.events.UserDataEvent;
 import com.github.tddts.jet.view.fx.annotations.FXController;
-import com.github.tddts.jet.view.fx.table.ColorStatusCellFactory;
-import com.github.tddts.jet.view.fx.table.NumberFormatCellFactory;
+import com.github.tddts.jet.view.fx.misc.choice.SecurityColorChangeListener;
+import com.github.tddts.jet.view.fx.misc.table.SecurityColorTableCellFactory;
+import com.github.tddts.jet.view.fx.misc.table.NumberFormatTableCellFactory;
 import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
 import com.github.tddts.jet.model.app.OrderSearchRow;
 import com.github.tddts.jet.model.app.SearchParams;
@@ -91,6 +93,8 @@ public class SearchTabController {
   @FXML
   private ChoiceBox<RouteOption> routeOptionBox;
   @FXML
+  private ChoiceBox<SecurityLevel> minSecurityBox;
+  @FXML
   private ChoiceBox<String> regionChoiceBox;
 
   @FXML
@@ -134,27 +138,27 @@ public class SearchTabController {
     quantityColumn.setCellValueFactory(cellData -> cellData.getValue().quantityProperty().asObject());
 
     sellingColumn.setCellValueFactory(cellData -> cellData.getValue().sellingLocationProperty());
-    sellingColumn.setCellFactory(new ColorStatusCellFactory(false));
+    sellingColumn.setCellFactory(new SecurityColorTableCellFactory(false));
 
     buyingColumn.setCellValueFactory(cellData -> cellData.getValue().buyingLocationProperty());
-    buyingColumn.setCellFactory(new ColorStatusCellFactory(true));
+    buyingColumn.setCellFactory(new SecurityColorTableCellFactory(true));
 
     volumeColumn.setCellValueFactory(cellData -> cellData.getValue().volumeProperty().asObject());
     volumeRemainColumn.setCellValueFactory(cellData -> cellData.getValue().volumeRemainProperty().asObject());
 
     sellingPriceColumn.setCellValueFactory(cellData -> cellData.getValue().sellPriceProperty().asObject());
-    sellingPriceColumn.setCellFactory(new NumberFormatCellFactory(iskPattern));
+    sellingPriceColumn.setCellFactory(new NumberFormatTableCellFactory(iskPattern));
 
     buyingPriceColumn.setCellValueFactory(cellData -> cellData.getValue().buyPriceProperty().asObject());
-    buyingPriceColumn.setCellFactory(new NumberFormatCellFactory(iskPattern));
+    buyingPriceColumn.setCellFactory(new NumberFormatTableCellFactory(iskPattern));
 
     jumpsColumn.setCellValueFactory(cellData -> cellData.getValue().jumpsProperty().asObject());
 
     profitColumn.setCellValueFactory(cellData -> cellData.getValue().profitProperty().asObject());
-    profitColumn.setCellFactory(new NumberFormatCellFactory(iskPattern));
+    profitColumn.setCellFactory(new NumberFormatTableCellFactory(iskPattern));
 
     perJumpColumn.setCellValueFactory(cellData -> cellData.getValue().perJumpProfitProperty().asObject());
-    perJumpColumn.setCellFactory(new NumberFormatCellFactory(iskPattern));
+    perJumpColumn.setCellFactory(new NumberFormatTableCellFactory(iskPattern));
 
     searchTable.setItems(FXCollections.observableArrayList());
   }
@@ -174,6 +178,10 @@ public class SearchTabController {
     routeOptionBox.setItems(FXCollections.observableArrayList(RouteOption.values()));
     routeOptionBox.getSelectionModel().selectFirst();
 
+    minSecurityBox.setItems(FXCollections.observableArrayList(SecurityLevel.values()));
+    minSecurityBox.getSelectionModel().selectedItemProperty().addListener(new SecurityColorChangeListener(minSecurityBox));
+    minSecurityBox.getSelectionModel().selectFirst();
+
     regionChoiceBox.setItems(FXCollections.observableArrayList(regionNames));
     regionChoiceBox.getSelectionModel().selectFirst();
   }
@@ -189,6 +197,7 @@ public class SearchTabController {
         .setCargo(cargoField.getValue())
         .setTax(taxField.getValue())
         .setRouteOption(routeOptionBox.getValue())
+        .setSecurityLevel(minSecurityBox.getValue())
         .setRegions(getRegions())
         .setResultConsumer((results) -> Platform.runLater(() -> fillSearchTable(results)));
 

@@ -1,15 +1,15 @@
-package com.github.tddts.jet.view.fx.table;
+package com.github.tddts.jet.view.fx.misc.table;
 
 import com.github.tddts.jet.model.app.OrderSearchRow;
-import com.github.tddts.tools.fx.table.cell.CustomizableCellFactory;
+import com.github.tddts.tools.fx.cell.factory.CustomizableTableCellFactory;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class ColorStatusCellFactory extends CustomizableCellFactory<OrderSearchRow, String> {
+public class SecurityColorTableCellFactory extends CustomizableTableCellFactory<OrderSearchRow, String> {
 
-  public ColorStatusCellFactory(boolean buy) {
-    addUpdater(new ColorStatusCellUpdater((row) -> getSecurity(row, buy)));
+  public SecurityColorTableCellFactory(boolean buy) {
+    addUpdater(new SecurityColorTableCellUpdater((row) -> getSecurity(row, buy)));
   }
 
   private float getSecurity(OrderSearchRow row, boolean buy) {

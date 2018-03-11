@@ -18,6 +18,7 @@ package com.github.tddts.jet.service.impl;
 
 import com.github.tddts.jet.config.spring.annotations.Profiling;
 import com.github.tddts.jet.consts.RouteOption;
+import com.github.tddts.jet.consts.SecurityLevel;
 import com.github.tddts.jet.model.app.OrderRoute;
 import com.github.tddts.jet.model.app.RouteParams;
 import com.github.tddts.jet.consts.OrderType;
@@ -117,7 +118,7 @@ public class SearchServiceImpl implements SearchService {
         // Filter loaded orders
         .perform(() -> filter(searchParams.getIsk(), searchParams.getCargo()))
         // Find profitable orders
-        .supply(() -> find(searchParams.getRouteOption(), searchParams.getCargo(), searchParams.getTax()))
+        .supply(() -> find(searchParams))
         // Supply orders to result consumer
         .consume((result) -> searchParams.consumeResult(result))
         // Clean cached data
@@ -227,15 +228,16 @@ public class SearchServiceImpl implements SearchService {
   /**
    * Returns list of profitable orders using given parameters
    *
-   * @param routeOption route option
-   * @param volume      available cargo volume
-   * @param taxRate     tax rate
+   * @param searchParams search parameters
    * @return list of profitable orders
    */
-  private List<OrderSearchRow> find(RouteOption routeOption, double volume, double taxRate) {
+  private List<OrderSearchRow> find(SearchParams searchParams) {
     eventBus.post(SEARCHING_FOR_PROFIT);
 
-    List<ResultOrder> searchResults = orderDao.findProfitableOrders(routeOption.getSecurity(), volume, taxRate);
+    List<ResultOrder> searchResults = orderDao.findProfitableOrders(
+        searchParams.getSecurityLevel().getValue(),
+        searchParams.getCargo(),
+        searchParams.getTax());
 
     if (searchResults.isEmpty()) {
       eventBus.post(NO_ORDERS_FOUND);
@@ -255,7 +257,7 @@ public class SearchServiceImpl implements SearchService {
     eventBus.post(SEARCHING_FOR_ROUTES);
 
     List<OrderSearchRow> result = searchResults.stream()
-        .map(searchResult -> findRoute(searchResult, routeOption, typeNames.get(searchResult.getTypeId())))
+        .map(searchResult -> findRoute(searchResult, searchParams.getRouteOption(), typeNames.get(searchResult.getTypeId())))
         .collect(Collectors.toList());
 
     eventBus.post(FINISHED);
