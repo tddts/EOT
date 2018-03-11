@@ -81,15 +81,6 @@ public class OrderDaoImplEbean extends EbeanAbstractDao<CachedOrder> implements 
     ebeans().createSqlUpdate(sql_update_searchCreateTables).execute();
     ebeans().createSqlUpdate(sql_update_prepare_search).setParameter("security_status", security).execute();
 
-    List<SqlRow> tmp_stations = ebeans().createSqlQuery("SELECT * FROM TMP_STATIONS").findList();
-    tmp_stations.forEach(sqlRow -> logger.warn(sqlRow.toString()));
-
-    List<SqlRow> tmp_sell_orders = ebeans().createSqlQuery("SELECT * FROM TMP_SELL_ORDERS").findList();
-    tmp_sell_orders.forEach(sqlRow -> logger.warn(sqlRow.toString()));
-
-    List<SqlRow> tmp_buy_orders = ebeans().createSqlQuery("SELECT * FROM TMP_BUY_ORDERS").findList();
-    tmp_buy_orders.forEach(sqlRow -> logger.warn(sqlRow.toString()));
-
     RawSql rawSql = RawSqlBuilder.parse(sql_select_search).create();
 
     Query<ResultOrder> query = ebeans().find(ResultOrder.class)
