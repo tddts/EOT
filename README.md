@@ -7,9 +7,10 @@ Not intended for mass use, as it's getting less useful with each user due to it'
 ## Tools used
 - JavaFX
 - Spring (Core, AOP, REST)
-- Ebean ORM
 - Guava EventBus
 - Apache HttpComponents
+- Ebean ORM
+- H2 DB
 
 ## Build requirements
 Requires JDK 8 and Maven 3.2.5 or higher to build.
