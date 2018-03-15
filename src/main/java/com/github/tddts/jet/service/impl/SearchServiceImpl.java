@@ -61,14 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.github.tddts.jet.context.events.SearchStatusEvent.CLEARING_CACHE;
-import static com.github.tddts.jet.context.events.SearchStatusEvent.FILTERING_ORDERS;
-import static com.github.tddts.jet.context.events.SearchStatusEvent.FINISHED;
-import static com.github.tddts.jet.context.events.SearchStatusEvent.LOADING_ORDERS;
-import static com.github.tddts.jet.context.events.SearchStatusEvent.LOADING_PRICES;
-import static com.github.tddts.jet.context.events.SearchStatusEvent.NO_ORDERS_FOUND;
-import static com.github.tddts.jet.context.events.SearchStatusEvent.SEARCHING_FOR_PROFIT;
-import static com.github.tddts.jet.context.events.SearchStatusEvent.SEARCHING_FOR_ROUTES;
+import static com.github.tddts.jet.context.events.SearchStatusEvent.*;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
@@ -109,6 +102,8 @@ public class SearchServiceImpl implements SearchService {
   private TaskChain<?> taskQueue;
   private SearchParams searchParams;
 
+  //TODO: Make stateless!!!
+
   public SearchServiceImpl() {
     // Build TaskQueue
     taskQueue = new ReusableTaskChain<>()
@@ -145,8 +140,10 @@ public class SearchServiceImpl implements SearchService {
    */
   private void cleanUp() {
     eventBus.post(CLEARING_CACHE);
+
     orderDao.deleteAll();
     marketPriceDao.deleteAll();
+
     eventBus.post(FINISHED);
   }
 
@@ -155,6 +152,7 @@ public class SearchServiceImpl implements SearchService {
    */
   private void loadPrices() {
     eventBus.post(LOADING_PRICES);
+
     marketClient.getAllItemPrices().process(list ->
         marketPriceDao.saveAll(list.stream().map(CachedMarketPrice::new).collect(Collectors.toList())));
   }
