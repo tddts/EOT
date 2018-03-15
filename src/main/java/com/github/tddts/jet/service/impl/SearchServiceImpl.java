@@ -55,10 +55,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.github.tddts.jet.context.events.SearchStatusEvent.*;
@@ -89,20 +87,20 @@ public class SearchServiceImpl implements SearchService {
   @Autowired
   private EventBus eventBus;
 
+  @Value("${header.pages}")
+  private String pagesHeader;
+
   @Value("#{${static.regions}}")
   private Map<String, Integer> regionsMap;
 
   @Value("${service.search.expiration.timeout}")
   private int expirationTimeout;
 
-
   private PaginationExecutor paginationExecutor = new SimplePaginationExecutor();
   private ResultOrderFilter resultFilter = new ResultOrderFilter();
 
   private TaskChain<?> taskQueue;
   private SearchParams searchParams;
-
-  //TODO: Fix: loading rate (30 per second), orders caching (300 seconds)
 
   public SearchServiceImpl() {
     taskQueue = new ReusableTaskChain<>()
@@ -145,8 +143,8 @@ public class SearchServiceImpl implements SearchService {
   private void loadPrices() {
     eventBus.post(LOADING_PRICES);
 
-    marketClient.getAllItemPrices().process(list ->
-        marketPriceDao.saveAll(list.stream().map(CachedMarketPrice::new).collect(Collectors.toList())));
+    marketClient.getAllItemPrices().process(
+        list -> marketPriceDao.saveAll(list.stream().map(CachedMarketPrice::new).collect(Collectors.toList())));
   }
 
   /**
@@ -158,11 +156,14 @@ public class SearchServiceImpl implements SearchService {
     Collection<String> regions = searchParams.getRegions();
 
     // Get region IDs by names
-    Collection<Integer> regionIds = regions == null || regions.isEmpty() ?
-        // All regions
-        regionsMap.values() : // or
-        // Only required regions
-        regions.stream().map(region -> regionsMap.get(region)).collect(Collectors.toList());
+    Collection<Integer> regionIds;
+    if (regions.isEmpty()) {
+      // All regions
+      regionIds = regionsMap.values();
+    } else {
+      // Only selected regions
+      regionIds = regions.stream().map(region -> regionsMap.get(region)).collect(Collectors.toList());
+    }
 
     // Run paginated loading of orders
     regionIds.forEach(region -> paginationExecutor.add(createPaginationForRegion(region)));
@@ -181,30 +182,40 @@ public class SearchServiceImpl implements SearchService {
    */
   private Pagination<RestResponse<List<MarketOrder>>> createPaginationForRegion(long regionId) {
     SerialPaginationBuilder<RestResponse<List<MarketOrder>>> builder = PaginationBuilders.serial();
+
+    // Load first page to get a get a header with overall page number
+    RestResponse<List<MarketOrder>> first = marketClient.getOrders(OrderType.ALL, regionId, 1);
+    savePage(first);
+
+    if (first.getHeader(pagesHeader) == null) return null;
+
+    int pages = Integer.parseInt(first.getHeader(pagesHeader).get(0));
+
+    if (pages == 1) return null;
+
     return builder
-        // Begin with first page
-        .startWith(1)
+        // Begin with second page
+        .startWith(2)
+        // Set last page number
+        .finishOn(pages)
         // Load market orders for given region and page
         .loadPage((handler, page) -> loadPage(regionId, page, handler))
         //Process page
-        .processPage((response, page) -> orderDao.merge(response.getObject().stream().map(CachedOrder::new).collect(Collectors.toList())))
-        // Set condition for pagination
-        .loadWhile(this::checkPaginationCondition)
+        .processPage((response, page) -> savePage(response))
+        //Set loading rate - 30 requests per second
+        .withRate(1000 / 30, TimeUnit.MILLISECONDS)
         // Build pagination
         .build();
   }
 
-  private RestResponse<List<MarketOrder>> loadPage(long regionId, int page, SinglePageErrorHandler errorHandler) {
+  private RestResponse<List<MarketOrder>> loadPage(long regionId, int page, SinglePageErrorHandler handler) {
     RestResponse<List<MarketOrder>> response = marketClient.getOrders(OrderType.ALL, regionId, page);
-    if (response.hasError()) {
-      errorHandler.retryPage();
-    }
+    if (response.hasError()) handler.retryPage();
     return response;
   }
 
-  private boolean checkPaginationCondition(SerialPaginationConditionData<RestResponse<List<MarketOrder>>> conditionData) {
-    RestResponse<List<MarketOrder>> lastResponse = conditionData.lastPage();
-    return lastResponse.isSuccessful() && lastResponse.getObject().size() > 0;
+  private void savePage(RestResponse<List<MarketOrder>> response) {
+    response.ifSuccessful((orders) -> orderDao.merge(orders.stream().map(CachedOrder::new).collect(Collectors.toList())));
   }
 
   /**
@@ -247,12 +258,11 @@ public class SearchServiceImpl implements SearchService {
     // Filter results
     searchResults = resultFilter.filter(searchResults);
 
+    RestResponse<List<UniverseName>> namesResponse = universeClient.getNames(searchResults.stream().mapToInt(ResultOrder::getTypeId).distinct().toArray());
+    namesResponse.checkError();
+
     // Loaded names for given types
-    Map<Integer, String> typeNames = universeClient.getNames(
-        // Get ids of types of loaded items
-        searchResults.stream().mapToInt(ResultOrder::getTypeId).distinct().toArray())
-        // Convert loaded names to the map of type ids and names
-        .getObject().stream().collect(Collectors.toMap(UniverseName::getId, UniverseName::getName));
+    Map<Integer, String> typeNames = namesResponse.getObject().stream().collect(Collectors.toMap(UniverseName::getId, UniverseName::getName));
 
     eventBus.post(SEARCHING_FOR_ROUTES);
 
@@ -276,7 +286,6 @@ public class SearchServiceImpl implements SearchService {
   private OrderSearchRow findRoute(ResultOrder searchResult, RouteOption routeOption, String typeName) {
     StaticStation sellStation = stationDao.find(searchResult.getSellLocation());
     StaticStation buyStation = stationDao.find(searchResult.getBuyLocation());
-
 
     OrderRoute orderRoute = routeService.getRoute(RouteParams
         .of(sellStation.getSolarSystemID(), buyStation.getSolarSystemID())

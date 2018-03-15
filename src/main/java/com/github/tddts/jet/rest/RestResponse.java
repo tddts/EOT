@@ -17,12 +17,14 @@
 package com.github.tddts.jet.rest;
 
 import com.github.tddts.jet.exception.RestResponseException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -34,15 +36,18 @@ public class RestResponse<T> {
 
   private T object;
   private HttpStatus status;
+  private HttpHeaders headers;
 
-  public RestResponse(T object, HttpStatus httpStatus) {
+  public RestResponse(T object, HttpStatus httpStatus, HttpHeaders headers) {
     this.object = object;
     this.status = httpStatus;
+    this.headers = headers;
   }
 
   public RestResponse(ResponseEntity<T> responseEntity) {
     object = responseEntity.getBody();
     status = responseEntity.getStatusCode();
+    headers = responseEntity.getHeaders();
   }
 
   public RestResponse(HttpStatusCodeException statusCodeException) {
@@ -50,7 +55,7 @@ public class RestResponse<T> {
   }
 
   public static <T> RestResponse<List<T>> fromArrayResponse(ResponseEntity<T[]> entity) {
-    return new RestResponse<>(Arrays.asList(entity.getBody()), entity.getStatusCode());
+    return new RestResponse<>(Arrays.asList(entity.getBody()), entity.getStatusCode(), entity.getHeaders());
   }
 
   public T getObject() {
@@ -59,6 +64,15 @@ public class RestResponse<T> {
 
   public HttpStatus getStatus() {
     return status;
+  }
+
+  public Map<String, List<String>> getHeaders() {
+    return headers;
+  }
+
+  public List<String> getHeader(String key) {
+    if (headers == null) return null;
+    return headers.get(key);
   }
 
   public String getStatusMessage() {
@@ -77,11 +91,14 @@ public class RestResponse<T> {
     return status.is2xxSuccessful();
   }
 
+  public void ifSuccessful(Consumer<T> consumer) {
+    process(false, consumer);
+  }
+
   public void process(boolean throwError, Consumer<T> consumer) throws RestResponseException {
     if (isSuccessful()) {
       consumer.accept(object);
-    }
-    else if (throwError) {
+    } else if (throwError) {
       throw new RestResponseException(status);
     }
   }
@@ -90,4 +107,9 @@ public class RestResponse<T> {
     process(true, consumer);
   }
 
+  public void checkError() {
+    if (!isSuccessful()) {
+      throw new RestResponseException(status);
+    }
+  }
 }

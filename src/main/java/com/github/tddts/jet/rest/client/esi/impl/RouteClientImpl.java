@@ -1,6 +1,7 @@
 package com.github.tddts.jet.rest.client.esi.impl;
 
 import com.github.tddts.jet.config.spring.annotations.RestClient;
+import com.github.tddts.jet.config.spring.annotations.Retry;
 import com.github.tddts.jet.consts.RouteOption;
 import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.rest.client.esi.RouteClient;
@@ -29,6 +30,7 @@ public class RouteClientImpl implements RouteClient {
   private RestClientTemplate client;
 
   @Override
+  @Retry
   public RestResponse<List<Integer>> getRoute(int origin, int destination, int[] avoid, int[] connections, RouteOption routeOption) {
     UriComponentsBuilder builder = client.apiUriBuilder(addressRoutes);
 

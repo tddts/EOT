@@ -17,6 +17,7 @@
 package com.github.tddts.jet.rest.client.esi.impl;
 
 import com.github.tddts.jet.config.spring.annotations.RestClient;
+import com.github.tddts.jet.config.spring.annotations.Retry;
 import com.github.tddts.jet.consts.OrderType;
 import com.github.tddts.jet.model.client.esi.market.MarketHistory;
 import com.github.tddts.jet.model.client.esi.market.MarketOrder;
@@ -61,6 +62,7 @@ public class MarketClientImpl implements MarketClient {
   }
 
   @Override
+  @Retry
   public RestResponse<List<MarketPrice>> getAllItemPrices() {
     return RestResponse.fromArrayResponse(client.restOperations().getForEntity(client.apiUrl(addressAllPrices), MarketPrice[].class));
   }
