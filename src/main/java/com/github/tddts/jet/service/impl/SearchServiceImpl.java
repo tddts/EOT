@@ -224,7 +224,7 @@ public class SearchServiceImpl implements SearchService {
    *
    * @return list of profitable orders
    */
-  private List<OrderSearchRow> find() {
+  private List<ResultOrder> find() {
     eventBus.post(SEARCHING_FOR_PROFIT);
 
     List<ResultOrder> searchResults = orderDao.findProfitableOrders(
@@ -237,6 +237,13 @@ public class SearchServiceImpl implements SearchService {
       return Collections.emptyList();
     }
 
+    return searchResults;
+  }
+
+  /**
+   * Process list of resulted orders.
+   */
+  private void processResults(List<ResultOrder> searchResults) {
     // Filter results
     searchResults = resultFilter.filter(searchResults);
 
@@ -254,14 +261,8 @@ public class SearchServiceImpl implements SearchService {
         .collect(Collectors.toList());
 
     eventBus.post(FINISHED);
-    return result;
-  }
 
-  /**
-   * Process list of resulted orders.
-   */
-  private void processResults(List<OrderSearchRow> orders) {
-    searchParams.consumeResult(orders);
+    searchParams.consumeResult(result);
   }
 
   /**
