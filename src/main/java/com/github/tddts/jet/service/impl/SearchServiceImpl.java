@@ -102,7 +102,7 @@ public class SearchServiceImpl implements SearchService {
   private TaskChain<?> taskQueue;
   private SearchParams searchParams;
 
-  //TODO: Make stateless!!!
+  //TODO: Fix: loading rate (30 per second), orders caching (300 seconds)
 
   public SearchServiceImpl() {
     taskQueue = new ReusableTaskChain<>()
@@ -209,7 +209,7 @@ public class SearchServiceImpl implements SearchService {
 
   /**
    * Filter loaded orders by amount of available funds and space.
-   * Also deletes duplicate orders and orders that are soon to expire.
+   * Also orders that are soon to expire.
    */
   private void filter() {
     eventBus.post(FILTERING_ORDERS);
