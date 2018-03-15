@@ -105,21 +105,13 @@ public class SearchServiceImpl implements SearchService {
   //TODO: Make stateless!!!
 
   public SearchServiceImpl() {
-    // Build TaskQueue
     taskQueue = new ReusableTaskChain<>()
-        // Load market prices
         .perform(this::loadPrices)
-        // Load market orders
-        .perform(() -> loadOrders(searchParams.getRegions()))
-        // Stop loading orders when queue execution is stopped
-        .onStop(() -> paginationExecutor.stop())
-        // Filter loaded orders
-        .perform(() -> filter(searchParams.getIsk(), searchParams.getCargo()))
-        // Find profitable orders
-        .supply(() -> find(searchParams))
-        // Supply orders to result consumer
-        .consume((result) -> searchParams.consumeResult(result))
-        // Clean cached data
+        .perform(this::loadOrders)
+        .onStop(this::stopOrdersLoading)
+        .perform(this::filter)
+        .supply(this::find)
+        .consume(this::processResults)
         .finallyAction(this::cleanUp);
   }
 
@@ -159,11 +151,11 @@ public class SearchServiceImpl implements SearchService {
 
   /**
    * Loads orders for given set of regions.
-   *
-   * @param regions set of regions for which orders will be loaded.
    */
-  private void loadOrders(Collection<String> regions) {
+  private void loadOrders() {
     eventBus.post(LOADING_ORDERS);
+
+    Collection<String> regions = searchParams.getRegions();
 
     // Get region IDs by names
     Collection<Integer> regionIds = regions == null || regions.isEmpty() ?
@@ -175,6 +167,10 @@ public class SearchServiceImpl implements SearchService {
     // Run paginated loading of orders
     regionIds.forEach(region -> paginationExecutor.add(createPaginationForRegion(region)));
     paginationExecutor.execute();
+  }
+
+  private void stopOrdersLoading() {
+    paginationExecutor.stop();
   }
 
   /**
@@ -214,25 +210,21 @@ public class SearchServiceImpl implements SearchService {
   /**
    * Filter loaded orders by amount of available funds and space.
    * Also deletes duplicate orders and orders that are soon to expire.
-   *
-   * @param funds  amount of funds available
-   * @param volume amount of cargo volume available
    */
-  private void filter(double funds, double volume) {
+  private void filter() {
     eventBus.post(FILTERING_ORDERS);
 
     orderDao.removeSoonExpiredOrders(expirationTimeout);
-    orderDao.removeLargeItemOrders(volume);
-    orderDao.removeTooExpensiveOrders(funds);
+    orderDao.removeLargeItemOrders(searchParams.getCargo());
+    orderDao.removeTooExpensiveOrders(searchParams.getIsk());
   }
 
   /**
-   * Returns list of profitable orders using given parameters
+   * Find list of profitable orders using given parameters
    *
-   * @param searchParams search parameters
    * @return list of profitable orders
    */
-  private List<OrderSearchRow> find(SearchParams searchParams) {
+  private List<OrderSearchRow> find() {
     eventBus.post(SEARCHING_FOR_PROFIT);
 
     List<ResultOrder> searchResults = orderDao.findProfitableOrders(
@@ -263,6 +255,13 @@ public class SearchServiceImpl implements SearchService {
 
     eventBus.post(FINISHED);
     return result;
+  }
+
+  /**
+   * Process list of resulted orders.
+   */
+  private void processResults(List<OrderSearchRow> orders) {
+    searchParams.consumeResult(orders);
   }
 
   /**
