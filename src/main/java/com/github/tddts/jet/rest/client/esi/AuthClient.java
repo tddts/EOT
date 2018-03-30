@@ -21,7 +21,7 @@ import com.github.tddts.jet.rest.RestResponse;
 import com.github.tddts.jet.model.client.esi.sso.AccessToken;
 
 /**
- * {@code AuthClient} represents authorization client for EVE Swagger Interface (an OpenAPI for EVE Online).
+ * {@code AuthClient} represents authorization client using OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

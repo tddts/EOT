@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * {@code RouteClient} represents a REST client which deals with flight routes through
- * EVE Swagger Interface (an OpenAPI for EVE Online)
+ * OpenAPI for EVE Online
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

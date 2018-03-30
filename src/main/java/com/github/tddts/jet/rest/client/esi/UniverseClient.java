@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * {@code UniverseClient} represents a REST client which deals with in-game universe data through
- * EVE Swagger Interface (an OpenAPI for EVE Online)
+ * OpenAPI for EVE Online
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */

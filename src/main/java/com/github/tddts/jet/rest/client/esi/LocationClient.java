@@ -22,7 +22,7 @@ import com.github.tddts.jet.model.client.esi.location.Ship;
 
 /**
  * {@code LocationClient} represents a REST client which deals with in-game Locations through
- * EVE Swagger Interface (an OpenAPI for EVE Online)
+ * OpenAPI for EVE Online
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
