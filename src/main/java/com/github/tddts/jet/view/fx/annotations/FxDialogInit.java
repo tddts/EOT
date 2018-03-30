@@ -22,17 +22,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for marking JavaFX controllers.
- * Contains path to corresponding FXML file for external usage.
+ * Annotations marking Dialog initialization method.
  *
- * @author Tigran_Dadaiants@epam.com
+ * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FXController {
-
-  /**
-   * FXML file path.
-   */
-  String value();
+public @interface FxDialogInit {
 }

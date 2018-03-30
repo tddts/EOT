@@ -22,7 +22,7 @@ import com.github.tddts.jet.consts.RestDataSource;
 import com.github.tddts.jet.context.events.AuthorizationEvent;
 import com.github.tddts.jet.service.LoginService;
 import com.github.tddts.jet.service.UserDataService;
-import com.github.tddts.jet.view.fx.annotations.FXController;
+import com.github.tddts.jet.view.fx.annotations.FxController;
 import com.github.tddts.jet.view.fx.dialog.DevCredentialsDialog;
 import com.github.tddts.jet.view.fx.spring.DialogProvider;
 import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
@@ -43,7 +43,7 @@ import java.util.Optional;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FXController("fxml/header.fxml")
+@FxController("fxml/header.fxml")
 public class LoginController {
 
   private static final String CSS_HEADER_AUTHORIZED = "header-authorized";

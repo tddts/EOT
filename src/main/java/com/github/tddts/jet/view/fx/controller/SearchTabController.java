@@ -21,7 +21,7 @@ import com.github.tddts.jet.consts.RouteOption;
 import com.github.tddts.jet.consts.SecurityLevel;
 import com.github.tddts.jet.context.events.AuthorizationEvent;
 import com.github.tddts.jet.context.events.UserDataEvent;
-import com.github.tddts.jet.view.fx.annotations.FXController;
+import com.github.tddts.jet.view.fx.annotations.FxController;
 import com.github.tddts.jet.view.fx.misc.choice.SecurityColorChangeListener;
 import com.github.tddts.jet.view.fx.misc.table.SecurityColorTableCellFactory;
 import com.github.tddts.jet.view.fx.misc.table.NumberFormatTableCellFactory;
@@ -52,7 +52,7 @@ import java.util.function.Consumer;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FXController("fxml/tab_search.fxml")
+@FxController("fxml/tab_search.fxml")
 public class SearchTabController {
 
   @FXML

@@ -18,8 +18,8 @@ package com.github.tddts.jet.view.fx.spring;
 
 import com.github.tddts.jet.config.spring.beans.ResourceBundleProvider;
 import com.github.tddts.jet.util.Util;
-import com.github.tddts.jet.view.fx.annotations.FXDialog;
-import com.github.tddts.jet.view.fx.annotations.InitDialog;
+import com.github.tddts.jet.view.fx.annotations.FxDialog;
+import com.github.tddts.jet.view.fx.annotations.FxDialogInit;
 import com.github.tddts.jet.view.fx.exception.DialogException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -41,10 +41,10 @@ import java.util.Map;
  * and also capable processing Dialog as a Spring bean (including injection of dependencies).
  * <p>
  * To create a Dialog via {@code DialogProvider} you should mark corresponding Dialog implementation with
- * {@link FXDialog} annotation and describe path to FXML file with dialog content.
+ * {@link FxDialog} annotation and describe path to FXML file with dialog content.
  * FXMl file should have {@code fx:controller} property set to dialog class.
  * <p>
- * To initialize dialog crate a method with required parameters and mark by {@link InitDialog} annotation.
+ * To initialize dialog crate a method with required parameters and mark by {@link FxDialogInit} annotation.
  * This initialization method will be invoked every time this dialog is called.
  * <p>
  * Such dialog would also support {@link PostConstruct} annotation as a Spring-processed bean.
@@ -93,11 +93,11 @@ public class DialogProvider {
 
   private <T extends Dialog<?>> T createDialog(Class<T> type) {
 
-    if (!type.isAnnotationPresent(FXDialog.class)) {
-      throw new DialogException("Dialog class should have a @FXDialog annotation!");
+    if (!type.isAnnotationPresent(FxDialog.class)) {
+      throw new DialogException("Dialog class should have a @FxDialog annotation!");
     }
 
-    FXDialog dialogAnnotation = type.getDeclaredAnnotation(FXDialog.class);
+    FxDialog dialogAnnotation = type.getDeclaredAnnotation(FxDialog.class);
     FXMLLoader loader = loadDialogView(dialogAnnotation);
     T dialog = loader.getController();
     setDialogContent(dialog, loader.getRoot(), dialogAnnotation);
@@ -115,7 +115,7 @@ public class DialogProvider {
     if (initMethods == null) {
       initMethods = new ArrayList<>();
       for (Method method : type.getDeclaredMethods()) {
-        if (method.isAnnotationPresent(InitDialog.class)) initMethods.add(method);
+        if (method.isAnnotationPresent(FxDialogInit.class)) initMethods.add(method);
       }
       dialogInitCache.put(type, initMethods);
     }
@@ -137,7 +137,7 @@ public class DialogProvider {
     }
   }
 
-  private void setDialogContent(Dialog<?> dialog, Node root, FXDialog dialogAnnotation) {
+  private void setDialogContent(Dialog<?> dialog, Node root, FxDialog dialogAnnotation) {
     boolean expandable = dialogAnnotation.expandable();
     if (expandable) {
       dialog.getDialogPane().setExpandableContent(root);
@@ -147,12 +147,12 @@ public class DialogProvider {
     }
   }
 
-  private FXMLLoader loadDialogView(FXDialog dialogAnnotation) {
+  private FXMLLoader loadDialogView(FxDialog dialogAnnotation) {
 
     String filePath = dialogAnnotation.value();
 
     if (filePath.isEmpty()) {
-      throw new DialogException("@FXDialog should contain path to FXML file!");
+      throw new DialogException("@FxDialog should contain path to FXML file!");
     }
 
     FXMLLoader loader = new FXMLLoader(Util.getClasspathResourceURL(filePath), resourceBundleProvider.getResourceBundle());
