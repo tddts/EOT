@@ -21,5 +21,5 @@ Also requires [Tools Core](https://github.com/tddts/tools-core) dependency provi
 - Russian
 
 English is used by default.<br />
-Чтобы включить русский язык добавьте *-Duser.language=ru -Duser.country=RU* к параметрам запуска.
-Например: *java -jar JET-1.8.jar -Duser.language=ru -Duser.country=RU*
+Чтобы включить русский язык добавьте *\[-Duser.language=ru -Duser.country=RU]* к параметрам запуска.<br />
+Например: **java -jar JET-1.8.jar -Duser.language=ru -Duser.country=RU**
