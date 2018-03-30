@@ -4,6 +4,15 @@
 Desktop application that allows EVE Online player to search for profitable buy/sell orders in certain regions.
 Not intended for mass use, as it's getting less useful with each user due to it's nature.
 
+## Supported languages
+- English
+- Russian
+
+English is used by default.
+
+Чтобы включить русский язык добавьте *\[-Duser.language=ru -Duser.country=RU]* к параметрам запуска.<br />
+Например: **java -jar JET-1.8.jar -Duser.language=ru -Duser.country=RU**
+
 ## Tools used
 - JavaFX
 - Spring (Core, AOP, REST)
@@ -15,11 +24,3 @@ Not intended for mass use, as it's getting less useful with each user due to it'
 ## Build requirements
 Requires JDK 8 and Maven 3.2.5 or higher to build.
 Also requires [Tools Core](https://github.com/tddts/tools-core) dependency provided.
-
-## Supported languages
-- English
-- Russian
-
-English is used by default.<br />
-Чтобы включить русский язык добавьте *\[-Duser.language=ru -Duser.country=RU]* к параметрам запуска.<br />
-Например: **java -jar JET-1.8.jar -Duser.language=ru -Duser.country=RU**
