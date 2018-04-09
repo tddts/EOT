@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Tigran Dadaiants
+ * Copyright 2018 Tigran Dadaiants
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ public class FxViewProvider {
   private String file;
   private String title;
 
-  private int width = 1024;
+  private int width = 800;
   private int height = 600;
 
   @Autowired
