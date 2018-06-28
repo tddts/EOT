@@ -14,30 +14,26 @@
  * limitations under the License.
  */
 
-package com.github.tddts.jet.service.impl;
+package com.github.tddts.jet.config.spring.annotations;
 
-import com.github.tddts.jet.service.TaskService;
-import org.springframework.stereotype.Component;
+import com.github.tddts.jet.context.events.SearchStatusEvent;
 
-import javax.annotation.PreDestroy;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@Component
-public class TaskServiceImpl implements TaskService {
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SendSearchEvents {
 
-  private final ExecutorService executorService = Executors.newCachedThreadPool();
+  SearchStatusEvent before() default SearchStatusEvent.NONE;
 
-  @Override
-  public ExecutorService executor() {
-    return executorService;
-  }
+  SearchStatusEvent after() default SearchStatusEvent.NONE;
 
-  @PreDestroy
-  private void onDestroy() {
-    executorService.shutdown();
-  }
+  SearchStatusEvent onEmpty() default SearchStatusEvent.NONE;
+
 }

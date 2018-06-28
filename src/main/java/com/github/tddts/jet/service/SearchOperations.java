@@ -16,28 +16,38 @@
 
 package com.github.tddts.jet.service;
 
+import com.github.tddts.jet.model.app.OrderSearchRow;
 import com.github.tddts.jet.model.app.SearchParams;
+import com.github.tddts.jet.model.db.ResultOrder;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.List;
+import java.util.Map;
 
 /**
- * {@code SearchService} represents a service processing search of most profitable orders.
- *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public interface SearchService {
+public interface SearchOperations {
 
-  /**
-   * Find a list of most profitable orders.
-   * Result is supplied to consumer defined in {@link SearchParams} object.
-   *
-   * @param searchParams search parameters
-   */
-  long searchForOrders(SearchParams searchParams);
+  void setSearchParams(SearchParams params);
 
-  /**
-   * Stop current search process.
-   */
-  void stopSearch(long queueId);
+  void loadPrices();
 
+  void loadOrders();
 
+  void stopLoadingOrders();
+
+  void filterLoaded();
+
+  void consumeResult(List<OrderSearchRow> result);
+
+  void cleanUp();
+
+  List<ResultOrder> findProfitableOrders();
+
+  List<ResultOrder> filterResults(List<ResultOrder> searchResults);
+
+  Pair<List<ResultOrder>, Map<Integer, String>> extractTypeNames(List<ResultOrder> searchResults);
+
+  List<OrderSearchRow> searchForRoutes(Pair<List<ResultOrder>, Map<Integer, String>> searchPair);
 }

@@ -60,21 +60,20 @@ public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {
     Field[] fields = type.getDeclaredFields();
 
     for (Method method : methods) {
-      if (method.isAnnotationPresent(Message.class) && checkMethod(method, type)) {
-        processMethod(target, method);
-      }
+      if (checkMethod(method, type)) processMethod(target, method);
     }
 
     for (Field field : fields) {
-      if (field.isAnnotationPresent(Message.class) && checkField(field, type)) {
-        processField(target, field);
-      }
+      if (checkField(field, type)) processField(target, field);
     }
 
     return bean;
   }
 
   private boolean checkMethod(Method method, Class<?> type) {
+    if (!method.isAnnotationPresent(Message.class)) {
+      return false;
+    }
     if (method.getParameterCount() == 1 && method.getParameterTypes()[0].equals(String.class)) {
       return true;
     }
@@ -82,7 +81,11 @@ public class MessageAnnotationBeanPostProcessor implements BeanPostProcessor {
     return false;
   }
 
+
   private boolean checkField(Field field, Class<?> type) {
+    if (!field.isAnnotationPresent(Message.class)) {
+      return false;
+    }
     if (field.getType().equals(String.class)) {
       return true;
     }

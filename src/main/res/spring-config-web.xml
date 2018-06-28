@@ -6,9 +6,6 @@
     <bean id="gsonFactory" class="com.github.tddts.jet.config.spring.factory.GsonFactoryBean">
         <property name="deserializers">
             <map>
-                <entry key="com.github.tddts.jet.model.client.dotlan.DotlanRoute"
-                       value="com.github.tddts.jet.config.gson.DotlanRouteJsonDeserializer"/>
-
                 <entry key="java.time.LocalDateTime"
                        value="com.github.tddts.jet.config.gson.LocalDateTimeJsonDeserializer"/>
             </map>

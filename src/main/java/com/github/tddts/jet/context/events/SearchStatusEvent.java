@@ -30,7 +30,9 @@ public enum SearchStatusEvent {
   SEARCHING_FOR_PROFIT,
   SEARCHING_FOR_ROUTES,
   NO_ORDERS_FOUND,
-  FINISHED;
+  FINISHED,
+
+  NONE;
 
   public boolean isFinished() {
     return this == FINISHED || this == NO_ORDERS_FOUND;

@@ -23,6 +23,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
@@ -51,22 +52,32 @@ public class LoadContentAnnotationBeanPostProcessor implements BeanPostProcessor
         if (field.isAnnotationPresent(LoadContent.class) && String.class.equals(field.getType())) {
 
           field.setAccessible(true);
-          LoadContent annotation = field.getAnnotation(LoadContent.class);
+          String fileName = getFileName(target, field);
 
-          String fileName = annotation.value().isEmpty() ? (String) field.get(target) :
-                  annotation.property() ? applicationProperties.getProperty(annotation.value()) : annotation.value();
-
-          if (fileName != null && !fileName.isEmpty()) {
+          if (!StringUtils.isEmpty(fileName)) {
             field.set(target, Util.loadContent(fileName));
           }
         }
       }
-
     } catch (Exception e) {
       throw new BeanInitializationException(e.getMessage(), e);
     }
 
     return bean;
+  }
+
+  private String getFileName(Object target, Field field) throws IllegalAccessException {
+    LoadContent annotation = field.getAnnotation(LoadContent.class);
+
+    if (annotation.value().isEmpty()) {
+      return (String) field.get(target);
+    }
+
+    if (annotation.property()) {
+      return applicationProperties.getProperty(annotation.value());
+    } else {
+      return annotation.value();
+    }
   }
 
   @Override

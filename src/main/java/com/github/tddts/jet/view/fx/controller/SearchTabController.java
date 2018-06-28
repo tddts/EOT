@@ -29,7 +29,6 @@ import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
 import com.github.tddts.jet.model.app.OrderSearchRow;
 import com.github.tddts.jet.model.app.SearchParams;
 import com.github.tddts.jet.service.SearchService;
-import com.github.tddts.jet.service.TaskService;
 import com.github.tddts.jet.service.UserDataService;
 import com.github.tddts.jet.service.UserInterfaceService;
 import com.github.tddts.tools.fx.controls.DoubleTextField;
@@ -123,8 +122,6 @@ public class SearchTabController {
   private UserInterfaceService userInterfaceService;
   @Autowired
   private UserDataService userDataService;
-  @Autowired
-  private TaskService taskService;
 
   @PostConstruct
   public void init() {
@@ -189,29 +186,31 @@ public class SearchTabController {
   //--------------------------------------------------------------------------------------------------------------------
 
   private void search() {
-    if (validateInput()) return;
+    if (validateInput())
+      searchService.searchForOrders(createSearchParams());
+  }
 
-    SearchParams searchParams = new SearchParams();
-    searchParams
+  private SearchParams createSearchParams() {
+    return new SearchParams()
         .setIsk(iskField.getValue())
         .setCargo(cargoField.getValue())
         .setTax(taxField.getValue())
         .setRouteOption(routeOptionBox.getValue())
         .setSecurityLevel(minSecurityBox.getValue())
         .setRegions(getRegions())
-        .setResultConsumer((results) -> Platform.runLater(() -> fillSearchTable(results)));
-
-    taskService.executor().execute(() -> searchService.searchForOrders(searchParams));
+        .setResultConsumer(this::fillSearchTable);
   }
 
   private void fillSearchTable(List<OrderSearchRow> resultList) {
-    searchTable.getItems().clear();
-    searchTable.getItems().addAll(resultList);
+    Platform.runLater(() -> {
+      searchTable.getItems().clear();
+      searchTable.getItems().addAll(resultList);
+    });
   }
 
   private boolean validateInput() {
     //TODO: light up the input fields
-    return iskField.getValue() == 0 || cargoField.getValue() == 0;
+    return !(iskField.getValue() == 0 || cargoField.getValue() == 0);
 
   }
 
