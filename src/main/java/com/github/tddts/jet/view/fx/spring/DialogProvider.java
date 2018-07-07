@@ -24,7 +24,9 @@ import com.github.tddts.jet.view.fx.exception.DialogException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Dialog;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -98,13 +100,42 @@ public class DialogProvider {
     }
 
     FxDialog dialogAnnotation = type.getDeclaredAnnotation(FxDialog.class);
+    T dialog = getDialog(type, dialogAnnotation);
+
+    fxBeanWirer.initBean(dialog);
+    dialogCache.put(type, dialog);
+
+    return dialog;
+  }
+
+  private <T extends Dialog<?>> T getDialog(Class<T> type, FxDialog dialogAnnotation) {
+    if (dialogHasContent(dialogAnnotation))
+      return getDialogWithContent(dialogAnnotation);
+    else
+      return getDialogWithoutContent(type);
+  }
+
+  private boolean dialogHasContent(FxDialog dialogAnnotation) {
+    return !dialogAnnotation.value().equals(StringUtils.EMPTY);
+  }
+
+  private <T extends Dialog<?>> T getDialogWithoutContent(Class<T> type) {
+    if (!ClassUtils.hasConstructor(type)) {
+      throw new DialogException("Dialog constructor should not have any parameters!");
+    }
+
+    try {
+      return type.newInstance();
+    } catch (InstantiationException | IllegalAccessException e) {
+      throw new DialogException(e.getMessage(), e);
+    }
+  }
+
+  private <T extends Dialog<?>> T getDialogWithContent(FxDialog dialogAnnotation) {
     FXMLLoader loader = loadDialogView(dialogAnnotation);
     T dialog = loader.getController();
     setDialogContent(dialog, loader.getRoot(), dialogAnnotation);
-    fxBeanWirer.initBean(dialog);
-    dialogCache.put(type, dialog);
     return dialog;
-
   }
 
   private void processInitMethods(Class<?> type, Dialog<?> dialog, Object[] args) {
@@ -126,8 +157,7 @@ public class DialogProvider {
         method.setAccessible(true);
         if (method.getParameterCount() == 0) {
           method.invoke(dialog, EMPTY_ARGS);
-        }
-        else {
+        } else {
           method.invoke(dialog, args);
         }
       }
@@ -141,8 +171,7 @@ public class DialogProvider {
     boolean expandable = dialogAnnotation.expandable();
     if (expandable) {
       dialog.getDialogPane().setExpandableContent(root);
-    }
-    else {
+    } else {
       dialog.getDialogPane().setContent(root);
     }
   }

@@ -63,7 +63,6 @@ import static com.github.tddts.jet.context.events.SearchStatusEvent.*;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
-@Scope("prototype")
 public class SearchOperationsImpl implements SearchOperations {
 
   @Autowired

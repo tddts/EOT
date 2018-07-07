@@ -16,6 +16,8 @@
 
 package com.github.tddts.jet.view.fx.annotations;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -35,7 +37,7 @@ public @interface FxDialog {
   /**
    * Path to FXML file.
    */
-  String value();
+  String value() default "";
 
   /**
    * Determines if loaded JavaFX nodes will be put under "expandable content" of dialog pane or not.

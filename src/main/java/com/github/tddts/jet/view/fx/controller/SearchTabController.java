@@ -21,10 +21,13 @@ import com.github.tddts.jet.consts.RouteOption;
 import com.github.tddts.jet.consts.SecurityLevel;
 import com.github.tddts.jet.context.events.AuthorizationEvent;
 import com.github.tddts.jet.context.events.UserDataEvent;
+import com.github.tddts.jet.exception.SearchRunningException;
 import com.github.tddts.jet.view.fx.annotations.FxController;
+import com.github.tddts.jet.view.fx.dialog.SearchCancelConfirmationDialog;
 import com.github.tddts.jet.view.fx.misc.choice.SecurityColorChangeListener;
 import com.github.tddts.jet.view.fx.misc.table.SecurityColorTableCellFactory;
 import com.github.tddts.jet.view.fx.misc.table.NumberFormatTableCellFactory;
+import com.github.tddts.jet.view.fx.spring.DialogProvider;
 import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
 import com.github.tddts.jet.model.app.OrderSearchRow;
 import com.github.tddts.jet.model.app.SearchParams;
@@ -44,6 +47,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -122,6 +126,8 @@ public class SearchTabController {
   private UserInterfaceService userInterfaceService;
   @Autowired
   private UserDataService userDataService;
+  @Autowired
+  private DialogProvider dialogProvider;
 
   @PostConstruct
   public void init() {
@@ -161,7 +167,7 @@ public class SearchTabController {
   }
 
   private void initButtons() {
-    searchButton.setOnAction(event -> search());
+    searchButton.setOnAction(event -> searchAction());
     regionSelectionButton.setOnAction(event -> addRegion());
     clearRegionsButton.setOnAction(event -> clearRegions());
 
@@ -185,20 +191,36 @@ public class SearchTabController {
 
   //--------------------------------------------------------------------------------------------------------------------
 
-  private void search() {
+  private void searchAction() {
     if (validateInput())
+      doSearch();
+  }
+
+  private void doSearch() {
+    try {
       searchService.searchForOrders(createSearchParams());
+    } catch (SearchRunningException e) {
+      processSearchRunningException();
+    }
+  }
+
+  private void processSearchRunningException() {
+    SearchCancelConfirmationDialog dialog = dialogProvider.getDialog(SearchCancelConfirmationDialog.class);
+    Optional<ButtonType> result = dialog.showAndWait();
+
+    if (result.isPresent() && result.get() == ButtonType.OK)
+      searchService.stopSearch();
   }
 
   private SearchParams createSearchParams() {
     return new SearchParams()
-        .setIsk(iskField.getValue())
-        .setCargo(cargoField.getValue())
-        .setTax(taxField.getValue())
-        .setRouteOption(routeOptionBox.getValue())
-        .setSecurityLevel(minSecurityBox.getValue())
-        .setRegions(getRegions())
-        .setResultConsumer(this::fillSearchTable);
+            .setIsk(iskField.getValue())
+            .setCargo(cargoField.getValue())
+            .setTax(taxField.getValue())
+            .setRouteOption(routeOptionBox.getValue())
+            .setSecurityLevel(minSecurityBox.getValue())
+            .setRegions(getRegions())
+            .setResultConsumer(this::fillSearchTable);
   }
 
   private void fillSearchTable(List<OrderSearchRow> resultList) {

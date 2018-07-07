@@ -17,17 +17,17 @@
 package com.github.tddts.jet.service.impl;
 
 import com.github.tddts.jet.config.spring.annotations.Profiling;
+import com.github.tddts.jet.exception.SearchRunningException;
 import com.github.tddts.jet.model.app.SearchParams;
 import com.github.tddts.jet.service.SearchService;
 import com.github.tddts.jet.service.SearchOperations;
 import com.github.tddts.tools.core.task.TaskChain;
 import com.github.tddts.tools.core.task.impl.ReusableTaskChain;
-import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
@@ -38,57 +38,52 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class SearchServiceImpl implements SearchService {
 
-  private final AtomicLong idCounter = new AtomicLong(Long.MIN_VALUE);
-  private final Map<Long, TaskChain<?>> taskChainMap = new ConcurrentHashMap<>();
+  private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-  private final ExecutorService executorService = Executors.newCachedThreadPool();
+  @Autowired
+  private SearchOperations searchOperations;
+  private TaskChain<?> searchChain;
+
+  @PostConstruct
+  private void init(){
+    searchChain = new ReusableTaskChain<>()
+            .perform(searchOperations::loadPrices)
+            .perform(searchOperations::loadOrders)
+            .onStop(searchOperations::stopLoadingOrders)
+            .perform(searchOperations::filterLoaded)
+            .supply(searchOperations::findProfitableOrders)
+            .process(searchOperations::filterResults)
+            .process(searchOperations::extractTypeNames)
+            .process(searchOperations::searchForRoutes)
+            .consume(searchOperations::consumeResult)
+            .finallyAction(searchOperations::cleanUp);
+  }
 
   @Override
   @Profiling
-  public long searchForOrders(SearchParams searchParams) {
-    TaskChain<?> operationsChain = createTaskChain(getOperations(), searchParams);
-    executorService.execute(operationsChain::execute);
-    return saveAndGetChainId(operationsChain);
+  public void searchForOrders(SearchParams searchParams) throws SearchRunningException {
+    checkSearchRunning();
+    launchSearch(searchParams);
   }
 
-  private long saveAndGetChainId(TaskChain<?> operationsChain) {
-    Long chainId = idCounter.incrementAndGet();
-    taskChainMap.put(chainId, operationsChain);
-    return chainId;
+  private void checkSearchRunning() {
+    if (searchChain.isRunning())
+      throw new SearchRunningException("Search is in progress!");
   }
 
-  private TaskChain<?> createTaskChain(SearchOperations operations, SearchParams params) {
-    operations.setSearchParams(params);
-    return new ReusableTaskChain<>()
-        .perform(operations::loadPrices)
-        .perform(operations::loadOrders)
-        .onStop(operations::stopLoadingOrders)
-        .perform(operations::filterLoaded)
-        .supply(operations::findProfitableOrders)
-        .process(operations::filterResults)
-        .process(operations::extractTypeNames)
-        .process(operations::searchForRoutes)
-        .consume(operations::consumeResult)
-        .finallyAction(operations::cleanUp);
+  private void launchSearch(SearchParams searchParams){
+    searchOperations.setSearchParams(searchParams);
+    executorService.execute(searchChain::execute);
   }
 
   @Override
-  public void stopSearch(long chainId) {
-    TaskChain<?> taskChain = taskChainMap.get(chainId);
-    if (taskChain != null) {
-      taskChain.stop();
-      taskChainMap.remove(chainId);
-    }
+  public void stopSearch() {
+    searchChain.stop();
   }
 
   @PreDestroy
   private void onDestroy() {
     executorService.shutdown();
-  }
-
-  @Lookup
-  public SearchOperations getOperations() {
-    return null;
   }
 
 

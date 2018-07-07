@@ -16,6 +16,7 @@
 
 package com.github.tddts.jet.service;
 
+import com.github.tddts.jet.exception.SearchRunningException;
 import com.github.tddts.jet.model.app.SearchParams;
 
 
@@ -31,13 +32,14 @@ public interface SearchService {
    * Result is supplied to consumer defined in {@link SearchParams} object.
    *
    * @param searchParams search parameters
+   * @throws SearchRunningException if search is currently running.
    */
-  long searchForOrders(SearchParams searchParams);
+  void searchForOrders(SearchParams searchParams) throws SearchRunningException;
 
   /**
    * Stop current search process.
    */
-  void stopSearch(long queueId);
+  void stopSearch();
 
 
 }
