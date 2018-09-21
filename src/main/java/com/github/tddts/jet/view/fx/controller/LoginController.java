@@ -114,15 +114,17 @@ public class LoginController {
   @Subscribe
   private void processAuthorizationEvent(AuthorizationEvent authorizationEvent) {
     Platform.runLater(() -> {
-
-      if (authorizationEvent.isAuthorized()) {
-        setHeader(messageAuthorized, CSS_HEADER_AUTHORIZED, CSS_STATUS_AUTHORIZED, false);
-      }
-
-      if (authorizationEvent.isExpired()) {
-        setHeader(messageUnauthorized, CSS_HEADER_UNAUTHORIZED, CSS_STATUS_UNAUTHORIZED, true);
-      }
+      if (authorizationEvent.isAuthorized()) showAuthorized();
+      if (authorizationEvent.isExpired()) showUnauthorized();
     });
+  }
+
+  private void showAuthorized(){
+    setHeader(messageAuthorized, CSS_HEADER_AUTHORIZED, CSS_STATUS_AUTHORIZED, false);
+  }
+
+  private void showUnauthorized(){
+    setHeader(messageUnauthorized, CSS_HEADER_UNAUTHORIZED, CSS_STATUS_UNAUTHORIZED, true);
   }
 
   private void setHeader(String message, String headerClass, String statusTextClass, boolean showLoginOptions) {
