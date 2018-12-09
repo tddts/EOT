@@ -16,8 +16,8 @@
 
 package com.github.tddts.jet.view.fx.dialog;
 
-import com.github.tddts.jet.config.spring.annotations.Message;
-import com.github.tddts.jet.view.fx.annotations.FxDialog;
+import com.github.tddts.sprix.annotations.Message;
+import com.github.tddts.sprix.annotations.SprixDialog;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,7 +29,7 @@ import javax.annotation.PostConstruct;
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FxDialog("fxml/dialog-devc.fxml")
+@SprixDialog("fxml/dialog-devc.fxml")
 public class DevCredentialsDialog extends Dialog<Pair<String, String>> {
 
   @FXML

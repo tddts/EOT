@@ -17,8 +17,8 @@
 package com.github.tddts.jet.view.fx.controller;
 
 import com.github.tddts.jet.context.events.SearchStatusEvent;
-import com.github.tddts.jet.view.fx.annotations.FxController;
 import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
+import com.github.tddts.sprix.annotations.SprixController;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -32,7 +32,7 @@ import javax.annotation.PostConstruct;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FxController("fxml/main.fxml")
+@SprixController
 public class MainController {
 
   @FXML

@@ -22,18 +22,18 @@ import com.github.tddts.jet.consts.SecurityLevel;
 import com.github.tddts.jet.context.events.AuthorizationEvent;
 import com.github.tddts.jet.context.events.UserDataEvent;
 import com.github.tddts.jet.exception.SearchRunningException;
-import com.github.tddts.jet.view.fx.annotations.FxController;
 import com.github.tddts.jet.view.fx.dialog.SearchCancelConfirmationDialog;
 import com.github.tddts.jet.view.fx.misc.choice.SecurityColorChangeListener;
 import com.github.tddts.jet.view.fx.misc.table.SecurityColorTableCellFactory;
 import com.github.tddts.jet.view.fx.misc.table.NumberFormatTableCellFactory;
-import com.github.tddts.jet.view.fx.spring.DialogProvider;
 import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
 import com.github.tddts.jet.model.app.OrderSearchRow;
 import com.github.tddts.jet.model.app.SearchParams;
 import com.github.tddts.jet.service.SearchService;
 import com.github.tddts.jet.service.UserDataService;
 import com.github.tddts.jet.service.UserInterfaceService;
+import com.github.tddts.sprix.annotations.SprixController;
+import com.github.tddts.sprix.beans.SprixDialogProvider;
 import com.github.tddts.tools.fx.controls.DoubleTextField;
 import com.github.tddts.tools.fx.controls.ItemListTextField;
 import com.github.tddts.tools.fx.controls.PercentageTextField;
@@ -55,7 +55,7 @@ import java.util.function.Consumer;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FxController("fxml/tab_search.fxml")
+@SprixController
 public class SearchTabController {
 
   @FXML
@@ -127,7 +127,7 @@ public class SearchTabController {
   @Autowired
   private UserDataService userDataService;
   @Autowired
-  private DialogProvider dialogProvider;
+  private SprixDialogProvider dialogProvider;
 
   @PostConstruct
   public void init() {

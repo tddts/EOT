@@ -16,11 +16,11 @@
 
 package com.github.tddts.jet.oauth.impl;
 
-import com.github.tddts.jet.config.spring.annotations.LoadContent;
-import com.github.tddts.jet.config.spring.annotations.Message;
 import com.github.tddts.jet.oauth.EmbeddedServer;
 import com.github.tddts.jet.oauth.server.DefaultAuthHandler;
 import com.github.tddts.jet.service.AuthService;
+import com.github.tddts.sprix.annotations.LoadContent;
+import com.github.tddts.sprix.annotations.Message;
 import com.github.tddts.tools.web.oauth.handler.AuthHandler;
 import com.github.tddts.tools.web.oauth.handler.impl.CallbackRequestHandler;
 import com.github.tddts.tools.web.oauth.handler.impl.SimpleAuthHandlerCallback;

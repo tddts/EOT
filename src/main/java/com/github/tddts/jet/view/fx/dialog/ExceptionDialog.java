@@ -16,9 +16,8 @@
 
 package com.github.tddts.jet.view.fx.dialog;
 
-import com.github.tddts.jet.config.spring.annotations.Message;
-import com.github.tddts.jet.view.fx.annotations.FxDialog;
-import com.github.tddts.jet.view.fx.annotations.FxDialogInit;
+import com.github.tddts.sprix.annotations.Message;
+import com.github.tddts.sprix.annotations.SprixDialog;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
@@ -31,7 +30,7 @@ import java.io.StringWriter;
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FxDialog(value = "fxml/dialog-exception.fxml", expandable = true)
+@SprixDialog(value = "fxml/dialog-exception.fxml", expandable = true)
 public class ExceptionDialog extends Alert {
 
   @FXML
@@ -46,8 +45,7 @@ public class ExceptionDialog extends Alert {
     super(AlertType.ERROR);
   }
 
-  @FxDialogInit
-  private void init(Throwable ex) {
+  public void setThrowable(Throwable ex) {
     setTitle(title);
     setHeaderText(headerText);
     setContentText(ex.getLocalizedMessage());

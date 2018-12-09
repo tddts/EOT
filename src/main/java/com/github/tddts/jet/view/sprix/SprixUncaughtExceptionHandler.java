@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package com.github.tddts.jet.view.fx.spring;
+package com.github.tddts.jet.view.sprix;
 
 import com.github.tddts.jet.view.fx.dialog.ExceptionDialog;
+import com.github.tddts.sprix.beans.SprixDialogProvider;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * {@code FxUncaughtExceptionHandler} is a simple implementation of {@link Thread.UncaughtExceptionHandler}
+ * {@code SprixUncaughtExceptionHandler} is a simple implementation of {@link Thread.UncaughtExceptionHandler}
  * that shows dialog with error message.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-public class FxUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+public class SprixUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
   private final Logger logger = LogManager.getLogger(Thread.UncaughtExceptionHandler.class);
 
-  private DialogProvider dialogProvider;
+  private SprixDialogProvider dialogProvider;
 
-  public FxUncaughtExceptionHandler(DialogProvider dialogProvider) {
+  public SprixUncaughtExceptionHandler(SprixDialogProvider dialogProvider) {
     this.dialogProvider = dialogProvider;
   }
 
@@ -41,8 +42,11 @@ public class FxUncaughtExceptionHandler implements Thread.UncaughtExceptionHandl
   public void uncaughtException(Thread t, Throwable e) {
     logger.error(e.getMessage(), e);
     Platform.runLater(() -> {
-      ExceptionDialog exceptionDialog = dialogProvider.getDialog(ExceptionDialog.class, e);
-      if (!exceptionDialog.isShowing()) exceptionDialog.showAndWait();
+      ExceptionDialog exceptionDialog = dialogProvider.getDialog(ExceptionDialog.class);
+      if (!exceptionDialog.isShowing()){
+        exceptionDialog.setThrowable(e);
+        exceptionDialog.showAndWait();
+      }
     });
   }
 }

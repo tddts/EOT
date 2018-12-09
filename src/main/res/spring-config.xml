@@ -3,11 +3,13 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:sprix="http://www.github.com/tddts/sprix"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+        http://www.github.com/tddts/sprix http://www.github.com/tddts/sprix/sprix.xsd">
 
     <!-- Basic configurations -->
     <aop:aspectj-autoproxy/>
@@ -24,15 +26,29 @@
     <!-- Imports -->
     <import resource="spring-config-db.xml"/>
     <import resource="spring-config-web.xml"/>
-    <import resource="spring-config-fx.xml"/>
+
+    <sprix:view
+            file="fxml/main.fxml"
+            starterClass="com.github.tddts.jet.view.sprix.SprixApplicationStarter"
+            messageSource="messageSource"
+            width="1024"
+            height="600"
+            title="EVE Trader"/>
 
     <!-- Bean postprocessors -->
+    <bean id="messageAnnotationPostProcessor"
+          class="com.github.tddts.sprix.postprocessor.MessageAnnotationBeanPostProcessor">
+        <property name="messageSource" ref="messageSource"/>
+    </bean>
+
+    <bean id="loadContentAnnotationPostProcessor"
+          class="com.github.tddts.sprix.postprocessor.LoadContentAnnotationBeanPostProcessor">
+        <property name="properties" ref="applicationProperties"/>
+    </bean>
+
+
     <bean id="eventBusPostProcessor"
           class="com.github.tddts.jet.config.spring.postprocessor.EventBusBeanPostProcessor"/>
-    <bean id="messageAnnotationPostProcessor"
-          class="com.github.tddts.jet.config.spring.postprocessor.MessageAnnotationBeanPostProcessor"/>
-    <bean id="loadContentAnnotationPostProcessor"
-          class="com.github.tddts.jet.config.spring.postprocessor.LoadContentAnnotationBeanPostProcessor"/>
 
     <!-- Message source -->
     <bean id="messageSource"

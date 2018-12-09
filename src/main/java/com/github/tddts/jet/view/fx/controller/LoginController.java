@@ -16,17 +16,17 @@
 
 package com.github.tddts.jet.view.fx.controller;
 
-import com.github.tddts.jet.config.spring.annotations.Message;
 import com.github.tddts.jet.consts.AuthorizationType;
 import com.github.tddts.jet.consts.RestDataSource;
 import com.github.tddts.jet.context.events.AuthorizationEvent;
 import com.github.tddts.jet.service.LoginService;
 import com.github.tddts.jet.service.UserDataService;
-import com.github.tddts.jet.view.fx.annotations.FxController;
 import com.github.tddts.jet.view.fx.dialog.DevCredentialsDialog;
-import com.github.tddts.jet.view.fx.spring.DialogProvider;
 import com.github.tddts.jet.view.fx.tools.message.MessageProvider;
 import com.github.tddts.jet.util.ViewUtil;
+import com.github.tddts.sprix.annotations.Message;
+import com.github.tddts.sprix.annotations.SprixController;
+import com.github.tddts.sprix.beans.SprixDialogProvider;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -43,7 +43,7 @@ import java.util.Optional;
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@FxController("fxml/header.fxml")
+@SprixController
 public class LoginController {
 
   private static final String CSS_HEADER_AUTHORIZED = "header-authorized";
@@ -76,7 +76,7 @@ public class LoginController {
   @Autowired
   private UserDataService userDataService;
   @Autowired
-  private DialogProvider dialogProvider;
+  private SprixDialogProvider dialogProvider;
 
   @PostConstruct
   private void init() {

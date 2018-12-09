@@ -16,10 +16,10 @@
 
 package com.github.tddts.jet.dao.impl;
 
-import com.github.tddts.jet.config.spring.annotations.LoadContent;
 import com.github.tddts.jet.dao.OrderDao;
 import com.github.tddts.jet.model.db.CachedOrder;
 import com.github.tddts.jet.model.db.ResultOrder;
+import com.github.tddts.sprix.annotations.LoadContent;
 import io.ebean.*;
 import io.ebean.annotation.PersistBatch;
 import io.ebean.annotation.Transactional;

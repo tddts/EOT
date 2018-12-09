@@ -16,7 +16,6 @@
 
 package com.github.tddts.jet;
 
-import com.github.tddts.jet.config.spring.beans.ApplicationStarterBean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.env.CommandLinePropertySource;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
@@ -26,7 +25,6 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * Launches whole application by initializing Spring context.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
- * @see ApplicationStarterBean
  */
 public class App {
 
