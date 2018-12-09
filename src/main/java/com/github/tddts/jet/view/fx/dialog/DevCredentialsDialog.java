@@ -29,7 +29,7 @@ import javax.annotation.PostConstruct;
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@SprixDialog("fxml/dialog-devc.fxml")
+@SprixDialog(value = "fxml/dialog-devc.fxml", cached = true)
 public class DevCredentialsDialog extends Dialog<Pair<String, String>> {
 
   @FXML

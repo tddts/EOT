@@ -30,7 +30,7 @@ import java.io.StringWriter;
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
-@SprixDialog(value = "fxml/dialog-exception.fxml", expandable = true)
+@SprixDialog(value = "fxml/dialog-exception.fxml", expandable = true, cached = true)
 public class ExceptionDialog extends Alert {
 
   @FXML
@@ -43,6 +43,8 @@ public class ExceptionDialog extends Alert {
 
   public ExceptionDialog() {
     super(AlertType.ERROR);
+    getDialogPane().setPrefHeight(300);
+    getDialogPane().setPrefWidth(300);
   }
 
   public void setThrowable(Throwable ex) {

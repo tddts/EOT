@@ -7,7 +7,7 @@ import javafx.scene.control.Alert;
 import javax.annotation.PostConstruct;
 
 
-@SprixDialog()
+@SprixDialog(cached = true)
 public class SearchCancelConfirmationDialog extends Alert {
 
   @Message("dialog.search.cancel.header")
