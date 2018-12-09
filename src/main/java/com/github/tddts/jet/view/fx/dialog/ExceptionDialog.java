@@ -43,8 +43,6 @@ public class ExceptionDialog extends Alert {
 
   public ExceptionDialog() {
     super(AlertType.ERROR);
-    getDialogPane().setPrefHeight(300);
-    getDialogPane().setPrefWidth(300);
   }
 
   public void setThrowable(Throwable ex) {
