@@ -50,6 +50,7 @@ public class LoginServiceImpl implements LoginService {
     AuthorizationType authType = userBean.getAuthorizationType();
 
     server.start();
+    registerShutdownHook(server);
 
     if (authType.isImplicit()) {
       loginUriConsumer.accept(authService.getLoginPageURI());
@@ -65,6 +66,10 @@ public class LoginServiceImpl implements LoginService {
       });
 
     }
+  }
+
+  private void registerShutdownHook(EmbeddedServer server){
+    Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
   }
 
   @Override
