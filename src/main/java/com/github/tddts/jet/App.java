@@ -28,11 +28,12 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  */
 public class App {
 
+  private static final String CONFIG_LOCATION = "spring-config.xml";
+
   public static void main(String[] args) throws Exception {
     CommandLinePropertySource commandLinePropertySource = new SimpleCommandLinePropertySource(args);
-    ClassPathXmlApplicationContext springContext = new ClassPathXmlApplicationContext();
+    ClassPathXmlApplicationContext springContext = new ClassPathXmlApplicationContext(CONFIG_LOCATION);
     springContext.getEnvironment().getPropertySources().addFirst(commandLinePropertySource);
-    springContext.setConfigLocation("spring-config.xml");
-    springContext.refresh();
+    springContext.start();
   }
 }
