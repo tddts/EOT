@@ -23,4 +23,4 @@ English is used by default.
 
 ## Build requirements
 Requires JDK 8 and Maven 3.2.5 or higher to build.
-Also requires [Tools Core](https://github.com/tddts/tools-core) dependency provided.
+Also requires [Tools Core](https://github.com/tddts/tools-core) and [Sprix](https://github.com/tddts/sprix) dependencies provided.
