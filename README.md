@@ -1,5 +1,5 @@
-# JET
-"Java EVE Online Trader"
+# EOT
+"EVE Online Trader"
 
 Desktop application that allows EVE Online player to search for profitable buy/sell orders in certain regions.
 Not intended for mass use, as it's getting less useful with each user due to it's nature.
