@@ -28,8 +28,8 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="packages">
             <list>
-                <value>com.github.tddts.jet.model.db</value>
-                <value>com.github.tddts.jet.config.ebean</value>
+                <value>com.github.tddts.evetrader.model.db</value>
+                <value>com.github.tddts.evetrader.config.ebean</value>
             </list>
         </property>
         <property name="ddlGenerate" value="true"/>
@@ -37,7 +37,7 @@
         <property name="ddlSeedSql" value="sql/startup.sql"/>
     </bean>
 
-    <bean id="ebeanServerFactory" class="com.github.tddts.jet.config.ebean.EbeanServerFactoryBean">
+    <bean id="ebeanServerFactory" class="com.github.tddts.evetrader.config.ebean.EbeanServerFactoryBean">
         <property name="serverConfig" ref="ebeanServerConfig"/>
     </bean>
 

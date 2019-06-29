@@ -17,7 +17,7 @@
             <Appender-ref ref="Console"/>
             <Appender-ref ref="LogFile"/>
         </Logger>
-        <Logger name="com.github.tddts.jet" level="ALL" additivity="false">
+        <Logger name="com.github.tddts.evetrader" level="ALL" additivity="false">
             <Appender-ref ref="Console"/>
             <Appender-ref ref="LogFile"/>
         </Logger>

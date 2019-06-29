@@ -3,11 +3,11 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <bean id="gsonFactory" class="com.github.tddts.jet.config.spring.factory.GsonFactoryBean">
+    <bean id="gsonFactory" class="com.github.tddts.evetrader.config.spring.factory.GsonFactoryBean">
         <property name="deserializers">
             <map>
                 <entry key="java.time.LocalDateTime"
-                       value="com.github.tddts.jet.config.gson.LocalDateTimeJsonDeserializer"/>
+                       value="com.github.tddts.evetrader.config.gson.LocalDateTimeJsonDeserializer"/>
             </map>
         </property>
     </bean>

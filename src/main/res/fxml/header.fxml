@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@css/header.css" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tddts.jet.view.fx.controller.LoginController">
+<VBox stylesheets="@css/header.css" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tddts.evetrader.view.fx.controller.LoginController">
     <HBox fx:id="headerHbox" alignment="CENTER_LEFT" spacing="5.0" styleClass="header-unauthorized" xmlns="http://javafx.com/fxml" xmlns:fx="http://javafx.com/fxml/1">
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

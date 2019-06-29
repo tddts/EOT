@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9" fx:controller="com.github.tddts.jet.view.fx.controller.SearchTabController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9" fx:controller="com.github.tddts.evetrader.view.fx.controller.SearchTabController">
     <top>
         <VBox maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="5.0">

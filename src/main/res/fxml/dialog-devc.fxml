@@ -25,7 +25,7 @@
   -->
 
 <GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="300.0" xmlns:fx="http://javafx.com/fxml"
-fx:controller="com.github.tddts.jet.view.fx.dialog.DevCredentialsDialog">
+fx:controller="com.github.tddts.evetrader.view.fx.dialog.DevCredentialsDialog">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>

@@ -14,7 +14,7 @@
     <!-- Basic configurations -->
     <aop:aspectj-autoproxy/>
 
-    <context:component-scan base-package="com.github.tddts.jet.*"/>
+    <context:component-scan base-package="com.github.tddts.evetrader.*"/>
 
     <util:properties id="applicationProperties"
                      location="classpath:application.properties,
@@ -29,7 +29,7 @@
 
     <sprix:view
             file="fxml/main.fxml"
-            starterClass="com.github.tddts.jet.view.sprix.SprixApplicationStarter"
+            starterClass="com.github.tddts.evetrader.view.sprix.SprixApplicationStarter"
             messageSource="messageSource"
             width="1024"
             height="600"
@@ -48,7 +48,7 @@
 
 
     <bean id="eventBusPostProcessor"
-          class="com.github.tddts.jet.config.spring.postprocessor.EventBusBeanPostProcessor"/>
+          class="com.github.tddts.evetrader.config.spring.postprocessor.EventBusBeanPostProcessor"/>
 
     <!-- Message source -->
     <bean id="messageSource"
