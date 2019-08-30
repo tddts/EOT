@@ -22,5 +22,10 @@ English is used by default.
 - H2 DB
 
 ## Build requirements
-Requires JDK 8 and Maven 3.2.5 or higher to build.
-Also requires [Tools Core](https://github.com/tddts/tools-core) and [Sprix](https://github.com/tddts/sprix) dependencies provided.
+# For Java 11 version
+JDK 11 or higher;
+[tools](https://github.com/tddts/tools) dependency version 2.0;
+[sprix](https://github.com/tddts/sprix) dependency version 11.0;
+
+## Download
+[Java 11 version](https://github.com/tddts/EveTrader/raw/11/bin/eve-trader-11.0.jar)
