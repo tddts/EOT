@@ -5,7 +5,6 @@
 hs_err_pid*
 
 # generated files
-bin/
 gen/
 build/
 out/

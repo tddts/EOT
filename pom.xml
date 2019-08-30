@@ -4,16 +4,16 @@
 
     <groupId>com.github.tddts</groupId>
     <artifactId>eve-trader</artifactId>
-    <version>1.9.1</version>
+    <version>11.0</version>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
 
@@ -100,13 +100,13 @@
         <dependency>
             <groupId>com.github.tddts</groupId>
             <artifactId>tools</artifactId>
-            <version>1.8.3</version>
+            <version>2.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.tddts</groupId>
             <artifactId>sprix</artifactId>
-            <version>1.0</version>
+            <version>11.0</version>
         </dependency>
 
         <dependency>
