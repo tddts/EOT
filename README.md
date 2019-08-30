@@ -21,8 +21,7 @@ English is used by default.
 - Ebean ORM
 - H2 DB
 
-## Build requirements
-# For Java 11 version
+## Build requirements for Java 11 version
 JDK 11 or higher;
 [tools](https://github.com/tddts/tools) dependency version 2.0;
 [sprix](https://github.com/tddts/sprix) dependency version 11.0;
