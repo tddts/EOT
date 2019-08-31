@@ -24,5 +24,5 @@ English is used by default.
 ## Build requirements
 - JDK 8.
 - Maven version 3.2.5 or higher.
-- [tools library version 2.0](https://github.com/tddts/tools-core).
-- [sprix library version 8.0](https://github.com/tddts/sprix).
+- [tools](https://github.com/tddts/tools-core) library version 2.0.
+- [sprix](https://github.com/tddts/sprix) library version 8.0.
