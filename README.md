@@ -22,5 +22,7 @@ English is used by default.
 - H2 DB
 
 ## Build requirements
-Requires JDK 8 and Maven 3.2.5 or higher to build.
-Also requires [Tools Core](https://github.com/tddts/tools-core) and [Sprix](https://github.com/tddts/sprix) dependencies provided.
+- JDK 8.
+- Maven version 3.2.5 or higher.
+- [tools](https://github.com/tddts/tools-core) library version 2.0.
+- [sprix](https://github.com/tddts/sprix) library version 8.0.
