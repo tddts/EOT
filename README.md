@@ -24,8 +24,8 @@ English is used by default.
 ## Build requirements for Java 11 version
 - JDK 11 or higher
 - Maven version 3.2.5 or higher.
-- [tools](https://github.com/tddts/tools) dependency version 2.0
-- [sprix](https://github.com/tddts/sprix) dependency version 11.0
+- [tools](https://github.com/tddts/tools) library version 2.0
+- [sprix](https://github.com/tddts/sprix) library version 11.0
 
 ## Download
 [Java 11 version](https://github.com/tddts/EveTrader/raw/11/bin/eve-trader-11.0.jar). Linux Only. Requires openjdk-11-jre package.
