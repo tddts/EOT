@@ -28,4 +28,4 @@ English is used by default.
 - [sprix](https://github.com/tddts/sprix) library version 8.0.
 
 ## Download
-[Java 8 version](https://github.com/tddts/EveTrader/raw/master/bin/eve-trader-8.0.jar). Requires JRE 8 or above.
+[Java 8 version](https://github.com/tddts/EveTrader/raw/master/bin/eve-trader-8.0.jar). Multiplatform. Requires JRE 8 or above.
