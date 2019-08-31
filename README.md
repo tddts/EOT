@@ -23,6 +23,7 @@ English is used by default.
 
 ## Build requirements for Java 11 version
 - JDK 11 or higher
+- Maven version 3.2.5 or higher.
 - [tools](https://github.com/tddts/tools) dependency version 2.0
 - [sprix](https://github.com/tddts/sprix) dependency version 11.0
 
