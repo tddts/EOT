@@ -22,9 +22,9 @@ English is used by default.
 - H2 DB
 
 ## Build requirements for Java 11 version
-JDK 11 or higher;  
-[tools](https://github.com/tddts/tools) dependency version 2.0;  
-[sprix](https://github.com/tddts/sprix) dependency version 11.0;
+- JDK 11 or higher
+- [tools](https://github.com/tddts/tools) dependency version 2.0
+- [sprix](https://github.com/tddts/sprix) dependency version 11.0
 
 ## Download
 [Java 11 version](https://github.com/tddts/EveTrader/raw/11/bin/eve-trader-11.0.jar). Linux Only. Requires openjdk-11-jre package.
