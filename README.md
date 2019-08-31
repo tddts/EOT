@@ -27,4 +27,4 @@ JDK 11 or higher;
 [sprix](https://github.com/tddts/sprix) dependency version 11.0;
 
 ## Download
-[Java 11 version](https://github.com/tddts/EveTrader/raw/11/bin/eve-trader-11.0.jar)
+[Java 11 version](https://github.com/tddts/EveTrader/raw/11/bin/eve-trader-11.0.jar). Linux Only. Requires openjdk-11-jre package.
