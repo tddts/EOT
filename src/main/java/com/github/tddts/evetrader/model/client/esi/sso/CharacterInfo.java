@@ -16,9 +16,12 @@
 
 package com.github.tddts.evetrader.model.client.esi.sso;
 
+import lombok.Data;
+
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Data
 public class CharacterInfo {
 
   private String ExpiresOn;
@@ -29,53 +32,5 @@ public class CharacterInfo {
   private String CharacterName;
 
   public CharacterInfo() {
-  }
-
-  public String getExpiresOn() {
-    return ExpiresOn;
-  }
-
-  public void setExpiresOn(String expiresOn) {
-    this.ExpiresOn = expiresOn;
-  }
-
-  public long getCharacterID() {
-    return CharacterID;
-  }
-
-  public void setCharacterID(long characterID) {
-    this.CharacterID = characterID;
-  }
-
-  public String getCharacterOwnerHash() {
-    return CharacterOwnerHash;
-  }
-
-  public void setCharacterOwnerHash(String characterOwnerHash) {
-    this.CharacterOwnerHash = characterOwnerHash;
-  }
-
-  public String getScopes() {
-    return Scopes;
-  }
-
-  public void setScopes(String scopes) {
-    this.Scopes = scopes;
-  }
-
-  public String getTokenType() {
-    return TokenType;
-  }
-
-  public void setTokenType(String tokenType) {
-    this.TokenType = tokenType;
-  }
-
-  public String getCharacterName() {
-    return CharacterName;
-  }
-
-  public void setCharacterName(String characterName) {
-    this.CharacterName = characterName;
   }
 }

@@ -16,6 +16,10 @@
 
 package com.github.tddts.evetrader.model.client.esi.wallet;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
 /**
@@ -23,32 +27,11 @@ import java.math.BigDecimal;
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Wallet {
 
   private int wallet_id;
   private BigDecimal balance;
-
-  public Wallet() {
-  }
-
-  public int getWallet_id() {
-    return wallet_id;
-  }
-
-  public void setWallet_id(int wallet_id) {
-    this.wallet_id = wallet_id;
-  }
-
-  public BigDecimal getBalance() {
-    return balance;
-  }
-
-  public void setBalance(BigDecimal balance) {
-    this.balance = balance;
-  }
-
-  @Override
-  public String toString() {
-    return "Wallet{" + "wallet_id=[" + wallet_id + "], balance=[" + balance + "]}";
-  }
 }

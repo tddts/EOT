@@ -16,11 +16,16 @@
 
 package com.github.tddts.evetrader.model.app;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 /**
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Getter
+@Setter
 public class OrderRoute {
 
   private List<Integer> waypoints;
@@ -29,14 +34,6 @@ public class OrderRoute {
   }
 
   public OrderRoute(List<Integer> waypoints) {
-    this.waypoints = waypoints;
-  }
-
-  public List<Integer> getWaypoints() {
-    return waypoints;
-  }
-
-  public void setWaypoints(List<Integer> waypoints) {
     this.waypoints = waypoints;
   }
 
