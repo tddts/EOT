@@ -19,7 +19,7 @@ Not intended for mass use, as it's getting less useful with each user due to it'
 English is used by default.
 
 Чтобы включить русский язык добавьте *\[-Duser.language=ru -Duser.country=RU]* к параметрам запуска.<br />
-Например: **java -Duser.language=ru -Duser.country=RU -jar ./JET-1.8.jar**
+Например: **java -Duser.language=ru -Duser.country=RU -jar ./eve-trader-8.0.jar**
 
 ## Tools used
 - JavaFX
