@@ -26,3 +26,6 @@ English is used by default.
 - Maven version 3.2.5 or higher.
 - [tools](https://github.com/tddts/tools-core) library version 2.0.
 - [sprix](https://github.com/tddts/sprix) library version 8.0.
+
+## Download
+[Java 8 version](https://github.com/tddts/EveTrader/raw/master/bin/eve-trader-8.0.jar). Multiplatform. Requires JRE 8 or above.
