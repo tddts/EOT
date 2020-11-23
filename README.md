@@ -4,6 +4,14 @@
 Desktop application that allows EVE Online player to search for profitable buy/sell orders in certain regions.
 Not intended for mass use, as it's getting less useful with each user due to it's nature.
 
+## Features
+- Searching orders by available cargo space and wallet funds
+- Finding routes based on given system security level
+- Calculating income based on available cargo space and given tax
+- Creating in-game routes
+- EVE SSO login
+- Developer login
+
 ## Supported languages
 - English
 - Russian
