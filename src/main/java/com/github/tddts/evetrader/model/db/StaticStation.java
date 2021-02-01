@@ -17,6 +17,9 @@
 package com.github.tddts.evetrader.model.db;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,6 +32,8 @@ import javax.persistence.Table;
  */
 @Table
 @Entity
+@Getter
+@Setter
 public class StaticStation {
 
   @Id
@@ -52,63 +57,4 @@ public class StaticStation {
 
   @Column
   private double securityStatus;
-
-  public StaticStation() {
-  }
-
-  public int getStationId() {
-    return stationId;
-  }
-
-  public void setStationId(int stationId) {
-    this.stationId = stationId;
-  }
-
-  public String getStationName() {
-    return stationName;
-  }
-
-  public void setStationName(String stationName) {
-    this.stationName = stationName;
-  }
-
-  public int getSolarSystemID() {
-    return solarSystemID;
-  }
-
-  public void setSolarSystemID(int solarSystemID) {
-    this.solarSystemID = solarSystemID;
-  }
-
-  public String getSolarSystemName() {
-    return solarSystemName;
-  }
-
-  public void setSolarSystemName(String solarSystemName) {
-    this.solarSystemName = solarSystemName;
-  }
-
-  public int getConstellationId() {
-    return constellationId;
-  }
-
-  public void setConstellationId(int constellationId) {
-    this.constellationId = constellationId;
-  }
-
-  public int getRegionId() {
-    return regionId;
-  }
-
-  public void setRegionId(int regionId) {
-    this.regionId = regionId;
-  }
-
-  public double getSecurityStatus() {
-    return securityStatus;
-  }
-
-  public void setSecurityStatus(double securityStatus) {
-    this.securityStatus = securityStatus;
-  }
 }

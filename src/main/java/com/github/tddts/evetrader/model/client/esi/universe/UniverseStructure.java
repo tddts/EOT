@@ -16,34 +16,20 @@
 
 package com.github.tddts.evetrader.model.client.esi.universe;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * {@code UniverseStructure} represents a universal structure object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UniverseStructure {
 
   private String name;
   private long solar_system_id;
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public long getSolar_system_id() {
-    return solar_system_id;
-  }
-
-  public void setSolar_system_id(long solar_system_id) {
-    this.solar_system_id = solar_system_id;
-  }
-
-  @Override
-  public String toString() {
-    return "UniverseStructure{" + "name=[" + name + "], solar_system_id=[" + solar_system_id + "]}";
-  }
 }

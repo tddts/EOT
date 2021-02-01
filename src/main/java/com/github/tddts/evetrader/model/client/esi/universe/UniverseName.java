@@ -16,43 +16,21 @@
 
 package com.github.tddts.evetrader.model.client.esi.universe;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * {@code UniverseName} represents a universal name object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UniverseName {
 
   private String category;
   private String name;
   private int id;
-
-  public String getCategory() {
-    return category;
-  }
-
-  public void setCategory(String category) {
-    this.category = category;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  @Override
-  public String toString() {
-    return "UniverseName{" + "category=[" + category + "], name=[" + name + "], id=[" + id + "]}";
-  }
 }

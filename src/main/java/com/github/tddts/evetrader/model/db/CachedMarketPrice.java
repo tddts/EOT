@@ -17,6 +17,9 @@
 package com.github.tddts.evetrader.model.db;
 
 import com.github.tddts.evetrader.model.client.esi.market.MarketPrice;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +33,9 @@ import javax.persistence.Table;
  */
 @Table
 @Entity
+@Getter
+@Setter
+@ToString
 public class CachedMarketPrice {
 
   @Column
@@ -52,30 +58,6 @@ public class CachedMarketPrice {
   public CachedMarketPrice(double averagePrice, double adjustedPrice, double typeId) {
     this.averagePrice = averagePrice;
     this.adjustedPrice = adjustedPrice;
-    this.typeId = typeId;
-  }
-
-  public double getAveragePrice() {
-    return averagePrice;
-  }
-
-  public void setAveragePrice(double averagePrice) {
-    this.averagePrice = averagePrice;
-  }
-
-  public double getAdjustedPrice() {
-    return adjustedPrice;
-  }
-
-  public void setAdjustedPrice(double adjustedPrice) {
-    this.adjustedPrice = adjustedPrice;
-  }
-
-  public double getTypeId() {
-    return typeId;
-  }
-
-  public void setTypeId(double typeId) {
     this.typeId = typeId;
   }
 }

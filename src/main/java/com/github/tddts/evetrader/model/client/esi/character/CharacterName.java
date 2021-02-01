@@ -16,34 +16,20 @@
 
 package com.github.tddts.evetrader.model.client.esi.character;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * {@code CharacterName} represents a character name object from OpenAPI for EVE Online.
  *
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CharacterName {
 
   private long character_id;
   private String character_name;
-
-  public long getCharacter_id() {
-    return character_id;
-  }
-
-  public void setCharacter_id(long character_id) {
-    this.character_id = character_id;
-  }
-
-  public String getCharacter_name() {
-    return character_name;
-  }
-
-  public void setCharacter_name(String character_name) {
-    this.character_name = character_name;
-  }
-
-  @Override
-  public String toString() {
-    return "CharacterName{" + "character_id=[" + character_id + "], character_name=[" + character_name + "]}";
-  }
 }

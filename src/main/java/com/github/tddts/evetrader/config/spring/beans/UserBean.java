@@ -20,6 +20,8 @@ import com.github.tddts.evetrader.consts.AuthorizationType;
 import com.github.tddts.evetrader.consts.RestDataSource;
 import com.github.tddts.evetrader.model.client.esi.sso.AccessToken;
 import com.github.tddts.evetrader.model.client.esi.sso.CharacterInfo;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +30,8 @@ import org.springframework.stereotype.Component;
  * @author Tigran_Dadaiants dtkcommon@gmail.com
  */
 @Component
+@Getter
+@Setter
 public class UserBean {
 
   private String clientId;
@@ -43,53 +47,5 @@ public class UserBean {
 
   public boolean isTokenRefreshable() {
     return accessToken.getRefresh_token() != null;
-  }
-
-  public String getClientId() {
-    return clientId;
-  }
-
-  public void setClientId(String clientId) {
-    this.clientId = clientId;
-  }
-
-  public String getSercretKey() {
-    return sercretKey;
-  }
-
-  public void setSercretKey(String sercretKey) {
-    this.sercretKey = sercretKey;
-  }
-
-  public AccessToken getAccessToken() {
-    return accessToken;
-  }
-
-  public void setAccessToken(AccessToken accessToken) {
-    this.accessToken = accessToken;
-  }
-
-  public CharacterInfo getCharacterInfo() {
-    return characterInfo;
-  }
-
-  public void setCharacterInfo(CharacterInfo characterInfo) {
-    this.characterInfo = characterInfo;
-  }
-
-  public AuthorizationType getAuthorizationType() {
-    return authorizationType;
-  }
-
-  public void setAuthorizationType(AuthorizationType authorizationType) {
-    this.authorizationType = authorizationType;
-  }
-
-  public RestDataSource getRestDataSource() {
-    return restDataSource;
-  }
-
-  public void setRestDataSource(RestDataSource restDataSource) {
-    this.restDataSource = restDataSource;
   }
 }
